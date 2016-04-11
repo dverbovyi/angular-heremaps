@@ -1,5 +1,5 @@
 # angular-heremaps
-Angular directive for working with Nokia HereMaps
 =================================================
+Angular directive for working with Nokia HereMaps
 
-under development
+(under development)
