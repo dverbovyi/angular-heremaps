@@ -55,13 +55,9 @@ module.exports = function($rootScope, $window, $timeout, APIProvider) {
             }
             
             function _resizeHandler(){
-                console.log('resize')
-                
                 $scope.height = $window.innerHeight + 'px';
                 $scope.width = $window.innerWidth + 'px';
-                
-                console.log($scope.height, $scope.width)
-                
+
                 $scope.$digest();
                 if(timeout)
                     $timeout.cancel(timeout);
