@@ -4,12 +4,28 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="./node_modules/angular/angular.min.js"></script>
-    
-    <!--<script src="http://js.api.here.com/v3/3.0/mapsjs-core.js"></script>-->
-    <!--<script src="http://js.api.here.com/v3/3.0/mapsjs-service.js"></script>-->
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        
+        html, body {
+            height: 100%;
+            width: 100%;
+        }
+        
+        #mapContainer {
+            height: 80%;
+            margin: 0 auto;
+            width: 80%;
+        }
+    </style>
 </head>
 <body>
-<div here-maps height="900" width="640"></div>
+    
+<div here-maps controls></div>
+
 <script src="./dist/app.js"></script>
 </body>
 </html>

@@ -1,25 +1,43 @@
 module.exports = function($rootScope, $q) {
     var options = {}, apiLoaded = false;
+    
+    var EVENTS = {
+        CORE_READY: "HEREMAPS_CORE_READY",
+        UI_READY: "HEREMAPS_UI_READY"
+    }
 
     return {
+        EVENTS: EVENTS,
         setConfig: _setConfig,
-        getConfig: _getConfig
+        getConfig: _getConfig,
+        loadCore: _loadCore,
+        loadUI: _loadUI
+        subscribe: _subscribe
     }
 
     function _setConfig(opts) {
         options = opts;
-        if (!apiLoaded)
-            _loadAPI();
+        if(!apiLoaded)
+            _loadAPICore();
     }
 
     function _getConfig() {
         return options;
     }
+    
+    function _subscribe(scope, eventName, listener){
+        var subscriber = $rootScope.$on(eventName, listener);
+        scope.$on('$destroy', subscriber);
+    }
 
-    function _loadAPI() {
+    function _loadAPICore() {
         var head = document.getElementsByTagName('head')[0],
             coreScript = document.createElement('script'),
             serviceScript = document.createElement('script');
+            // uiScript = document.createElement('script');
+            
+    //         <script src="http://js.api.here.com/v3/3.0/mapsjs-ui.js" 
+    //   type="text/javascript" charset="utf-8"></script>
 
         coreScript.type = serviceScript.type = 'text/javascript';
         coreScript.src = 'http://js.api.here.com/v3/3.0/mapsjs-core.js';

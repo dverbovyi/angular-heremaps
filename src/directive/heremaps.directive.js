@@ -3,68 +3,81 @@
  */
 var tpl = require('./heremaps.tpl.html');
 
-module.exports = function($rootScope, $window, $timeout, APIProvider) {
+module.exports = function(
+    $rootScope,
+    $window,
+    $timeout,
+    // APIService
+    // APIProvider,
+    // UtilsService,
+    CONSTS) {
     return {
         restrict: 'EA',
         template: tpl,
         replace: true,
         controller: function($scope, $element, $attrs) {
-            console.log($attrs)
-            var height = $attrs.height || 480,
-                width = $attrs.width || 640;
-
-            height = $window.innerHeight;
-            width = $window.innerWidth;
+            $scope.options = {
+                controls: !!$attrs.$attr.controls
+            };
+            //TODO
+            // LoadApiCore
             
-            $scope.height = height + 'px';
-            $scope.width = width + 'px';
-
+            console.log($scope);            
+            
             var config = APIProvider.getConfig();
+            
+            APIProvider.subscribe($scope, APIProvider.CORE_READY, _apiReadyHandler);
+            
+            if($scope.options.controls)
+                APIProvider.subscribe($scope, APIProvider.UI_READY, _uiReadyHandler);
+            
+            _setMapSize();
 
-            var apiReadySubscribe = $rootScope.$on('HEREMAPS_API_READY', _apiReadyHandler);
-            
-            var timeout = null;
-
-            $scope.$on('$destroy', apiReadySubscribe);
-            
-            $window.addEventListener('resize', _resizeHandler)
-            
+            $window.addEventListener('resize', UtilsService.throttle(_resizeHandler, CONSTS.UPDATE_MAP_RESIZE_TIMEOUT))
 
             function _apiReadyHandler() {
-                console.log('ready')
-                if($element.html())
+                if ($element.html())
                     $element.empty();
                     
+                
                 var platform = new H.service.Platform({
                     'app_id': config.app_id,
                     'app_code': config.app_code
                 });
 
-                // Obtain the default map types from the platform object:
                 var defaultLayers = platform.createDefaultLayers();
-                
-                console.log(defaultLayers)
 
                 var map = new H.Map(
                     $element[0],
-                    defaultLayers.satellite.map,
+                    defaultLayers.normal.transit,
                     {
                         zoom: 10,
                         center: { lat: 52.5, lng: 13.4 }
                     });
-            }
-            
-            function _resizeHandler(){
-                $scope.height = $window.innerHeight + 'px';
-                $scope.width = $window.innerWidth + 'px';
-
-                $scope.$digest();
-                if(timeout)
-                    $timeout.cancel(timeout);
                     
-                timeout = $timeout(_apiReadyHandler, 500);
+                var ui = H.ui.UI.createDefault(map, defaultLayers);
             }
             
+            function _uiReadyHandler(){
+                
+            }
+
+            function _resizeHandler() {
+                _setMapSize()
+                _apiReadyHandler();
+            }
+
+            function _setMapSize() {
+                
+                var height = $window.innerHeight || CONSTS.DEFAULT_MAP_SIZE.HEIGHT,
+                    width = $window.innerWidth || CONSTS.DEFAULT_MAP_SIZE.WIDTH;
+
+                $scope.height = height + 'px';
+                $scope.width = width + 'px';
+                
+                UtilsService.runScopeDigestIfNeed($scope);
+            }
+
         },
         link: function(scope) { }
     }
