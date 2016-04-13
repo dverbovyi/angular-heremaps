@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = function($q, UtilsService){
     var API_VERSION = {
         V: "3",
@@ -8,26 +10,40 @@ module.exports = function($q, UtilsService){
         BASE: "http://js.api.here.com/v",
         CORE: "mapsjs-core.js",
         SERVICE: "mapsjs-service.js",
-        UI: "mapsjs-ui.js" 
+        UI: {
+            src: "mapsjs-ui.js",
+            href: "mapsjs-ui.css"
+        }
     };
     
     var head = document.getElementsByTagName('head')[0];
     
     return {
-        LoadApiCore: loadApiCore,
-        LoadApiUI: loadApiUI
-    }
+        loadApiCore: loadApiCore,
+        loadUIComponent: loadUIComponent
+    };
     
     //#region PUBLIC 
     function loadApiCore(){
         return _getLoader(CONFIG.CORE)
                 .then(function(){
-                    return  _getLoader(CONFIG.SERVICE);
+                    return _getLoader(CONFIG.SERVICE);
                 });
     }
     
-    function loadApiUI(){
-        return _getLoader(CONFIG.UI);
+    function loadUIComponent(){
+        return _getLoader(CONFIG.UI.src).then(function(){
+            var href = _getURL(CONFIG.UI.href),
+                link = UtilsService.createLinkTag({
+                    rel: 'stylesheet',
+                    type: 'text/css',
+                    href: href,
+                    id: CONFIG.UI.href
+                });
+
+            if(link)
+                head.appendChild(link);
+        });
     }
     //#endregion PUBLIC
 
@@ -46,14 +62,20 @@ module.exports = function($q, UtilsService){
     
     function _getLoader(sourceName){
         var src = _getURL(sourceName),
-            coreScript = UtilsService.createScriptTag(src);
-            
-        head.appendChild(coreScript);
-        
+            coreScript = UtilsService.createScriptTag({
+                src: src,
+                id: sourceName
+            });
+
         return $q(function(resolve, reject){
+            if(!coreScript) {
+                resolve();
+                return true;
+            }
+            head.appendChild(coreScript);
+
             coreScript.onload = resolve;
             coreScript.onerror = reject;
         });
     }
-    
-}
+};
