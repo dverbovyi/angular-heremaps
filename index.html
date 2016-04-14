@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="heremaps">
+<html lang="en" ng-app="app">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, width=device-width"/>
     <title>Title</title>
+    
     <script src="./node_modules/angular/angular.min.js"></script>
-
+    
     <style>
         * {
             padding: 0;
@@ -15,18 +17,19 @@
             height: 100%;
             width: 100%;
         }
-        
-        #mapContainer {
-            height: 80%;
-            margin: 0 auto;
-            width: 80%;
-        }
     </style>
 </head>
-<body>
+<body ng-controller="AppCtrl">
     
-<div here-maps controls></div>
+<div 
+    here-maps
+    controls
+    pano
+    events
+    
+    places="markers"    
+></div>
 
-<script src="./dist/heremaps.module.js"></script>
+<script src="./dist/app.module.js"></script>
 </body>
 </html>

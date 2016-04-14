@@ -10,7 +10,7 @@ var browserify = require('browserify'),
     browserSync = require('browser-sync');
 
 /* pathConfig*/
-var entryPoint = './src/heremaps.module.js',
+var entryPoint = './src/app.module.js',
     browserDir = './',
     jsWatchPath = './src/**/*.js',
     htmlWatchPath = './src/**/*.html';
@@ -20,7 +20,7 @@ gulp.task('build', function () {
     return browserify(entryPoint, {debug: true})
         .transform(stringify(['.tpl.html']))
         .bundle()
-        .pipe(source('heremaps.module.js'))
+        .pipe(source('app.module.js'))
         .pipe(buffer())
         .pipe(sourcemaps.init({loadMaps: true}))
         .pipe(sourcemaps.write())
