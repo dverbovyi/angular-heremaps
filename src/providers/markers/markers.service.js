@@ -1,4 +1,5 @@
 module.exports = function(DefaultMarker, DOMMarker) {
+    // TODO: Should be placed in const file
     var MARKER_TYPES = {
         DEFAULT: 0,
         DOM: 1,
@@ -8,12 +9,14 @@ module.exports = function(DefaultMarker, DOMMarker) {
     return {
         addMarkerToMap: addMarkerToMap
     }
-    
+
+    // TODO: You should pass only MAP instead of full heremaps obj
     function addMarkerToMap(heremaps, places) {
         console.log(heremaps);
         var map = heremaps.map;
         console.log(places)
 
+        // TODO: LENGTH
         if (!places)
             return false;
 
@@ -24,15 +27,15 @@ module.exports = function(DefaultMarker, DOMMarker) {
         places.forEach(function(place, i) {
             var creator = _getMarkerCreator(place);
             var marker = place.draggable ? _draggableMarkerMixin(creator.create()) : creator.create();
-            
+
             map.addObject(marker);
         });
 
     }
 
     function _getMarkerCreator(place) {
-        var ConcreteMarker = angular.noop;
-        
+        var ConcreteMarker;
+
         switch(place.type) {
             case MARKER_TYPES.DOM:
                 ConcreteMarker = DOMMarker;
@@ -40,17 +43,17 @@ module.exports = function(DefaultMarker, DOMMarker) {
             case MARKER_TYPES.SVG:
                 ConcreteMarker = SVGMarker;
                 break;
-            default: 
+            default:
                 ConcreteMarker = DefaultMarker;
         }
-        
+
         return new ConcreteMarker(place);
     }
 
     function _draggableMarkerMixin(marker) {
         // Ensure that the marker can receive drag events
         marker.draggable = true;
-        
+
         return marker;
     }
 

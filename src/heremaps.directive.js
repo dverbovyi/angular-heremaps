@@ -2,9 +2,7 @@
  * Created by Dmytro on 4/11/2016.
  */
 module.exports = function(
-    $rootScope,
     $window,
-    $timeout,
     Config,
     APIService,
     UtilsService,
@@ -29,23 +27,23 @@ module.exports = function(
             APIService.loadApiCore().then(_apiReady);
 
             _setMapSize();
-            
+
             var _resizeMap = UtilsService.throttle(_resizeHandler, CONSTS.UPDATE_MAP_RESIZE_TIMEOUT);
 
             $window.addEventListener('resize', _resizeMap);
-            
+
             $scope.$on('$destory', function(){
                 $window.removeEventListener('resize', _resizeMap);
             });
 
-            function _apiReady() {
-                if ($element.html())
-                    $element.empty();
 
+            function _apiReady() {
+                // TODO: Move to separate function - _SetupMap
                 $scope.heremaps.platform = new H.service.Platform(Config);
 
                 $scope.heremaps.layers = $scope.heremaps.platform.createDefaultLayers();
 
+                // TODO: Zoom level and center should be configurable
                 $scope.heremaps.map = new H.Map($element[0], $scope.heremaps.layers.normal.map, {
                     zoom: 10,
                     center: new H.geo.Point(52.5, 13.4)
@@ -55,8 +53,14 @@ module.exports = function(
 
             }
 
-            //TODO: should has been refactored
+            //TODO: should has been refactored/ use $attrs.$attr directly
             function _loadModules() {
+
+                // APIService.loadModule($attrs.$attr, {
+                //     "control": _uiModuleReady,
+                //     "pano": _panoModuleReady
+                // })
+
                 if ($scope.modules.controls) {
                     APIService.loadUIModule().then(function() {
                         _uiModuleReady();
@@ -79,6 +83,7 @@ module.exports = function(
             //
 
             function _uiModuleReady() {
+                // TODO: Use $scope.heremaps.ui.component
                 $scope.uiComponent = H.ui.UI.createDefault($scope.heremaps.map, $scope.heremaps.layers);
             }
 
@@ -94,7 +99,7 @@ module.exports = function(
                 map.addEventListener('tap', function(evt) {
                     console.log(evt.type, evt.currentPointer.type);
                 });
-                
+
                 // disable the default draggability of the underlying map
                 // when starting to drag a marker object:
                 map.addEventListener('dragstart', function(ev) {
@@ -103,7 +108,7 @@ module.exports = function(
                         behavior.disable();
                     }
                 }, false);
-                
+
                 // Listen to the drag event and move the position of the marker
                 // as necessary
                 map.addEventListener('drag', function(ev) {
@@ -122,14 +127,14 @@ module.exports = function(
                         behavior.enable();
                     }
                 }, false);
-                
+
                 MarkersService.addMarkerToMap($scope.heremaps, $scope.places);
 
             }
 
             function _resizeHandler() {
                 _setMapSize();
-                
+
                 $scope.heremaps.map.getViewPort().resize();
             }
 
@@ -143,7 +148,6 @@ module.exports = function(
                 UtilsService.runScopeDigestIfNeed($scope);
             }
 
-        },
-        link: function(scope) { }
+        }
     }
 };

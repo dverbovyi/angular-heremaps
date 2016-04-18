@@ -1,15 +1,16 @@
 
 (function() {
-    
+
     'use strict';
-    
-    
+
+
     angular.module('exampleModule', ['heremaps']);
-    
+
     angular.module('exampleModule')
-        .controller('AppCtrl', ['$scope', AppController]);  
+        .controller('AppCtrl', ['$scope', AppController]);
 
     function AppController($scope) {
+         // TODO: Dont use numbers for marker type
          $scope.markers = [
              {
                  pos: { lat: 52.508249, lng: 13.338931 }
