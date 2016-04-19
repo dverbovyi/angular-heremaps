@@ -8,8 +8,4 @@ describe('Initial test for CI', function() {
         expect(true).toBe(true);
     });
 
-    it('should fail', function() {
-        expect(true).toBe(false);
-    });
-
 });
