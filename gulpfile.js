@@ -8,12 +8,11 @@ var browserify = require('browserify'),
     buffer = require('vinyl-buffer'),
     stringify = require('stringify'),
     browserSync = require('browser-sync');
+    config = require('./package.json');
 
 /* pathConfig*/
-var entryPoint = './src/heremaps.module.js',
-    browserDir = './',
-    jsWatchPath = './src/**/*.js',
-    htmlWatchPath = './index.html';
+var entryPoint = config["source-folder"] + '/' + config.main,
+    jsWatchPath = config["source-folder"] + '**/*.js';
 /**/
 
 gulp.task('build', function () {
@@ -27,22 +26,10 @@ gulp.task('build', function () {
         .pipe(browserSync.reload({stream: true}));
 });
 
-gulp.task('browser-sync', function () {
-    const config = {
-        server: {baseDir: browserDir}
-    };
-
-    return browserSync(config);
-});
-
 gulp.task('watch', function () {
     gulp.watch(jsWatchPath, ['build']);
-    gulp.watch(htmlWatchPath, function () {
-        return gulp.src('')
-            .pipe(browserSync.reload({stream: true}))
-    });
 });
 
-gulp.task('run', ['build', 'watch', 'browser-sync']);
+gulp.task('run', ['build', 'watch']);
 
 gulp.task('default', ['js']);
