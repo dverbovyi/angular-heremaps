@@ -3,4 +3,5 @@
 # angular-heremaps
 Angular directive for working with Nokia HereMaps
 
+v0.0.1
 (under development)
