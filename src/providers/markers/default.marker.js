@@ -4,8 +4,7 @@ module.exports = function(MarkerInterface){
         this.setCoords();
     }
 
-    // TODO: Object create should have pollyfill
-    var proto = DefaultMarker.prototype = Object.create(MarkerInterface.prototype);
+    var proto = DefaultMarker.prototype = new MarkerInterface();
     proto.constructor = DefaultMarker;
 
     proto.create = function(){

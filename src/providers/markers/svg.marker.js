@@ -1,17 +1,26 @@
-//TODO: Support SVG Marker
-
 module.exports = function(MarkerInterface){
-    function DefaultMarker(place){
+    function SVGMarker(place){
         this.place = place;
         this.setCoords();
     }
     
-    var proto = DefaultMarker.prototype = Object.create(MarkerInterface.prototype);
-    proto.constructor = DefaultMarker;
+    var proto = SVGMarker.prototype = new MarkerInterface();
+    
+    proto.constructor = SVGMarker;
     
     proto.create = function(){
-        return new H.map.Marker(this.coords);
-    }
+        return new H.map.Marker(this.coords, {
+            icon: this._getIcon(),
+        });
+    };
     
-    return DefaultMarker;
+    proto._getIcon = function(){
+        var icon = this.place.markup;
+         if(!icon)
+            throw new Error('markup missed');
+
+        return new H.map.Icon(icon);
+    };
+    
+    return SVGMarker;
 }

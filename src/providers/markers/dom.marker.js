@@ -6,7 +6,7 @@ module.exports = function(MarkerInterface){
         this.setCoords();
     }
 
-    var proto = DOMMarker.prototype = Object.create(MarkerInterface.prototype);
+    var proto = DOMMarker.prototype = new MarkerInterface();
     proto.constructor = DOMMarker;
 
     proto.create = function(){
@@ -18,7 +18,7 @@ module.exports = function(MarkerInterface){
     proto._getIcon = function(){
         var icon = this.place.markup;
          if(!icon)
-            throw new Error('Icon missed');
+            throw new Error('markup missed');
 
         return new H.map.DomIcon(icon, this._getEvents());
     };

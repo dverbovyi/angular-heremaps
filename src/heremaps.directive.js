@@ -13,7 +13,8 @@ module.exports = function(
         template: "<div ng-style=\"{'width': width, 'height': height}\"></div>",
         replace: true,
         scope: {
-            places: '='
+            places: '=',
+            events: '=' //TODO: support passing custom listeners
         },
         controller: function($scope, $element, $attrs) {
             $scope.modules = {

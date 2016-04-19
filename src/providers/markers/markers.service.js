@@ -1,4 +1,4 @@
-module.exports = function(DefaultMarker, DOMMarker) {
+module.exports = function(DefaultMarker, DOMMarker, SVGMarker) {
     // TODO: Should be placed in const file
     var MARKER_TYPES = {
         DEFAULT: 0,
@@ -14,8 +14,7 @@ module.exports = function(DefaultMarker, DOMMarker) {
     function addMarkerToMap(heremaps, places) {
         var map = heremaps.map;
 
-        // TODO: LENGTH
-        if (!places)
+        if (!places || !places.length)
             return false;
 
         if (!(map instanceof H.Map))
