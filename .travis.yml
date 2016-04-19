@@ -1,8 +1,10 @@
+install: true
 language: node_js
 node_js:
   - "5.1"
 before_script:
   - npm install -g gulp
 script:
+  - npm i
   - gulp build
   - npm test
