@@ -4,7 +4,8 @@
   "description": "Angular directive for working with Nokia heremaps",
   "main": "heremaps.directive.js",
   "scripts": {
-    "test": "./node_modules/.bin/jasmine JASMINE_CONFIG_PATH=jasmine.json"
+    "test": "./node_modules/.bin/jasmine JASMINE_CONFIG_PATH=jasmine.json",
+    "build": "./node_modules/.bin/gulp build"
   },
   "repository": {
     "type": "git",

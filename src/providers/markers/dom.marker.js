@@ -16,8 +16,7 @@ module.exports = function(MarkerInterface){
     };
 
     proto._getIcon = function(){
-        var icon = this.place.icon;
-        console.log(this.place)
+        var icon = this.place.markup;
          if(!icon)
             throw new Error('Icon missed');
 

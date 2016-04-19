@@ -12,9 +12,7 @@ module.exports = function(DefaultMarker, DOMMarker) {
 
     // TODO: You should pass only MAP instead of full heremaps obj
     function addMarkerToMap(heremaps, places) {
-        console.log(heremaps);
         var map = heremaps.map;
-        console.log(places)
 
         // TODO: LENGTH
         if (!places)
@@ -23,7 +21,6 @@ module.exports = function(DefaultMarker, DOMMarker) {
         if (!(map instanceof H.Map))
             throw new Error('Unsupported map instance');
 
-        console.log(places)
         places.forEach(function(place, i) {
             var creator = _getMarkerCreator(place);
             var marker = place.draggable ? _draggableMarkerMixin(creator.create()) : creator.create();

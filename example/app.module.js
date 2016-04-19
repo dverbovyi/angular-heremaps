@@ -23,7 +23,7 @@
                  pos: { lat: 52.503730, lng: 13.331678 },
                  type: 1,
                  draggable: true,
-                 icon: '<div style="width: 50px; height: 30px; background-color: red">ICON</div>',
+                 markup: '<div style="width: 50px; height: 30px; background-color: red">ICON</div>',
                  events: {
                      'click': function(e) {
                          console.log('dom marker has been clicked', e)
