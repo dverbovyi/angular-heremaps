@@ -1,5 +1,8 @@
-install: true
 language: node_js
 node_js:
   - "5.1"
-script: ./node_modules/.bin/gulp build
+before_script:
+  - npm install -g gulp
+script:
+  - gulp build
+  - npm test
