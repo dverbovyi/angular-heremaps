@@ -9,7 +9,7 @@ describe('Initial test for CI', function() {
     });
 
     it('should fail', function() {
-        expect(false).toBe(false);
+        expect(true).toBe(false);
     });
 
 });
