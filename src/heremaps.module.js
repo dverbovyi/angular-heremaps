@@ -16,7 +16,7 @@ heremaps
     .service('UtilsService', utilsService)
     .constant('CONSTS', consts)
 
-heremaps.directive('hereMaps', directive);
+heremaps.directive('heremaps', directive);
 
 heremaps.config(["ConfigProvider", function(ConfigProvider) {
     ConfigProvider.setOptions({

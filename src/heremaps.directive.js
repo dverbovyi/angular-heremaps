@@ -10,13 +10,18 @@ module.exports = function(
     CONSTS) {
     return {
         restrict: 'EA',
-        template: "<div ng-style=\"{'width': width, 'height': height}\"></div>",
+        template: "<div ng-style=\"{'width': mapWidth, 'height': mapHeight}\"></div>",
         replace: true,
         scope: {
+            coords: '=',
+            zoom: '=',
+            height: '=',
+            width: '=',
             places: '=',
             events: '=' //TODO: support passing custom listeners
         },
         controller: function($scope, $element, $attrs) {
+            console.log($scope)
             $scope.modules = {
                 controls: !!$attrs.$attr.controls,
                 pano: !!$attrs.$attr.pano,
@@ -31,7 +36,7 @@ module.exports = function(
 
             var _resizeMap = UtilsService.throttle(_resizeHandler, CONSTS.UPDATE_MAP_RESIZE_TIMEOUT);
 
-            $window.addEventListener('resize', _resizeMap);
+            // $window.addEventListener('resize', _resizeMap); TODO
 
             $scope.$on('$destory', function(){
                 $window.removeEventListener('resize', _resizeMap);
@@ -44,13 +49,17 @@ module.exports = function(
 
                 $scope.heremaps.layers = $scope.heremaps.platform.createDefaultLayers();
 
-                // TODO: Zoom level and center should be configurable
-                $scope.heremaps.map = new H.Map($element[0], $scope.heremaps.layers.normal.map, {
-                    zoom: 10,
-                    center: new H.geo.Point(52.5, 13.4)
-                });
+                if(typeof $scope.coords.lat === 'number' && typeof $scope.coords.lng === 'number') {
+                    $scope.heremaps.map = new H.Map($element[0], $scope.heremaps.layers.normal.map, {
+                        zoom: $scope.zoom || 10,
+                        center: new H.geo.Point($scope.coords.lat, $scope.coords.lng)
+                    });
 
-                _loadModules();
+                    _loadModules();    
+                } else {
+                    console.error('Missed coords');
+                }
+                
 
             }
 
@@ -140,11 +149,11 @@ module.exports = function(
             }
 
             function _setMapSize() {
-                var height = $window.innerHeight || CONSTS.DEFAULT_MAP_SIZE.HEIGHT,
-                    width = $window.innerWidth || CONSTS.DEFAULT_MAP_SIZE.WIDTH;
+                var height = $scope.height || CONSTS.DEFAULT_MAP_SIZE.HEIGHT,
+                    width = $scope.width || CONSTS.DEFAULT_MAP_SIZE.WIDTH;
 
-                $scope.height = height + 'px';
-                $scope.width = width + 'px';
+                $scope.mapHeight = height + 'px';
+                $scope.mapWidth = width + 'px';
 
                 UtilsService.runScopeDigestIfNeed($scope);
             }
