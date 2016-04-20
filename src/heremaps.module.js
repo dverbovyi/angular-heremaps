@@ -10,8 +10,9 @@ var heremaps = angular.module('heremaps', [
     'markers-module'
 ]);
 
-heremaps.provider('Config', configProvider)
-    .service('APIService', apiService)
+heremaps
+    .provider('Config', configProvider)
+    .service('APIService', ['$q', 'Config', 'UtilsService', apiService])
     .service('UtilsService', utilsService)
     .constant('CONSTS', consts)
 

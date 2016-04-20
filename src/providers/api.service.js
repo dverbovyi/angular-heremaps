@@ -70,20 +70,32 @@ module.exports = function($q, Config, UtilsService){
     function _getLoader(sourceName){
         // TODO: Instead of id you can check global properties
         var src = _getURL(sourceName),
-            coreScript = UtilsService.createScriptTag({
+            script = UtilsService.createScriptTag({
                 src: src,
                 id: sourceName
             });
 
-        return $q(function(resolve, reject){
-            if(!coreScript) {
-                resolve();
-                return true;
-            }
-            head.appendChild(coreScript);
+        head.appendChild(script);
+        
+        return _createPromise(script);
+    }
+    
+    function _createPromise(script){
+        var dererred = $q.defer();
+        
+        if(!script) {
+            dererred.resolve();
+            return true;
+        }
 
-            coreScript.onload = resolve;
-            coreScript.onerror = reject;
-        });
+        script.onload = function(){
+            dererred.resolve();
+        };
+        
+        script.onerror = function(){
+            dererred.reject();
+        };        
+        
+        return dererred.promise;
     }
 };
