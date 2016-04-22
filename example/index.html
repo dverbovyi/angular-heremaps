@@ -21,19 +21,35 @@
             height: 100%;
             width: 100%;
         }
+        
+        .map {
+            display: inline-block;
+        }
     </style>
-</head>
+</head> 
 
 <body>
     <div ng-controller="AppCtrl">
 
+        <div heremaps events controls map-ready="onMapReady"
+            options="mapOptions"
+            places="markers" class="map"></div>
+            
         <div heremaps events controls
-            coords="{lat:49.8, lng: 24.2}"
-            zoom="10"
-            height="640" 
-            width="960"
-            places="markers"></div>
-
+            options="mapOptions"
+            places="markers" class="map"></div>
+            
+        <div heremaps events
+            options="{
+                zoom: 6,
+                height: 390,
+                width: 480,
+                coords: {
+                    longitude: 47,
+                    latitude: 20
+                }
+            }"
+            places="markers" class="map"></div>
     </div>
 
 

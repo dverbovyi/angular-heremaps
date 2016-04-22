@@ -1,19 +1,11 @@
-module.exports = function(DefaultMarker, DOMMarker, SVGMarker) {
-    // TODO: Should be placed in const file
-    var MARKER_TYPES = {
-        DEFAULT: 0,
-        DOM: 1,
-        SVG: 2
-    };
-
+module.exports = function(DefaultMarker, DOMMarker, SVGMarker, CONSTS) {
+    
+    var MARKER_TYPES = CONSTS.MARKER_TYPES;
     return {
         addMarkerToMap: addMarkerToMap
     }
 
-    // TODO: You should pass only MAP instead of full heremaps obj
-    function addMarkerToMap(heremaps, places) {
-        var map = heremaps.map;
-
+    function addMarkerToMap(map, places) {
         if (!places || !places.length)
             return false;
 
@@ -47,7 +39,6 @@ module.exports = function(DefaultMarker, DOMMarker, SVGMarker) {
     }
 
     function _draggableMarkerMixin(marker) {
-        // Ensure that the marker can receive drag events
         marker.draggable = true;
 
         return marker;

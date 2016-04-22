@@ -3,6 +3,7 @@
  */
 module.exports = function(
     $window,
+    $rootScope,
     Config,
     APIService,
     UtilsService,
@@ -13,15 +14,14 @@ module.exports = function(
         template: "<div ng-style=\"{'width': mapWidth, 'height': mapHeight}\"></div>",
         replace: true,
         scope: {
-            coords: '=',
-            zoom: '=',
-            height: '=',
-            width: '=',
+            opts: '=options',
             places: '=',
-            events: '=' //TODO: support passing custom listeners
+            onMapReady: "=mapReady"
         },
         controller: function($scope, $element, $attrs) {
-            console.log($scope)
+            var options = angular.extend({}, CONSTS.DEFAULT_MAP_OPTIONS, $scope.opts),
+                position = options.coords;
+
             $scope.modules = {
                 controls: !!$attrs.$attr.controls,
                 pano: !!$attrs.$attr.pano,
@@ -29,72 +29,94 @@ module.exports = function(
             };
 
             $scope.heremaps = {};
-
-            APIService.loadApiCore().then(_apiReady);
+            
+            APIService.loadApi().then(_apiReady);
 
             _setMapSize();
 
-            var _resizeMap = UtilsService.throttle(_resizeHandler, CONSTS.UPDATE_MAP_RESIZE_TIMEOUT);
+            // var _resizeMap = UtilsService.throttle(_resizeHandler, CONSTS.UPDATE_MAP_RESIZE_TIMEOUT);
+            // $window.addEventListener('resize', _resizeMap);
 
-            // $window.addEventListener('resize', _resizeMap); TODO
-
-            $scope.$on('$destory', function(){
+            $scope.$on('$destory', function() {
                 $window.removeEventListener('resize', _resizeMap);
             });
 
 
             function _apiReady() {
-                // TODO: Move to separate function - _SetupMap
+                _setupMapPlatform();
+
+                _getLocation()
+                    .then(function(response) {
+                        _setupMap({
+                            longitude: response.coords.longitude,
+                            latitude: response.coords.latitude
+                        });
+                    })
+                    .catch(_locationFailure);
+            }
+
+            function _setupMapPlatform() {
                 $scope.heremaps.platform = new H.service.Platform(Config);
-
                 $scope.heremaps.layers = $scope.heremaps.platform.createDefaultLayers();
+            }
 
-                if(typeof $scope.coords.lat === 'number' && typeof $scope.coords.lng === 'number') {
-                    $scope.heremaps.map = new H.Map($element[0], $scope.heremaps.layers.normal.map, {
-                        zoom: $scope.zoom || 10,
-                        center: new H.geo.Point($scope.coords.lat, $scope.coords.lng)
+            function _getLocation() {
+                return APIService.getPosition({
+                    coords: position,
+                    enableHighAccuracy: true,
+                    maximumAge: 10000
+                });
+            }
+            
+            function _locationFailure(){
+                console.error('Can\'t get a position', error);
+            }
+
+            function _setupMap(coords) {
+                if (coords)
+                    position = coords;
+
+                _initMap(function() {
+                    APIService.loadModules($attrs.$attr, {
+                        "controls": _uiModuleReady,
+                        "events": _eventsModuleReady,
+                        "pano": _panoModuleReady
                     });
+                });
 
-                    _loadModules();    
-                } else {
-                    console.error('Missed coords');
-                }
-                
+                _addEventListeners();
 
             }
 
-            //TODO: should has been refactored/ use $attrs.$attr directly
-            function _loadModules() {
+            function _initMap(cb) {
+                var map = $scope.heremaps.map = new H.Map($element[0], $scope.heremaps.layers.normal.map, {
+                    zoom: options.zoom,
+                    center: new H.geo.Point(position.latitude, position.longitude)
+                });
 
-                // APIService.loadModule($attrs.$attr, {
-                //     "control": _uiModuleReady,
-                //     "pano": _panoModuleReady
-                // })
+                $scope.onMapReady && $scope.onMapReady(MapProxy());
 
-                if ($scope.modules.controls) {
-                    APIService.loadUIModule().then(function() {
-                        _uiModuleReady();
-                    });
-                }
-
-                if ($scope.modules.pano) {
-                    APIService.loadPanoModule().then(function() {
-                        _panoModuleReady();
-                    });
-                }
-
-                if ($scope.modules.events) {
-                    APIService.loadEventsModule().then(function() {
-                        _eventsModuleReady();
-                    });
-                }
-
+                cb && cb();
             }
-            //
+
+            function _navigate(coords) {
+                if (!$scope.heremaps.map)
+                    _setupMap(coords)
+            }
+
+            function _addEventListeners() {
+                $rootScope.$on(CONSTS.MAP_EVENTS.RELOAD, function(e, coords) {
+                    _initMap();
+                });
+
+                $rootScope.$on(CONSTS.MAP_EVENTS.NAVIGATE, function(e, coords) {
+                    position = coords;
+                    $scope.heremaps.map.setCenter(coords);
+                });
+            }
 
             function _uiModuleReady() {
-                // TODO: Use $scope.heremaps.ui.component
-                $scope.uiComponent = H.ui.UI.createDefault($scope.heremaps.map, $scope.heremaps.layers);
+                $scope.heremaps.ui = H.ui.UI.createDefault($scope.heremaps.map, $scope.heremaps.layers);
             }
 
             function _panoModuleReady() {
@@ -107,11 +129,9 @@ module.exports = function(
                     behavior = $scope.heremaps.behavior = new H.mapevents.Behavior(events);
 
                 map.addEventListener('tap', function(evt) {
-                    console.log(evt.type, evt.currentPointer.type);
+                    // console.log(evt.type, evt.currentPointer.type);
                 });
 
-                // disable the default draggability of the underlying map
-                // when starting to drag a marker object:
                 map.addEventListener('dragstart', function(ev) {
                     var target = ev.target;
                     if (target instanceof H.map.Marker) {
@@ -119,8 +139,6 @@ module.exports = function(
                     }
                 }, false);
 
-                // Listen to the drag event and move the position of the marker
-                // as necessary
                 map.addEventListener('drag', function(ev) {
                     var target = ev.target,
                         pointer = ev.currentPointer;
@@ -129,8 +147,6 @@ module.exports = function(
                     }
                 }, false);
 
-                // re-enable the default draggability of the underlying map
-                // when dragging has completed
                 map.addEventListener('dragend', function(ev) {
                     var target = ev.target;
                     if (target instanceof mapsjs.map.Marker) {
@@ -138,7 +154,9 @@ module.exports = function(
                     }
                 }, false);
 
-                MarkersService.addMarkerToMap($scope.heremaps, $scope.places);
+                map.draggable = options.draggable;
+
+                MarkersService.addMarkerToMap($scope.heremaps.map, $scope.places);
 
             }
 
@@ -149,15 +167,34 @@ module.exports = function(
             }
 
             function _setMapSize() {
-                var height = $scope.height || CONSTS.DEFAULT_MAP_SIZE.HEIGHT,
-                    width = $scope.width || CONSTS.DEFAULT_MAP_SIZE.WIDTH;
-
-                $scope.mapHeight = height + 'px';
-                $scope.mapWidth = width + 'px';
+                $scope.mapHeight = options.height + 'px';
+                $scope.mapWidth = options.width + 'px';
 
                 UtilsService.runScopeDigestIfNeed($scope);
             }
+            
+            function MapProxy(){
+                return {
+                    getMap: function(){
+                        return $scope.heremaps.map
+                    },
+                    setCenter: function(coords) {
+                        if (!coords) {
+                            return _getLocation()
+                                .then(function(response){
+                                    $scope.heremaps.map.setCenter({
+                                        lng: response.coords.longitude,
+                                        lat: response.coords.latitude
+                                    });        
+                                })
+                                .catch(_locationFailure);
+                        }
 
+                        $scope.heremaps.map.setCenter(coords);        
+                    }
+                }
+            }
+            
         }
     }
 };

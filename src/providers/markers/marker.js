@@ -5,19 +5,24 @@ module.exports = function(){
     
     var proto = MarkerInterface.prototype;
     
-    proto.create = function(){ throw new Error('getInstance:: not implemented'); };
-    
-    proto.setCoords = function(){
-        this.coords = {
-            lat: this.place.pos.lat,
-            lng: this.place.pos.lng
-        }
-    }
+    proto.create = create;
+    proto.setCoords = setCoords;
     
     function Marker(){};
     
     Marker.prototype = proto;
     
     return Marker;
+    
+    function create(){
+        throw new Error('getInstance:: not implemented'); 
+    }
+    
+    function setCoords(){
+         this.coords = {
+            lat: this.place.pos.lat,
+            lng: this.place.pos.lng
+        }
+    }
     
 }

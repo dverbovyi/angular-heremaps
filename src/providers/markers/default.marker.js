@@ -7,9 +7,11 @@ module.exports = function(MarkerInterface){
     var proto = DefaultMarker.prototype = new MarkerInterface();
     proto.constructor = DefaultMarker;
 
-    proto.create = function(){
-        return new H.map.Marker(this.coords);
-    }
+    proto.create = create;
 
     return DefaultMarker;
+    
+    function create(){
+        return new H.map.Marker(this.coords);
+    }
 }

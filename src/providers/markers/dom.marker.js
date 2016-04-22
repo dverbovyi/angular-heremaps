@@ -1,6 +1,4 @@
 module.exports = function(MarkerInterface){
-    // TODO: Public methods should be placed first and implementation detail moved bottom
-
     function DOMMarker(place){
         this.place = place;
         this.setCoords();
@@ -9,21 +7,28 @@ module.exports = function(MarkerInterface){
     var proto = DOMMarker.prototype = new MarkerInterface();
     proto.constructor = DOMMarker;
 
-    proto.create = function(){
+    proto.create = create;
+    proto._getIcon = _getIcon;
+    proto._setupEvents = _setupEvents;
+    proto._getEvents = _getEvents;
+
+    return DOMMarker;
+    
+    function create(){
         return new H.map.DomMarker(this.coords, {
             icon: this._getIcon(),
         });
-    };
-
-    proto._getIcon = function(){
+    }
+    
+    function _getIcon(){
         var icon = this.place.markup;
          if(!icon)
             throw new Error('markup missed');
 
         return new H.map.DomIcon(icon, this._getEvents());
-    };
-
-    proto._setupEvents = function(el, events, remove){
+    }
+    
+    function _setupEvents(el, events, remove){
         var method = remove ? 'removeEventListener' : 'addEventListener';
 
         for(var key in events) {
@@ -32,9 +37,9 @@ module.exports = function(MarkerInterface){
 
             el[method].call(null, key, events[key]);
         }
-    };
-
-    proto._getEvents = function(){
+    }
+    
+    function _getEvents(){
         var self = this,
             events = this.place.events;
 
@@ -42,16 +47,12 @@ module.exports = function(MarkerInterface){
             return {};
 
         return {
-            // the function is called every time marker enters the viewport
             onAttach: function(clonedElement, domIcon, domMarker){
                 self._setupEvents(clonedElement, events);
             },
-             // the function is called every time marker leaves the viewport
             onDetach: function(clonedElement, domIcon, domMarker){
                 self._setupEvents(clonedElement, events, true);
             }
         }
-    };
-
-    return DOMMarker;
+    }
 }

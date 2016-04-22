@@ -12,7 +12,7 @@ var heremaps = angular.module('heremaps', [
 
 heremaps
     .provider('Config', configProvider)
-    .service('APIService', ['$q', 'Config', 'UtilsService', apiService])
+    .service('APIService', ['$q', 'Config', 'UtilsService', 'CONSTS', apiService])
     .service('UtilsService', utilsService)
     .constant('CONSTS', consts)
 

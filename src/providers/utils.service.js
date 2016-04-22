@@ -27,25 +27,29 @@ module.exports = function($rootScope, $timeout){
     }
     
     function createScriptTag(attrs){
-        if(attrs.id && document.getElementById(attrs.id))
+        var script = document.getElementById(attrs.src);
+        
+        if(script)
             return false;
-
-        var script = document.createElement('script');
+        
+        script = document.createElement('script');
         script.type = 'text/javascript';
-
-        _setAttrs(script, attrs);
+        script.id = attrs.src;
+        _setAttrs(script, attrs);    
 
         return script;
     }
 
     function createLinkTag(attrs) {
-        if(attrs.id && document.getElementById(attrs.id))
+        var link = document.getElementById(attrs.href);
+        
+        if(link)
             return false;
-
-        var link = document.createElement('link');
-
+            
+        link = document.createElement('link');
+        link.id = attrs.href;
         _setAttrs(link, attrs);
-
+        
         return link;
     }
     //#endregion PUBLIC 

@@ -1,7 +1,22 @@
 module.exports = {
     "UPDATE_MAP_RESIZE_TIMEOUT": 500,
-    "DEFAULT_MAP_SIZE": {
-        HEIGHT: 480,
-        WIDTH: 640
+    "MODULES": {
+        UI: 'controls',
+        EVENTS: 'events',
+        PANO: 'pano'
+    },
+    "DEFAULT_MAP_OPTIONS": {
+        height: 480,
+        width: 640,
+        zoom: 10,
+        draggable: false
+    },
+    "MARKER_TYPES": {
+        DOM: "DOM",
+        SVG: "SVG"
+    },
+    "MAP_EVENTS": {
+        NAVIGATE: "NAVIGATE",
+        RELOAD: "RELOAD"
     }
 }
