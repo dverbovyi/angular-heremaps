@@ -22,13 +22,7 @@ module.exports = function(
             var options = angular.extend({}, CONSTS.DEFAULT_MAP_OPTIONS, $scope.opts),
                 position = options.coords;
 
-            $scope.modules = {
-                controls: !!$attrs.$attr.controls,
-                pano: !!$attrs.$attr.pano,
-                events: !!$attrs.$attr.events
-            };
-
-            $scope.heremaps = {};
+            var heremaps = {};
             
             APIService.loadApi().then(_apiReady);
 
@@ -56,8 +50,8 @@ module.exports = function(
             }
 
             function _setupMapPlatform() {
-                $scope.heremaps.platform = new H.service.Platform(Config);
-                $scope.heremaps.layers = $scope.heremaps.platform.createDefaultLayers();
+                heremaps.platform = new H.service.Platform(Config);
+                heremaps.layers = heremaps.platform.createDefaultLayers();
             }
 
             function _getLocation() {
@@ -89,7 +83,7 @@ module.exports = function(
             }
 
             function _initMap(cb) {
-                var map = $scope.heremaps.map = new H.Map($element[0], $scope.heremaps.layers.normal.map, {
+                var map = heremaps.map = new H.Map($element[0], heremaps.layers.normal.map, {
                     zoom: options.zoom,
                     center: new H.geo.Point(position.latitude, position.longitude)
                 });
@@ -100,7 +94,7 @@ module.exports = function(
             }
 
             function _navigate(coords) {
-                if (!$scope.heremaps.map)
+                if (!heremaps.map)
                     _setupMap(coords)
             }
 
@@ -111,22 +105,22 @@ module.exports = function(
 
                 $rootScope.$on(CONSTS.MAP_EVENTS.NAVIGATE, function(e, coords) {
                     position = coords;
-                    $scope.heremaps.map.setCenter(coords);
+                    heremaps.map.setCenter(coords);
                 });
             }
 
             function _uiModuleReady() {
-                $scope.heremaps.ui = H.ui.UI.createDefault($scope.heremaps.map, $scope.heremaps.layers);
+                heremaps.ui = H.ui.UI.createDefault(heremaps.map,heremaps.layers);
             }
 
             function _panoModuleReady() {
-                //$scope.heremaps.platform.configure(H.map.render.panorama.RenderEngine);
+                //heremaps.platform.configure(H.map.render.panorama.RenderEngine);
             }
 
             function _eventsModuleReady() {
-                var map = $scope.heremaps.map,
-                    events = $scope.heremaps.mapEvents = new H.mapevents.MapEvents(map),
-                    behavior = $scope.heremaps.behavior = new H.mapevents.Behavior(events);
+                var map = heremaps.map,
+                    events = heremaps.mapEvents = new H.mapevents.MapEvents(map),
+                    behavior = heremaps.behavior = new H.mapevents.Behavior(events);
 
                 map.addEventListener('tap', function(evt) {
                     // console.log(evt.type, evt.currentPointer.type);
@@ -156,14 +150,14 @@ module.exports = function(
 
                 map.draggable = options.draggable;
 
-                MarkersService.addMarkerToMap($scope.heremaps.map, $scope.places);
+                MarkersService.addMarkerToMap(heremaps.map, $scope.places);
 
             }
 
             function _resizeHandler() {
                 _setMapSize();
 
-                $scope.heremaps.map.getViewPort().resize();
+                heremaps.map.getViewPort().resize();
             }
 
             function _setMapSize() {
@@ -176,13 +170,13 @@ module.exports = function(
             function MapProxy(){
                 return {
                     getMap: function(){
-                        return $scope.heremaps.map
+                        return heremaps.map
                     },
                     setCenter: function(coords) {
                         if (!coords) {
                             return _getLocation()
                                 .then(function(response){
-                                    $scope.heremaps.map.setCenter({
+                                   heremaps.map.setCenter({
                                         lng: response.coords.longitude,
                                         lat: response.coords.latitude
                                     });        
@@ -190,7 +184,7 @@ module.exports = function(
                                 .catch(_locationFailure);
                         }
 
-                        $scope.heremaps.map.setCenter(coords);        
+                        heremaps.map.setCenter(coords);        
                     }
                 }
             }
