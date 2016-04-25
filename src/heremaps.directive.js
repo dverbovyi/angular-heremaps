@@ -171,6 +171,12 @@ module.exports = function(
                     getMap: function(){
                         return heremaps.map
                     },
+                    calculateRoute: function(driveType, direction){
+                        APIService.calculateRoute(heremaps.platform, heremaps.map, {
+                            driveType: driveType,
+                            direction: direction 
+                        });  
+                    },
                     setCenter: function(coords) {
                         if (!coords) {
                             return _getLocation()

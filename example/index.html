@@ -31,6 +31,8 @@
 <body>
     <div ng-controller="AppCtrl">
         <div heremaps events controls map-ready="onMapReady" options="mapOptions" places="markers" class="map"></div>
+        
+        <div heremaps events controls options="{coords: {longitude: 23, latitude: 49}}" places="markers" class="map"></div>
     </div>
 
 </body>

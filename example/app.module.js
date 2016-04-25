@@ -34,6 +34,15 @@
             $scope.map.setCenter({
                 lat: 52.508249, lng: 13.33893
             });
+            
+            $scope.map.calculateRoute('car', {
+                from: {
+                    lat: 52.508249, lng: 13.338931
+                },
+                to: {
+                    lat: 52.506682, lng: 13.332107
+                }
+            })
         };
         
         $scope.markers = [
