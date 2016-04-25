@@ -17,20 +17,20 @@ module.exports = function($q, Config, UtilsService, CONSTS) {
         PANO: "mapsjs-pano.js",
         EVENTS: "mapsjs-mapevents.js"
     };
-    
+
     var API_DEFERSQueue = {};
-    
-    API_DEFERSQueue[CONFIG.CORE] = [];    
+
+    API_DEFERSQueue[CONFIG.CORE] = [];
     API_DEFERSQueue[CONFIG.SERVICE] = [];
     API_DEFERSQueue[CONFIG.UI.src] = [];
     API_DEFERSQueue[CONFIG.PANO] = [];
     API_DEFERSQueue[CONFIG.EVENTS] = [];
-    
+
     var head = document.getElementsByTagName('head')[0];
 
     return {
         loadApi: loadApi,
-        loadModules: loadModules, 
+        loadModules: loadModules,
         getPosition: getPosition
     };
 
@@ -41,21 +41,21 @@ module.exports = function($q, Config, UtilsService, CONSTS) {
                 return _getLoader(CONFIG.SERVICE);
             });
     }
-    
+
     function loadModules(attrs, handlers){
         for(var key in handlers) {
             if(!handlers.hasOwnProperty(key) || !attrs[key])
                 continue;
-                
+
             var loader = _getLoaderByAttr(key);
             loader()
                 .then(handlers[key])
         }
     }
-    
+
     function _getLoaderByAttr(attr){
         var loader;
-        
+
         switch(attr) {
             case CONSTS.MODULES.UI:
                 loader = loadUIModule;
@@ -69,7 +69,7 @@ module.exports = function($q, Config, UtilsService, CONSTS) {
             default:
                 throw new Error('Unknown module', attr);
         }
-        
+
         return loader;
     }
 
@@ -96,7 +96,7 @@ module.exports = function($q, Config, UtilsService, CONSTS) {
     }
 
     function getPosition(options) {
-        var coordsExist = options.coords && (typeof options.coords.latitude === 'number' && typeof options.coords.longitude === 'number'); 
+        var coordsExist = options.coords && (typeof options.coords.latitude === 'number' && typeof options.coords.longitude === 'number');
 
         var dererred = $q.defer();
 
@@ -108,14 +108,16 @@ module.exports = function($q, Config, UtilsService, CONSTS) {
             }, function(error) {
                 dererred.reject(error);
             }, options);
-        } 
-        
+        }
+
         return dererred.promise;
     }
     //#endregion PUBLIC
 
 
     //#region PRIVATE
+    // TODO: Add comment about final url structure
+    // e.g http://js.api.here.com/v{VER}/{SUBVERSION}/{TARGET}
     function _getURL(sourceName) {
         return [
             CONFIG.BASE,
@@ -135,11 +137,11 @@ module.exports = function($q, Config, UtilsService, CONSTS) {
         })() : (function() {
             var src = _getURL(sourceName),
                 script = UtilsService.createScriptTag({ src: src });
-                
+
             script && head.appendChild(script);
-            
+
             API_DEFERSQueue[sourceName].push(defer);
-            
+
             script.onload = _onLoad.bind(null, sourceName);
             script.onerror = _onError.bind(null, sourceName);
 
@@ -193,24 +195,24 @@ module.exports = function($q, Config, UtilsService, CONSTS) {
     function _isPanoLoaded() {
         return !!(window.H && window.H.pano);
     }
-    
+
     function _onLoad(sourceName){
         var deferQueue = API_DEFERSQueue[sourceName];
         for(var i = 0, l = deferQueue.length; i < l; ++i) {
             var defer = deferQueue[i];
             defer.resolve();
         }
-        
+
         API_DEFERSQueue[sourceName] = [];
     }
-    
+
     function _onError(sourceName) {
         var deferQueue = API_DEFERSQueue[sourceName];
         for(var i = 0, l = deferQueue.length; i < l; ++i) {
             var defer = deferQueue[i];
             defer.reject();
         }
-        
+
         API_DEFERSQueue[sourceName] = [];
     }
 };
