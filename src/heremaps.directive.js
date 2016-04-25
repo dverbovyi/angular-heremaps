@@ -23,7 +23,7 @@ module.exports = function(
                 position = options.coords;
 
             var heremaps = {};
-            
+
             APIService.loadApi().then(_apiReady);
 
             _setMapSize();
@@ -61,7 +61,7 @@ module.exports = function(
                     maximumAge: 10000
                 });
             }
-            
+
             function _locationFailure(){
                 console.error('Can not get a geo position');
             }
@@ -104,6 +104,7 @@ module.exports = function(
             }
 
             function _addEventListeners() {
+                // TODO: Remove this
                 $rootScope.$on(CONSTS.MAP_EVENTS.RELOAD, function(e, coords) {
                     _initMap();
                 });
@@ -164,7 +165,7 @@ module.exports = function(
 
                 UtilsService.runScopeDigestIfNeed($scope);
             }
-            
+
             function MapProxy(){
                 return {
                     getMap: function(){
@@ -177,16 +178,16 @@ module.exports = function(
                                    heremaps.map.setCenter({
                                         lng: response.coords.longitude,
                                         lat: response.coords.latitude
-                                    });        
+                                    });
                                 })
                                 .catch(_locationFailure);
                         }
 
-                        heremaps.map.setCenter(coords);        
+                        heremaps.map.setCenter(coords);
                     }
                 }
             }
-            
+
         }
     }
 };

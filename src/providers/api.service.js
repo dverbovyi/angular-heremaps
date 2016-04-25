@@ -113,6 +113,10 @@ module.exports = function($q, Config, UtilsService, CONSTS) {
         return _getLoader(CONFIG.EVENTS);
     }
     
+    /**
+     * @param {String} sourceName
+     * return {String} e.g http://js.api.here.com/v{VER}/{SUBVERSION}/{SOURCE}
+     */
     function _getURL(sourceName) {
         return [
             CONFIG.BASE,
