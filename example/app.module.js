@@ -18,9 +18,9 @@
         // };
         
         $scope.mapOptions = {
-            zoom: 5,
-            height: 390,
-            width: 480,
+            zoom: 15,
+            height: 640,
+            width: 960,
             draggable: true,
             coords: {
                 longitude: 48,
@@ -32,7 +32,7 @@
             $scope.map = map;
             
             $scope.map.setCenter({
-                lat: 52.5159, lng:13.3777
+                lat: 52.508249, lng: 13.33893
             });
         };
         

@@ -14,7 +14,6 @@ module.exports = function($q, Config, UtilsService, CONSTS) {
             src: "mapsjs-ui.js",
             href: "mapsjs-ui.css"
         },
-        PANO: "mapsjs-pano.js",
         EVENTS: "mapsjs-mapevents.js"
     };
     
@@ -31,7 +30,8 @@ module.exports = function($q, Config, UtilsService, CONSTS) {
     return {
         loadApi: loadApi,
         loadModules: loadModules, 
-        getPosition: getPosition
+        getPosition: getPosition,
+        calculateRoute: calculateRoute
     };
 
     //#region PUBLIC
@@ -52,48 +52,6 @@ module.exports = function($q, Config, UtilsService, CONSTS) {
                 .then(handlers[key])
         }
     }
-    
-    function _getLoaderByAttr(attr){
-        var loader;
-        
-        switch(attr) {
-            case CONSTS.MODULES.UI:
-                loader = loadUIModule;
-                break;
-            case CONSTS.MODULES.EVENTS:
-                loader = loadEventsModule;
-                break;
-            case CONSTS.MODULES.PANO:
-                loader = loadPanoModule;
-                break;
-            default:
-                throw new Error('Unknown module', attr);
-        }
-        
-        return loader;
-    }
-
-    function loadUIModule() {
-        if (!_isLoaded(CONFIG.UI)) {
-            var link = UtilsService.createLinkTag({
-                rel: 'stylesheet',
-                type: 'text/css',
-                href: _getURL(CONFIG.UI.href)
-            });
-
-            link && head.appendChild(link);
-        }
-
-        return _getLoader(CONFIG.UI.src);
-    }
-
-    function loadPanoModule() {
-        return _getLoader(CONFIG.PANO);
-    }
-
-    function loadEventsModule() {
-        return _getLoader(CONFIG.EVENTS);
-    }
 
     function getPosition(options) {
         var coordsExist = options.coords && (typeof options.coords.latitude === 'number' && typeof options.coords.longitude === 'number'); 
@@ -112,10 +70,49 @@ module.exports = function($q, Config, UtilsService, CONSTS) {
         
         return dererred.promise;
     }
+    
+    function calculateRoute(drivingType, From, To){
+        console.log(drivingType, From, To)
+    }
     //#endregion PUBLIC
 
 
     //#region PRIVATE
+    function _getLoaderByAttr(attr){
+        var loader;
+        
+        switch(attr) {
+            case CONSTS.MODULES.UI:
+                loader = _loadUIModule;
+                break;
+            case CONSTS.MODULES.EVENTS:
+                loader = _loadEventsModule;
+                break;
+            default:
+                throw new Error('Unknown module', attr);
+        }
+        
+        return loader;
+    }
+    
+    function _loadUIModule() {
+        if (!_isLoaded(CONFIG.UI)) {
+            var link = UtilsService.createLinkTag({
+                rel: 'stylesheet',
+                type: 'text/css',
+                href: _getURL(CONFIG.UI.href)
+            });
+
+            link && head.appendChild(link);
+        }
+
+        return _getLoader(CONFIG.UI.src);
+    }
+    
+    function _loadEventsModule() {
+        return _getLoader(CONFIG.EVENTS);
+    }
+    
     function _getURL(sourceName) {
         return [
             CONFIG.BASE,
@@ -164,9 +161,6 @@ module.exports = function($q, Config, UtilsService, CONSTS) {
             case CONFIG.EVENTS:
                 checker = _isEventsLoaded;
                 break;
-            case CONFIG.PANO:
-                checker = _isPanoLoaded;
-                break;
             default:
                 checker = function() { return false };
         }
@@ -188,10 +182,6 @@ module.exports = function($q, Config, UtilsService, CONSTS) {
 
     function _isEventsLoaded() {
         return !!(window.H && window.H.mapevents);
-    }
-
-    function _isPanoLoaded() {
-        return !!(window.H && window.H.pano);
     }
     
     function _onLoad(sourceName){

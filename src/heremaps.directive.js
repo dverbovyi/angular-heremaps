@@ -63,7 +63,7 @@ module.exports = function(
             }
             
             function _locationFailure(){
-                console.error('Can\'t get a position', error);
+                console.error('Can not get a geo position');
             }
 
             function _setupMap(coords) {
@@ -73,8 +73,7 @@ module.exports = function(
                 _initMap(function() {
                     APIService.loadModules($attrs.$attr, {
                         "controls": _uiModuleReady,
-                        "events": _eventsModuleReady,
-                        "pano": _panoModuleReady
+                        "events": _eventsModuleReady
                     });
                 });
 
@@ -87,6 +86,12 @@ module.exports = function(
                     zoom: options.zoom,
                     center: new H.geo.Point(position.latitude, position.longitude)
                 });
+                
+                MarkersService.addUserMarker(heremaps.map, {
+                    pos: { lat: position.latitude, lng: position.longitude }
+                });
+                
+                MarkersService.addMarkersToMap(heremaps.map, $scope.places);
 
                 $scope.onMapReady && $scope.onMapReady(MapProxy());
 
@@ -111,10 +116,6 @@ module.exports = function(
 
             function _uiModuleReady() {
                 heremaps.ui = H.ui.UI.createDefault(heremaps.map,heremaps.layers);
-            }
-
-            function _panoModuleReady() {
-                //heremaps.platform.configure(H.map.render.panorama.RenderEngine);
             }
 
             function _eventsModuleReady() {
@@ -149,9 +150,6 @@ module.exports = function(
                 }, false);
 
                 map.draggable = options.draggable;
-
-                MarkersService.addMarkerToMap(heremaps.map, $scope.places);
-
             }
 
             function _resizeHandler() {

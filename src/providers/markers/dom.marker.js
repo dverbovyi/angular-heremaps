@@ -16,7 +16,7 @@ module.exports = function(MarkerInterface){
     
     function create(){
         return new H.map.DomMarker(this.coords, {
-            icon: this._getIcon(),
+            icon: this._getIcon()
         });
     }
     
