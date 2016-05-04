@@ -11,16 +11,9 @@
 
     function AppController($scope) {
         
-        // $scope.events = {
-        //     'click': function(e) {
-        //         console.log('click event', e)
-        //     }
-        // };
-        
         $scope.mapOptions = {
+            resize: true,
             zoom: 15,
-            height: 640,
-            width: 960,
             draggable: true,
             coords: {
                 longitude: 48,
@@ -35,7 +28,7 @@
                 lat: 52.508249, lng: 13.33893
             });
             
-            $scope.map.calculateRoute('car', {
+            $scope.map.calculateRoute('pedestrian', {
                 from: {
                     lat: 52.508249, lng: 13.338931
                 },
@@ -49,15 +42,6 @@
             {
                 pos: { lat: 52.508249, lng: 13.338931 },
                 draggable: true
-            },
-            {
-                pos: { lat: 52.506682, lng: 13.332107 },
-                type: 'SVG',
-                draggable: true,
-                markup: '<svg  width="35" height="24" xmlns="http://www.w3.org/2000/svg">' +
-                '<rect stroke="black" fill="red" x="1" y="1" width="35" height="24" />' +
-                '<text x="18" y="18" font-size="12pt" font-family="Arial" font-weight="bold" ' +
-                'text-anchor="middle" fill="green">SVG</text></svg>',
             },
             {
                 pos: { lat: 52.503730, lng: 13.331678 },

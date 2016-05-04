@@ -22,6 +22,11 @@
             width: 100%;
         }
         
+        .resize_wrapper {
+            height: 100%;
+            width: 100%;
+        }
+        
         .map {
             display: inline-block;
         }
@@ -29,10 +34,8 @@
 </head>
 
 <body>
-    <div ng-controller="AppCtrl">
+    <div  class="resize_wrapper" ng-controller="AppCtrl">
         <div heremaps events controls map-ready="onMapReady" options="mapOptions" places="markers" class="map"></div>
-        
-        <div heremaps events controls options="{coords: {longitude: 23, latitude: 49}}" places="markers" class="map"></div>
     </div>
 
 </body>

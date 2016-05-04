@@ -21,20 +21,25 @@ module.exports = function(
         controller: function($scope, $element, $attrs) {
             var options = angular.extend({}, CONSTS.DEFAULT_MAP_OPTIONS, $scope.opts),
                 position = options.coords;
-
+                
             var heremaps = {};
 
             APIService.loadApi().then(_apiReady);
-
+            
+            $element[0].parentNode.style.overflow = 'hidden';
+            
             _setMapSize();
 
-            // var _resizeMap = UtilsService.throttle(_resizeHandler, CONSTS.UPDATE_MAP_RESIZE_TIMEOUT);
-            // $window.addEventListener('resize', _resizeMap);
+            options.resize && addOnResizeListener();
 
             $scope.$on('$destory', function() {
                 $window.removeEventListener('resize', _resizeMap);
             });
-
+            
+            function addOnResizeListener(){
+                var _onResizeMap = UtilsService.throttle(_resizeHandler, CONSTS.UPDATE_MAP_RESIZE_TIMEOUT);
+                $window.addEventListener('resize', _onResizeMap);
+            }
 
             function _apiReady() {
                 _setupMapPlatform();
@@ -154,14 +159,17 @@ module.exports = function(
             }
 
             function _resizeHandler() {
-                _setMapSize();
+                _setMapSize(true);
 
                 heremaps.map.getViewPort().resize();
             }
 
             function _setMapSize() {
-                $scope.mapHeight = options.height + 'px';
-                $scope.mapWidth = options.width + 'px';
+                var height = $element[0].parentNode.offsetHeight || options.height,
+                    width = $element[0].parentNode.offsetWidth || options.width;
+                    
+                $scope.mapHeight = height + 'px';
+                $scope.mapWidth = width + 'px';
 
                 UtilsService.runScopeDigestIfNeed($scope);
             }
