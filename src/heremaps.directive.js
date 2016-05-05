@@ -32,7 +32,7 @@ module.exports = function(
 
             options.resize && addOnResizeListener();
 
-            $scope.$on('$destory', function() {
+            $scope.$on('$destroy', function() {
                 $window.removeEventListener('resize', _resizeMap);
             });
             
