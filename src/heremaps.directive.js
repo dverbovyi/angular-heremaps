@@ -21,13 +21,13 @@ module.exports = function(
         controller: function($scope, $element, $attrs) {
             var options = angular.extend({}, CONSTS.DEFAULT_MAP_OPTIONS, $scope.opts),
                 position = options.coords;
-                
+
             var heremaps = {};
 
             APIService.loadApi().then(_apiReady);
-            
+
             $element[0].parentNode.style.overflow = 'hidden';
-            
+
             _setMapSize();
 
             options.resize && addOnResizeListener();
@@ -35,8 +35,8 @@ module.exports = function(
             $scope.$on('$destory', function() {
                 $window.removeEventListener('resize', _resizeMap);
             });
-            
-            function addOnResizeListener(){
+
+            function addOnResizeListener() {
                 var _onResizeMap = UtilsService.throttle(_resizeHandler, CONSTS.UPDATE_MAP_RESIZE_TIMEOUT);
                 $window.addEventListener('resize', _onResizeMap);
             }
@@ -67,7 +67,7 @@ module.exports = function(
                 });
             }
 
-            function _locationFailure(){
+            function _locationFailure() {
                 console.error('Can not get a geo position');
             }
 
@@ -81,9 +81,6 @@ module.exports = function(
                         "events": _eventsModuleReady
                     });
                 });
-
-                _addEventListeners();
-
             }
 
             function _initMap(cb) {
@@ -91,11 +88,11 @@ module.exports = function(
                     zoom: options.zoom,
                     center: new H.geo.Point(position.latitude, position.longitude)
                 });
-                
+
                 MarkersService.addUserMarker(heremaps.map, {
                     pos: { lat: position.latitude, lng: position.longitude }
                 });
-                
+
                 MarkersService.addMarkersToMap(heremaps.map, $scope.places);
 
                 $scope.onMapReady && $scope.onMapReady(MapProxy());
@@ -103,25 +100,17 @@ module.exports = function(
                 cb && cb();
             }
 
-            function _navigate(coords) {
-                if (!heremaps.map)
-                    _setupMap(coords)
-            }
-
-            function _addEventListeners() {
-                // TODO: Remove this
-                $rootScope.$on(CONSTS.MAP_EVENTS.RELOAD, function(e, coords) {
-                    _initMap();
-                });
-
-                $rootScope.$on(CONSTS.MAP_EVENTS.NAVIGATE, function(e, coords) {
-                    position = coords;
-                    heremaps.map.setCenter(coords);
-                });
-            }
-
             function _uiModuleReady() {
-                heremaps.ui = H.ui.UI.createDefault(heremaps.map,heremaps.layers);
+                var ui = heremaps.ui = H.ui.UI.createDefault(heremaps.map, heremaps.layers);
+
+                // var mapSettings = ui.getControl('mapsettings');
+                // var zoom = ui.getControl('zoom');
+                // var scalebar = ui.getControl('scalebar');
+                // var panorama = ui.getControl('panorama');
+
+                // mapSettings.setAlignment('bottom-right');
+                // zoom.setAlignment('bottom-right');
+                // scalebar.setAlignment('bottom-right');
             }
 
             function _eventsModuleReady() {
@@ -167,29 +156,33 @@ module.exports = function(
             function _setMapSize() {
                 var height = $element[0].parentNode.offsetHeight || options.height,
                     width = $element[0].parentNode.offsetWidth || options.width;
-                    
+
                 $scope.mapHeight = height + 'px';
                 $scope.mapWidth = width + 'px';
 
                 UtilsService.runScopeDigestIfNeed($scope);
             }
 
-            function MapProxy(){
+            function MapProxy() {
                 return {
-                    getMap: function(){
+                    getMap: function() {
                         return heremaps.map
                     },
-                    calculateRoute: function(driveType, direction){
+                    reload: function(){ //TODO: not working
+                        _setMapSize();
+                        _initMap();
+                    },
+                    calculateRoute: function(driveType, direction) {
                         APIService.calculateRoute(heremaps.platform, heremaps.map, {
                             driveType: driveType,
-                            direction: direction 
-                        });  
+                            direction: direction
+                        });
                     },
                     setCenter: function(coords) {
                         if (!coords) {
                             return _getLocation()
-                                .then(function(response){
-                                   heremaps.map.setCenter({
+                                .then(function(response) {
+                                    heremaps.map.setCenter({
                                         lng: response.coords.longitude,
                                         lat: response.coords.latitude
                                     });
