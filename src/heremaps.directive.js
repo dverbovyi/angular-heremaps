@@ -1,6 +1,12 @@
 /**
  * Created by Dmytro on 4/11/2016.
  */
+//TODO: 
+//Add 'ngInject'; and ng-annotate step in gulpfile, then add minification
+//What about move directive -> component syntax? ( + bindToContoller? + controllerAs?)
+//Would be nice to create some class like MapService or similar that hold logic to init map and incapsulate all that staff like _setupMap etc
+//So directive become much lighter, easier to maintain and will be just a proxy to logic
+//Are you sure that TwoWayBinding needed? especially in onMapReady, what about '&' ?
 module.exports = function(
     $window,
     $rootScope,
@@ -11,6 +17,7 @@ module.exports = function(
     CONSTS) {
     return {
         restrict: 'EA',
+        //TODO: TemplateCache is better place to hold templates
         template: "<div ng-style=\"{'width': mapWidth, 'height': mapHeight}\"></div>",
         replace: true,
         scope: {
