@@ -16,13 +16,13 @@ module.exports = function(
         scope: {
             opts: '=options',
             places: '=',
-            onMapReady: "=mapReady"
+            onMapReady: "&mapReady"
         },
         controller: function($scope, $element, $attrs) {
             var options = angular.extend({}, CONSTS.DEFAULT_MAP_OPTIONS, $scope.opts),
                 position = options.coords;
 
-            var heremaps = {};
+            var heremaps = {}, mapReady = $scope.onMapReady();
 
             APIService.loadApi().then(_apiReady);
 
@@ -89,13 +89,13 @@ module.exports = function(
                     center: new H.geo.Point(position.latitude, position.longitude)
                 });
 
-                MarkersService.addUserMarker(heremaps.map, {
+                MarkersService.addUserMarker(map, {
                     pos: { lat: position.latitude, lng: position.longitude }
                 });
 
-                MarkersService.addMarkersToMap(heremaps.map, $scope.places);
+                MarkersService.addMarkersToMap(map, $scope.places);
 
-                $scope.onMapReady && $scope.onMapReady(MapProxy());
+                mapReady && mapReady(MapProxy());
 
                 cb && cb();
             }

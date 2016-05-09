@@ -35,7 +35,12 @@
 
 <body>
     <div  class="resize_wrapper" ng-controller="AppCtrl">
-        <div heremaps events controls map-ready="onMapReady" options="mapOptions" places="markers" class="map"></div>
+        <div heremaps class="map"
+             events
+             controls="bottom-right"
+             map-ready="onMapReady"
+             options="mapOptions"
+             places="markers"></div>
     </div>
 
 </body>

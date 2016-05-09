@@ -3,7 +3,6 @@
 
     'use strict';
 
-
     angular
         .module('exampleModule', ['heremaps'])
         .config(["MapConfigProvider", function(MapConfigProvider) {
@@ -31,6 +30,7 @@
         };
 
         $scope.onMapReady = function(map) {
+            console.log('onMapReady', map);
             $scope.map = map;
             
             $scope.map.setCenter({
