@@ -4,7 +4,7 @@
 module.exports = function(
     $window,
     $rootScope,
-    Config,
+    MapConfig,
     APIService,
     UtilsService,
     MarkersService,
@@ -55,7 +55,7 @@ module.exports = function(
             }
 
             function _setupMapPlatform() {
-                heremaps.platform = new H.service.Platform(Config);
+                heremaps.platform = new H.service.Platform(MapConfig);
                 heremaps.layers = heremaps.platform.createDefaultLayers();
             }
 

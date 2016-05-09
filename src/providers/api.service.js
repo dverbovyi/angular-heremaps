@@ -1,5 +1,5 @@
-module.exports = function($q, Config, UtilsService, CONSTS) {
-    var version = Config.apiVersion;
+module.exports = function($q, MapConfig, UtilsService, CONSTS) {
+    var version = MapConfig.apiVersion;
 
     var API_VERSION = {
         V: parseInt(version),
