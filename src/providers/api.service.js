@@ -48,8 +48,9 @@ module.exports = function($q, MapConfig, UtilsService, CONSTS) {
                 continue;
 
             var loader = _getLoaderByAttr(key);
+
             loader()
-                .then(handlers[key])
+                .then(handlers[key]);
         }
     }
 
@@ -75,7 +76,6 @@ module.exports = function($q, MapConfig, UtilsService, CONSTS) {
      * @params {Object} driveType, from, to
      */
     function calculateRoute(platform, map, params) {
-        console.log(platform, map, params);
         var router = platform.getRoutingService(),
             dir = params.direction;
         
@@ -88,8 +88,6 @@ module.exports = function($q, MapConfig, UtilsService, CONSTS) {
             waypoint1: [dir.to.lat, dir.to.lng].join(',')
         };
             
-        console.log(routeRequestParams)
-
         router.calculateRoute(
             routeRequestParams,
             _onRouteSuccess,

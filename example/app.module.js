@@ -30,7 +30,6 @@
         };
 
         $scope.onMapReady = function(map) {
-            console.log('onMapReady', map);
             $scope.map = map;
             
             $scope.map.setCenter({

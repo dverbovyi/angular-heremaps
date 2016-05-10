@@ -103,6 +103,7 @@ module.exports = function(
             function _uiModuleReady() {
                 var ui = heremaps.ui = H.ui.UI.createDefault(heremaps.map, heremaps.layers);
 
+                _setControlsPosition(ui);
                 // var mapSettings = ui.getControl('mapsettings');
                 // var zoom = ui.getControl('zoom');
                 // var scalebar = ui.getControl('scalebar');
@@ -111,6 +112,37 @@ module.exports = function(
                 // mapSettings.setAlignment('bottom-right');
                 // zoom.setAlignment('bottom-right');
                 // scalebar.setAlignment('bottom-right');
+            }
+            
+            function _setControlsPosition(ui){
+                var position = $attrs.controls;
+                if(!ui || !_isValidPosition(position))
+                    return;
+
+                var controls = ['mapsettings', 'zoom', 'scalebar', 'panorama'];
+                controls.forEach(function(value){
+                    var control = ui.getControl(value);
+                    if(!control)
+                        return;
+                        
+                    control.setAlignment(position);
+                });                  
+            }
+            
+            function _isValidPosition(position){
+                var isValid = false;
+                switch(position) {
+                    case 'top-right':
+                    case 'top-left':
+                    case 'bottom-right':
+                    case 'bottom-left':
+                        isValid = true;
+                        break;
+                    default:
+                        isValid = false;
+                }
+                
+                return isValid;
             }
 
             function _eventsModuleReady() {

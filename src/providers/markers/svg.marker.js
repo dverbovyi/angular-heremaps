@@ -5,7 +5,6 @@ module.exports = function(MarkerInterface){
     }
     
     var proto = SVGMarker.prototype = new MarkerInterface();
-    
     proto.constructor = SVGMarker;
     
     proto.create = create;

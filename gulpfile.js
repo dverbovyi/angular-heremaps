@@ -7,7 +7,6 @@ var browserify = require('browserify'),
     source = require('vinyl-source-stream'),
     buffer = require('vinyl-buffer'),
     stringify = require('stringify'),
-    browserSync = require('browser-sync');
     config = require('./package.json');
 
 /* pathConfig*/
@@ -23,7 +22,6 @@ gulp.task('build', function () {
         .pipe(sourcemaps.init({loadMaps: true}))
         .pipe(sourcemaps.write())
         .pipe(gulp.dest('./dist/'))
-        .pipe(browserSync.reload({stream: true}));
 });
 
 gulp.task('watch', function () {
@@ -32,4 +30,4 @@ gulp.task('watch', function () {
 
 gulp.task('run', ['build', 'watch']);
 
-gulp.task('default', ['js']);
+gulp.task('default', ['build']);

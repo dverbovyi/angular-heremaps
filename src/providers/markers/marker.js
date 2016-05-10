@@ -8,14 +8,14 @@ module.exports = function(){
     proto.create = create;
     proto.setCoords = setCoords;
     
-    function Marker(){};
+    function Marker(){}
     
     Marker.prototype = proto;
     
     return Marker;
     
     function create(){
-        throw new Error('getInstance:: not implemented'); 
+        throw new Error('create:: not implemented'); 
     }
     
     function setCoords(){
