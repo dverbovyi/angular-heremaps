@@ -7,7 +7,6 @@
         .module('exampleModule', ['heremaps'])
         .config(["MapConfigProvider", function(MapConfigProvider) {
             MapConfigProvider.setOptions({
-                'apiVersion': '3.0',
                 'app_id': 'wMHJuLgCQzkfbhzXIwRF',
                 'app_code': 'WLIc7QzoO8irv7lurUt1qA',
                 'useHTTPS': true
