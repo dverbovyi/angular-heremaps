@@ -15,8 +15,10 @@ module.exports = {
         DOM: "DOM",
         SVG: "SVG"
     },
-    "MAP_EVENTS": {
-        NAVIGATE: "NAVIGATE",
-        RELOAD: "RELOAD"
+    "CONTROLS": {
+        settings: 'mapsettings',
+        zoom: 'zoom',
+        scale: 'scalebar',
+        pano: 'panorama'
     }
 }

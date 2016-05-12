@@ -104,14 +104,6 @@ module.exports = function(
                 var ui = heremaps.ui = H.ui.UI.createDefault(heremaps.map, heremaps.layers);
 
                 _setControlsPosition(ui);
-                // var mapSettings = ui.getControl('mapsettings');
-                // var zoom = ui.getControl('zoom');
-                // var scalebar = ui.getControl('scalebar');
-                // var panorama = ui.getControl('panorama');
-
-                // mapSettings.setAlignment('bottom-right');
-                // zoom.setAlignment('bottom-right');
-                // scalebar.setAlignment('bottom-right');
             }
             
             function _setControlsPosition(ui){
@@ -119,14 +111,18 @@ module.exports = function(
                 if(!ui || !_isValidPosition(position))
                     return;
 
-                var controls = ['mapsettings', 'zoom', 'scalebar', 'panorama'];
-                controls.forEach(function(value){
-                    var control = ui.getControl(value);
+                var availableControls = CONSTS.CONTROLS; 
+                for(key in availableControls){
+                    if(!availableControls.hasOwnProperty(key))
+                        continue;
+                    var value = availableControls[key],
+                        control = ui.getControl(value);
+                        
                     if(!control)
                         return;
                         
                     control.setAlignment(position);
-                });                  
+                }
             }
             
             function _isValidPosition(position){
