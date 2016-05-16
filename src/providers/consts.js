@@ -9,7 +9,11 @@ module.exports = {
         height: 480,
         width: 640,
         zoom: 10,
-        draggable: false
+        draggable: false,
+        coords: {
+            longitude: 0,
+            latitude: 0
+        }
     },
     "MARKER_TYPES": {
         DOM: "DOM",

@@ -2,11 +2,12 @@
  * Created by Dmytro on 4/11/2016.
  */
 module.exports = function(
+    $timeout,
     $window,
     $rootScope,
-    MapConfig,
+    HereMapsConfig,
     APIService,
-    UtilsService,
+    HereMapUtilsService,
     MarkersService,
     CONSTS) {
     return {
@@ -24,11 +25,13 @@ module.exports = function(
 
             var heremaps = {}, mapReady = $scope.onMapReady();
 
-            APIService.loadApi().then(_apiReady);
-
             $element[0].parentNode.style.overflow = 'hidden';
 
-            _setMapSize();
+            $timeout(function(){
+                return _setMapSize();
+            }).then(function(){
+                APIService.loadApi().then(_apiReady);
+            });
 
             options.resize && addOnResizeListener();
 
@@ -37,25 +40,18 @@ module.exports = function(
             });
 
             function addOnResizeListener() {
-                var _onResizeMap = UtilsService.throttle(_resizeHandler, CONSTS.UPDATE_MAP_RESIZE_TIMEOUT);
+                var _onResizeMap = HereMapUtilsService.throttle(_resizeHandler, CONSTS.UPDATE_MAP_RESIZE_TIMEOUT);
                 $window.addEventListener('resize', _onResizeMap);
             }
 
             function _apiReady() {
                 _setupMapPlatform();
 
-                _getLocation()
-                    .then(function(response) {
-                        _setupMap({
-                            longitude: response.coords.longitude,
-                            latitude: response.coords.latitude
-                        });
-                    })
-                    .catch(_locationFailure);
+                _setupMap();
             }
 
             function _setupMapPlatform() {
-                heremaps.platform = new H.service.Platform(MapConfig);
+                heremaps.platform = new H.service.Platform(HereMapsConfig);
                 heremaps.layers = heremaps.platform.createDefaultLayers();
             }
 
@@ -89,9 +85,9 @@ module.exports = function(
                     center: new H.geo.Point(position.latitude, position.longitude)
                 });
 
-                MarkersService.addUserMarker(map, {
-                    pos: { lat: position.latitude, lng: position.longitude }
-                });
+                // MarkersService.addUserMarker(map, {
+                //     pos: { lat: position.latitude, lng: position.longitude }
+                // });
 
                 MarkersService.addMarkersToMap(map, $scope.places);
 
@@ -188,7 +184,7 @@ module.exports = function(
                 $scope.mapHeight = height + 'px';
                 $scope.mapWidth = width + 'px';
 
-                UtilsService.runScopeDigestIfNeed($scope);
+                HereMapUtilsService.runScopeDigestIfNeed($scope);
             }
 
             function MapProxy() {
@@ -196,15 +192,14 @@ module.exports = function(
                     getMap: function() {
                         return heremaps.map
                     },
-                    reload: function(){ //TODO: not working
-                        _setMapSize();
-                        _initMap();
-                    },
                     calculateRoute: function(driveType, direction) {
                         APIService.calculateRoute(heremaps.platform, heremaps.map, {
                             driveType: driveType,
                             direction: direction
                         });
+                    },
+                    setZoom: function(zoom){
+                      heremaps.map.setZoom(zoom || 10);  
                     },
                     setCenter: function(coords) {
                         if (!coords) {

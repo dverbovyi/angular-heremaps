@@ -6,7 +6,6 @@ var browserify = require('browserify'),
     sourcemaps = require('gulp-sourcemaps'),
     source = require('vinyl-source-stream'),
     buffer = require('vinyl-buffer'),
-    stringify = require('stringify'),
     config = require('./package.json');
 
 /* pathConfig*/

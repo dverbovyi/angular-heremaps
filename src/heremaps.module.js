@@ -11,9 +11,9 @@ var heremaps = angular.module('heremaps', [
 ]);
 
 heremaps
-    .provider('MapConfig', configProvider)
-    .service('APIService', ['$q', 'MapConfig', 'UtilsService', 'CONSTS', apiService])
-    .service('UtilsService', utilsService)
+    .provider('HereMapsConfig', configProvider)
+    .service('APIService', ['$q', 'HereMapsConfig', 'HereMapUtilsService', 'CONSTS', apiService])
+    .service('HereMapUtilsService', utilsService)
     .constant('CONSTS', consts);
 
 heremaps.directive('heremaps', directive);

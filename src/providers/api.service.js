@@ -1,5 +1,5 @@
-module.exports = function($q, MapConfig, UtilsService, CONSTS) {
-    var version = MapConfig.apiVersion;
+module.exports = function($q, HereMapsConfig, HereMapUtilsService, CONSTS) {
+    var version = HereMapsConfig.apiVersion;
 
     var API_VERSION = {
         V: parseInt(version),
@@ -55,11 +55,9 @@ module.exports = function($q, MapConfig, UtilsService, CONSTS) {
     }
 
     function getPosition(options) {
-        var coordsExist = options.coords && (typeof options.coords.latitude === 'number' && typeof options.coords.longitude === 'number');
-
         var dererred = $q.defer();
 
-        if (coordsExist) {
+        if (_isValidCoords(options.coords)) {
             dererred.resolve({ coords: options.coords });
         } else {
             navigator.geolocation.getCurrentPosition(function(response) {
@@ -99,11 +97,11 @@ module.exports = function($q, MapConfig, UtilsService, CONSTS) {
 
     //#region PRIVATE
     function _onRouteSuccess(result){
-        console.log(result)
+        // console.log(result)
     }
     
     function _onRouteFailure(error){
-        console.log('Calculate route failure', error);
+        // console.log('Calculate route failure', error);
     }
     
     function _getLoaderByAttr(attr) {
@@ -125,7 +123,7 @@ module.exports = function($q, MapConfig, UtilsService, CONSTS) {
 
     function _loadUIModule() {
         if (!_isLoaded(CONFIG.UI)) {
-            var link = UtilsService.createLinkTag({
+            var link = HereMapUtilsService.createLinkTag({
                 rel: 'stylesheet',
                 type: 'text/css',
                 href: _getURL(CONFIG.UI.href)
@@ -163,7 +161,7 @@ module.exports = function($q, MapConfig, UtilsService, CONSTS) {
             defer.resolve();
         } else {
             src = _getURL(sourceName),
-                script = UtilsService.createScriptTag({ src: src });
+                script = HereMapUtilsService.createScriptTag({ src: src });
 
             script && head.appendChild(script);
 
@@ -375,5 +373,13 @@ module.exports = function($q, MapConfig, UtilsService, CONSTS) {
         }
 
         routeInstructionsContainer.appendChild(nodeOL);
+    }
+    
+    function _isValidCoords(coords){
+        var lng = coords && coords.longitude,
+            lat = coords && coords.latitude;
+            
+        return (typeof lng === 'number' || typeof lng === 'string') &&
+                (typeof lat === 'number' || typeof lat === 'string'); 
     }
 };

@@ -1,38 +1,38 @@
 {
-  "name": "angular-heremaps",
-  "version": "0.0.1",
-  "description": "Angular directive for working with Nokia heremaps",
-  "source-folder": "./src",
-  "main": "heremaps.module.js",
-  "output": "angular-heremaps.js",
-  "scripts": {
-    "test": "./node_modules/.bin/jasmine JASMINE_CONFIG_PATH=jasmine.json",
-    "build": "./node_modules/.bin/gulp build"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/dverbovyi/angular-heremaps.git"
-  },
-  "keywords": [
-    "heremaps",
-    "angular",
-    "nokia"
-  ],
-  "author": "Dmytro Verbovyi, https://github.com/dverbovyi, Andrii Vandakurov https://github.com/toastman",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/dverbovyi/angular-heremaps/issues"
-  },
-  "homepage": "https://github.com/dverbovyi/angular-heremaps#readme",
-  "devDependencies": {
-    "angular": "^1.2",
-    "browser-sync": "^2.12.1",
-    "browserify": "^13.0.0",
-    "gulp": "^3.9.1",
-    "gulp-sourcemaps": "^1.6.0",
-    "jasmine": "^2.4.1",
-    "stringify": "^5.1.0",
-    "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.1.0"
-  }
+    "name": "angular-heremaps",
+    "version": "0.0.1",
+    "description": "Angular directive for working with Nokia heremaps",
+    "source-folder": "./src",
+    "main": "heremaps.module.js",
+    "output": "angular-heremaps.js",
+    "scripts": {
+        "test": "./node_modules/.bin/jasmine JASMINE_CONFIG_PATH=jasmine.json",
+        "build": "./node_modules/.bin/gulp build"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/dverbovyi/angular-heremaps.git"
+    },
+    "keywords": [
+        "heremaps",
+        "angular",
+        "nokia"
+    ],
+    "author": "Dmytro Verbovyi: https://github.com/dverbovyi, Andrii Vandakurov: https://github.com/toastman",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/dverbovyi/angular-heremaps/issues"
+    },
+    "homepage": "https://github.com/dverbovyi/angular-heremaps#readme",
+    "dependencies": {
+        "angular": "^1.2"
+    },
+    "devDependencies": {
+        "browserify": "^13.0.0",
+        "gulp": "^3.9.1",
+        "gulp-sourcemaps": "^1.6.0",
+        "jasmine": "^2.4.1",
+        "vinyl-buffer": "^1.0.0",
+        "vinyl-source-stream": "^1.1.0"
+    }
 }

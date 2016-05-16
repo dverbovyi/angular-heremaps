@@ -5,8 +5,8 @@
 
     angular
         .module('exampleModule', ['heremaps'])
-        .config(["MapConfigProvider", function(MapConfigProvider) {
-            MapConfigProvider.setOptions({
+        .config(["HereMapsConfigProvider", function(HereMapsConfigProvider) {
+            HereMapsConfigProvider.setOptions({
                 'app_id': 'wMHJuLgCQzkfbhzXIwRF',
                 'app_code': 'WLIc7QzoO8irv7lurUt1qA',
                 'useHTTPS': true
