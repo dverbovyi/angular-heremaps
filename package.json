@@ -1,9 +1,9 @@
 {
     "name": "angular-heremaps",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "Angular directive for working with Nokia heremaps",
     "source-folder": "./src",
-    "main": "heremaps.module.js",
+    "main": "dist/angular-heremaps.js",
     "output": "angular-heremaps.js",
     "scripts": {
         "test": "./node_modules/.bin/jasmine JASMINE_CONFIG_PATH=jasmine.json",
