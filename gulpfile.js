@@ -9,8 +9,8 @@ var browserify = require('browserify'),
     config = require('./package.json');
 
 /* pathConfig*/
-var entryPoint = config["source-folder"] + '/' + config.main,
-    jsWatchPath = config["source-folder"] + '**/*.js';
+var entryPoint = './src/index.js',
+    jsWatchPath = './src/**/*.js';
 /**/
 
 gulp.task('build', function () {

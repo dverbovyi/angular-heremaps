@@ -22,18 +22,14 @@
             resize: true,
             zoom: 15,
             draggable: true,
-            coords: {
-                longitude: 48,
-                latitude: 23
-            }
         };
 
         $scope.onMapReady = function(map) {
             $scope.map = map;
             
-            $scope.map.setCenter({
-                lat: 52.508249, lng: 13.33893
-            });
+            // $scope.map.setCenter({
+            //     lat: 52.508249, lng: 13.33893
+            // });
             
             $scope.map.calculateRoute('pedestrian', {
                 from: {

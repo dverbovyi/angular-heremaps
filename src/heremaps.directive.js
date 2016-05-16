@@ -80,11 +80,12 @@ module.exports = function(
             }
 
             function _initMap(cb) {
+                console.log(position)
                 var map = heremaps.map = new H.Map($element[0], heremaps.layers.normal.map, {
                     zoom: options.zoom,
                     center: new H.geo.Point(position.latitude, position.longitude)
                 });
-
+                
                 // MarkersService.addUserMarker(map, {
                 //     pos: { lat: position.latitude, lng: position.longitude }
                 // });
