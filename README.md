@@ -20,7 +20,7 @@ Angular directive for working with Nokia HereMaps
 ```
         
 #####add config provider:
-Before, you should register [here](https://developer.here.com/) and take your app credentials:
+Before, you should register [here](https://developer.here.com/plans/api/consumer-mapping) and get your app id. Then pass it below
 
 ```javascript
     angular.module('exampleModule')
