@@ -5,7 +5,7 @@ Angular directive for working with Nokia HereMaps
 
 ### Install guide:
 
-    npm install angular-heremaps --save
+        npm install angular-heremaps --save
 
 #####include angular-heremaps file
 
