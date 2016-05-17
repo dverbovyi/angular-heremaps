@@ -7,9 +7,7 @@ QUICK INSTALL GUIDE:
 
 - npm isntall angular-heremaps
 
-- add script tag in your html file:
-    
-    <script src="/node_modules/angular-heremaps/dist/angular-heremaps.js"></script>
+- add "/node_modules/angular-heremaps/dist/angular-heremaps.js" in your html file
     
 - add "heremaps-module" as dependency in your angular-module;
 
