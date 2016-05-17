@@ -13,7 +13,7 @@ Angular directive for working with Nokia HereMaps
     <script src="/node_modules/angular-heremaps/dist/angular-heremaps.js" type="text/javascript"></script>
 ```
     
-#####add dependency in your angular-module;
+#####add dependency in your angular-module
 
 ```javascript 
     angular.module('exampleModule', ['heremaps'])
