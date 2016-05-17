@@ -3,19 +3,27 @@
 # angular-heremaps
 Angular directive for working with Nokia HereMaps
 
-QUICK INSTALL GUIDE:
+### Install guide:
 
-- npm isntall angular-heremaps
+    npm isntall angular-heremaps
 
-- add "/node_modules/angular-heremaps/dist/angular-heremaps.js" in your html file
+#####include angular-heremaps file
+
+```html
+    <script src="/node_modules/angular-heremaps/dist/angular-heremaps.js" type="text/javascript"></script>
+```
     
-- add "heremaps-module" as dependency in your angular-module;
+#####add dependency in your angular-module;
 
-    angular
-        .module('exampleModule', ['heremaps'])
+```javascript 
+    angular.module('exampleModule', ['heremaps'])
+```
         
-- add config provider with your map credentials:
+#####add config provider:
+Before, you should register [here](https://developer.here.com/) and take your app credentials:
 
+```javascript
+    angular.module('exampleModule')
         .config(["HereMapsConfigProvider", function(HereMapsConfigProvider) {
             HereMapsConfigProvider.setOptions({
                 'app_id': 'wMHJuLgCQzkfbhzXIwRF',
@@ -23,12 +31,8 @@ QUICK INSTALL GUIDE:
                 'useHTTPS': true
             });
         }]);
-        
-USAGE:
+```
 
-     <div heremaps class="map"
-             events
-             controls="bottom-right"
-             map-ready="onMapReady"
-             options="mapOptions"
-             places="markers"></div>
+### Documentation
+
+See [Wiki Page](https://github.com/dverbovyi/angular-heremaps/wiki)
