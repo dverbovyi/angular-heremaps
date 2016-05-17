@@ -26,8 +26,8 @@ Before, you should register [here](https://developer.here.com/) and take your ap
     angular.module('exampleModule')
         .config(["HereMapsConfigProvider", function(HereMapsConfigProvider) {
             HereMapsConfigProvider.setOptions({
-                'app_id': 'wMHJuLgCQzkfbhzXIwRF',
-                'app_code': 'WLIc7QzoO8irv7lurUt1qA',
+                'app_id': 'your_app_id_here',
+                'app_code': 'your_app_code_here',
                 'useHTTPS': true
             });
         }]);
