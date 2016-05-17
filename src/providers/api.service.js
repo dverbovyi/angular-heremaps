@@ -7,7 +7,7 @@ module.exports = function($q, HereMapsConfig, HereMapUtilsService, CONSTS) {
     };
 
     var CONFIG = {
-        BASE: "http://js.api.here.com/v",
+        BASE: "https://js.api.here.com/v",
         CORE: "mapsjs-core.js",
         SERVICE: "mapsjs-service.js",
         UI: {
