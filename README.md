@@ -13,7 +13,7 @@ Angular directive for working with Nokia Here Maps
     <script src="/node_modules/angular-heremaps/dist/angular-heremaps.js" type="text/javascript"></script>
 ```
     
-#####add dependency in your angular-module
+#####add dependency in your angular application
 
 ```javascript 
     angular.module('exampleModule', ['heremaps'])
@@ -33,7 +33,7 @@ Before, you should register [here](https://developer.here.com/plans/api/consumer
         }]);
 ```
 
-####initialize directive with default options
+####Simple directive initialization with default options. Please, see extended details on [wiki](https://github.com/dverbovyi/angular-heremaps/wiki)
 
 ```html
         <div heremaps></div>
