@@ -33,12 +33,10 @@ Before, you should register [here](https://developer.here.com/plans/api/consumer
         }]);
 ```
 
-####Simple directive initialization with default options. Please, see extended details on [wiki](https://github.com/dverbovyi/angular-heremaps/wiki)
+####Simple directive initialization with default options.
 
 ```html
         <div heremaps></div>
 ```
 
-### Detailed documentation
-
-See [Wiki Page](https://github.com/dverbovyi/angular-heremaps/wiki)
+####See details on [wiki pages](https://github.com/dverbovyi/angular-heremaps/wiki)
