@@ -1,6 +1,8 @@
 [![Build Status](https://travis-ci.org/dverbovyi/angular-heremaps.svg?branch=master)](https://travis-ci.org/dverbovyi/angular-heremaps)
 
 # angular-heremaps
+**http://dverbovyi.github.io/angular-heremaps/**
+
 Angular directive for working with Nokia Here Maps
 
 ### Install guide:
