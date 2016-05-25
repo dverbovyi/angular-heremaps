@@ -3,7 +3,8 @@ module.exports = function($rootScope, $timeout){
         throttle: throttle,
         createScriptTag: createScriptTag,
         createLinkTag: createLinkTag,
-        runScopeDigestIfNeed: runScopeDigestIfNeed
+        runScopeDigestIfNeed: runScopeDigestIfNeed,
+        isCoordsDefined: isCoordsDefined 
     };
     
     //#region PUBLIC
@@ -51,6 +52,10 @@ module.exports = function($rootScope, $timeout){
         _setAttrs(link, attrs);
         
         return link;
+    }
+    
+    function isCoordsDefined(coords){
+        return coords && coords.latitude && coords.longitude;
     }
     //#endregion PUBLIC 
 

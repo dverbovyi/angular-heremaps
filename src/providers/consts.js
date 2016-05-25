@@ -8,7 +8,9 @@ module.exports = {
     "DEFAULT_MAP_OPTIONS": {
         height: 480,
         width: 640,
-        zoom: 10,
+        zoom: 12,
+        maxZoom: 2,
+        resize: false,
         draggable: false,
         coords: {
             longitude: 0,

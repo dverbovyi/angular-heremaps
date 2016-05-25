@@ -1,5 +1,6 @@
 module.exports = function($q, HereMapsConfig, HereMapUtilsService, CONSTS) {
-    var version = HereMapsConfig.apiVersion;
+    var version = HereMapsConfig.apiVersion,
+        protocol = HereMapsConfig.useHTTPS ? 'https' : 'http';
 
     var API_VERSION = {
         V: parseInt(version),
@@ -7,7 +8,7 @@ module.exports = function($q, HereMapsConfig, HereMapUtilsService, CONSTS) {
     };
 
     var CONFIG = {
-        BASE: "https://js.api.here.com/v",
+        BASE: "://js.api.here.com/v",
         CORE: "mapsjs-core.js",
         SERVICE: "mapsjs-service.js",
         UI: {
@@ -145,6 +146,7 @@ module.exports = function($q, HereMapsConfig, HereMapUtilsService, CONSTS) {
      */
     function _getURL(sourceName) {
         return [
+            protocol,            
             CONFIG.BASE,
             API_VERSION.V,
             "/",
