@@ -53,7 +53,7 @@ module.exports = function($rootScope, $timeout){
         
         return link;
     }
-    
+
     function isValidCoords(coords){
         return coords && 
             (typeof coords.latitude === 'string' ||  typeof coords.latitude === 'number') &&

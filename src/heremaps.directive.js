@@ -53,6 +53,9 @@ module.exports = function(
             }
 
             function _setupMapPlatform() {
+                if(!HereMapsConfig.app_id || !HereMapsConfig.app_code)
+                    throw new Error('app_id or app_code were missed. Please specify their in HereMapsConfig');
+                    
                 heremaps.platform = new H.service.Platform(HereMapsConfig);
                 heremaps.layers = heremaps.platform.createDefaultLayers();
             }
@@ -80,7 +83,7 @@ module.exports = function(
 
             function _initMap(cb) {
                 var map = heremaps.map = new H.Map($element[0], heremaps.layers.normal.map, {
-                    zoom: options.zoom,
+                    zoom: HereMapUtilsService.isValidCoords(position) ? options.zoom : options.maxZoom,
                     center: new H.geo.Point(position.latitude, position.longitude)
                 });
                 
@@ -188,8 +191,8 @@ module.exports = function(
 
             function MapProxy() {
                 return {
-                    getMap: function() {
-                        return heremaps.map
+                    getPlatform: function() {
+                        return heremaps;
                     },
                     calculateRoute: function(driveType, direction) {
                         APIService.calculateRoute(heremaps.platform, heremaps.map, {
