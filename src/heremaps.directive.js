@@ -5,6 +5,7 @@ module.exports = function(
     $timeout,
     $window,
     $rootScope,
+    $filter,
     HereMapsConfig,
     APIService,
     HereMapUtilsService,
@@ -21,9 +22,11 @@ module.exports = function(
         },
         controller: function($scope, $element, $attrs) {
             var options = angular.extend({}, CONSTS.DEFAULT_MAP_OPTIONS, $scope.opts),
-                position = options.coords;
-
-            var heremaps = {}, mapReady = $scope.onMapReady();
+                position = HereMapUtilsService.isValidCoords(options.coords) ?  options.coords : CONSTS.DEFAULT_MAP_OPTIONS.coords;
+                
+            var heremaps = {}, 
+                mapReady = $scope.onMapReady(), 
+                _onResizeMap = null;;
 
             $element[0].parentNode.style.overflow = 'hidden';
 
@@ -36,17 +39,16 @@ module.exports = function(
             options.resize && addOnResizeListener();
 
             $scope.$on('$destroy', function() {
-                $window.removeEventListener('resize', _resizeMap);
+                $window.removeEventListener('resize', _onResizeMap);
             });
 
             function addOnResizeListener() {
-                var _onResizeMap = HereMapUtilsService.throttle(_resizeHandler, CONSTS.UPDATE_MAP_RESIZE_TIMEOUT);
+                _onResizeMap = HereMapUtilsService.throttle(_resizeHandler, CONSTS.UPDATE_MAP_RESIZE_TIMEOUT);
                 $window.addEventListener('resize', _onResizeMap);
             }
 
             function _apiReady() {
                 _setupMapPlatform();
-
                 _setupMap();
             }
 
@@ -68,9 +70,6 @@ module.exports = function(
             }
 
             function _setupMap(coords) {
-                if (coords)
-                    position = coords;
-
                 _initMap(function() {
                     APIService.loadModules($attrs.$attr, {
                         "controls": _uiModuleReady,
@@ -214,6 +213,16 @@ module.exports = function(
                         }
 
                         heremaps.map.setCenter(coords);
+                    },
+                    updateMarkers: function(places){
+                        MarkersService.updateMarkers(heremaps.map, places);   
+                    },
+                    fitMarkersBounds: function(places){
+                        var sortByLatitude = places.sort(function(a, b){
+                            return +a.lat - +b.lat;
+                        });
+                        
+                        console.log(sortByLatitude);
                     }
                 }
             }

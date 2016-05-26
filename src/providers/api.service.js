@@ -97,7 +97,7 @@ module.exports = function($q, HereMapsConfig, HereMapUtilsService, CONSTS) {
 
     //#region PRIVATE
     function _onRouteSuccess(result){
-        // console.log(result)
+        console.log(result)
     }
     
     function _onRouteFailure(error){

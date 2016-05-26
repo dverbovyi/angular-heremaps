@@ -3,7 +3,8 @@ module.exports = function($rootScope, $timeout){
         throttle: throttle,
         createScriptTag: createScriptTag,
         createLinkTag: createLinkTag,
-        runScopeDigestIfNeed: runScopeDigestIfNeed
+        runScopeDigestIfNeed: runScopeDigestIfNeed,
+        isValidCoords: isValidCoords
     };
     
     //#region PUBLIC
@@ -51,6 +52,12 @@ module.exports = function($rootScope, $timeout){
         _setAttrs(link, attrs);
         
         return link;
+    }
+    
+    function isValidCoords(coords){
+        return coords && 
+            (typeof coords.latitude === 'string' ||  typeof coords.latitude === 'number') &&
+            (typeof coords.longitude === 'string' ||  typeof coords.longitude === 'number')
     }
     //#endregion PUBLIC 
 

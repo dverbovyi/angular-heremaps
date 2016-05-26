@@ -1,9 +1,11 @@
 module.exports = function(DefaultMarker, DOMMarker, SVGMarker, CONSTS) {
 
     var MARKER_TYPES = CONSTS.MARKER_TYPES;
+        
     return {
         addMarkersToMap: addMarkersToMap,
-        addUserMarker: addUserMarker
+        addUserMarker: addUserMarker,
+        updateMarkers: updateMarkers
     }
 
     function addMarkersToMap(map, places) {
@@ -13,13 +15,26 @@ module.exports = function(DefaultMarker, DOMMarker, SVGMarker, CONSTS) {
         if (!(map instanceof H.Map))
             throw new Error('Unsupported map instance');
 
+        if(!map.markersGroup)
+            map.markersGroup = new H.map.Group();
+        
         places.forEach(function(place, i) {
-            var creator = _getMarkerCreator(place);
-            var marker = place.draggable ? _draggableMarkerMixin(creator.create()) : creator.create();
-
-            map.addObject(marker);
+            var creator = _getMarkerCreator(place),
+                marker = place.draggable ? _draggableMarkerMixin(creator.create()) : creator.create();
+                
+            map.markersGroup.addObject(marker);
         });
-
+        
+        map.addObject(map.markersGroup);
+    }
+    
+    function updateMarkers(map, places){
+        if(map.markersGroup) {
+            map.removeObject(map.markersGroup);
+            map.markersGroup = null;    
+        }
+        
+        addMarkersToMap.apply(null, arguments);
     }
 
     function addUserMarker(map, place) {

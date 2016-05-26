@@ -27,9 +27,9 @@
         $scope.onMapReady = function(map) {
             $scope.map = map;
             
-            // $scope.map.setCenter({
-            //     lat: 52.508249, lng: 13.33893
-            // });
+            $scope.map.setCenter({
+                lat: 52.508249, lng: 13.33893
+            });
             
             $scope.map.calculateRoute('pedestrian', {
                 from: {

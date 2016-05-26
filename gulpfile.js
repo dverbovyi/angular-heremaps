@@ -27,6 +27,6 @@ gulp.task('watch', function () {
     gulp.watch(jsWatchPath, ['build']);
 });
 
-gulp.task('run', ['build', 'watch']);
+gulp.task('run', ['build']);
 
 gulp.task('default', ['build']);
