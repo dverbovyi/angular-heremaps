@@ -1,0 +1,1 @@
+//TODO: moved logic from directive about ui-module

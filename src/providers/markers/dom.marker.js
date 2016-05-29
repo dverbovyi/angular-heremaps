@@ -15,9 +15,13 @@ module.exports = function(MarkerInterface){
     return DOMMarker;
     
     function create(){
-        return new H.map.DomMarker(this.coords, {
+        var marker = new H.map.DomMarker(this.coords, {
             icon: this._getIcon()
         });
+        
+        this.addInfoBubble(marker);
+        
+        return marker;
     }
     
     function _getIcon(){

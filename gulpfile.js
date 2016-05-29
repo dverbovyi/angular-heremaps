@@ -3,7 +3,6 @@
  */
 var browserify = require('browserify'),
     gulp = require('gulp'),
-    sourcemaps = require('gulp-sourcemaps'),
     source = require('vinyl-source-stream'),
     buffer = require('vinyl-buffer'),
     config = require('./package.json');
@@ -18,8 +17,6 @@ gulp.task('build', function () {
         .bundle()
         .pipe(source('angular-heremaps.js'))
         .pipe(buffer())
-        .pipe(sourcemaps.init({loadMaps: true}))
-        .pipe(sourcemaps.write())
         .pipe(gulp.dest('./dist/'))
 });
 

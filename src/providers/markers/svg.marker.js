@@ -13,9 +13,13 @@ module.exports = function(MarkerInterface){
     return SVGMarker;
     
     function create(){
-        return new H.map.Marker(this.coords, {
+        var marker = new H.map.Marker(this.coords, {
             icon: this._getIcon(),
         });
+        
+        this.addInfoBubble(marker);
+        
+        return marker;
     }
     
     function _getIcon(){

@@ -7,6 +7,7 @@ module.exports = function(){
     
     proto.create = create;
     proto.setCoords = setCoords;
+    proto.addInfoBubble = addInfoBubble;
     
     function Marker(){}
     
@@ -25,4 +26,10 @@ module.exports = function(){
         }
     }
     
+    function addInfoBubble(marker){
+        if(!this.place.popup)
+            return;
+            
+        marker.setData(this.place.popup)
+    }
 }

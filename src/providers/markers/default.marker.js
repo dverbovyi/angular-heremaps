@@ -12,6 +12,10 @@ module.exports = function(MarkerInterface){
     return DefaultMarker;
     
     function create(){
-        return new H.map.Marker(this.coords);
+        var marker = new H.map.Marker(this.coords);
+        
+        this.addInfoBubble(marker);
+        
+        return marker;
     }
 }

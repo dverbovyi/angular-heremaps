@@ -23,21 +23,18 @@
         }
         
         .resize_wrapper {
-            height: 100%;
-            width: 100%;
+            height: 320px;
+            width: 480px;
         }
         
-        .map {
-            display: inline-block;
-        }
     </style>
 </head>
 
 <body>
     <div class="resize_wrapper" ng-controller="AppCtrl">
-        <div heremaps controls="bottom-right" options="mapOptions" events places="markers" map-ready="onMapReady"></div>
+        <div class="map" heremaps controls="bottom-right" options="mapOptions" events="listeners" places="markers" map-ready="onMapReady"></div>
+        <div class="map" heremaps controls options="mapOptions" events="listeners" places="markers" map-ready="onMapReady"></div>
     </div>
-
 </body>
 
 </html>

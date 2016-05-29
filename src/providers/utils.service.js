@@ -4,7 +4,8 @@ module.exports = function($rootScope, $timeout){
         createScriptTag: createScriptTag,
         createLinkTag: createLinkTag,
         runScopeDigestIfNeed: runScopeDigestIfNeed,
-        isValidCoords: isValidCoords
+        isValidCoords: isValidCoords,
+        addEventListener: addEventListener
     };
     
     //#region PUBLIC
@@ -17,6 +18,12 @@ module.exports = function($rootScope, $timeout){
                 
             timeout = $timeout(fn, period);
         }
+    }
+    
+    function addEventListener(obj, eventName, listener, useCapture) {
+        var _useCapture = !!useCapture;
+
+        obj.addEventListener(eventName, listener, _useCapture);
     }
     
     function runScopeDigestIfNeed(scope, cb) {
@@ -61,7 +68,6 @@ module.exports = function($rootScope, $timeout){
     }
     //#endregion PUBLIC 
 
-    //#region PRIVATE
     function _setAttrs(el, attrs) {
         if(!el || !attrs)
             throw new Error('Missed attributes');

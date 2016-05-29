@@ -1,4 +1,5 @@
 require('./providers/markers/markers.module');
+require('./providers/components/components.module');
 
 var directive = require('./heremaps.directive'),
     configProvider = require('./providers/mapconfig.provider'),
@@ -7,7 +8,8 @@ var directive = require('./heremaps.directive'),
     consts = require('./providers/consts');
 
 var heremaps = angular.module('heremaps', [
-    'markers-module'
+    'markers-module',
+    'components-module'
 ]);
 
 heremaps

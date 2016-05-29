@@ -10,29 +10,33 @@ module.exports = function(
     APIService,
     HereMapUtilsService,
     MarkersService,
-    CONSTS) {
+    CONSTS,
+    EventsModule) {
     return {
         restrict: 'EA',
         template: "<div ng-style=\"{'width': mapWidth, 'height': mapHeight}\"></div>",
         replace: true,
         scope: {
-            opts: '=options',
-            places: '=',
-            onMapReady: "&mapReady"
+            opts: '&options',
+            places: '&',
+            onMapReady: "&mapReady",
+            events: '&'
         },
         controller: function($scope, $element, $attrs) {
-            var options = angular.extend({}, CONSTS.DEFAULT_MAP_OPTIONS, $scope.opts),
-                position = HereMapUtilsService.isValidCoords(options.coords) ?  options.coords : CONSTS.DEFAULT_MAP_OPTIONS.coords;
+            var places = $scope.places(),
+                opts = $scope.opts(),
+                listeners = $scope.events();
                 
-            var heremaps = {}, 
-                mapReady = $scope.onMapReady(), 
+            var options = angular.extend({}, CONSTS.DEFAULT_MAP_OPTIONS, opts),
+                position = HereMapUtilsService.isValidCoords(options.coords) ? options.coords : CONSTS.DEFAULT_MAP_OPTIONS.coords;
+
+            var heremaps = {},
+                mapReady = $scope.onMapReady(),
                 _onResizeMap = null;;
 
-            $element[0].parentNode.style.overflow = 'hidden';
-
-            $timeout(function(){
+            $timeout(function() {
                 return _setMapSize();
-            }).then(function(){
+            }).then(function() {
                 APIService.loadApi().then(_apiReady);
             });
 
@@ -53,9 +57,9 @@ module.exports = function(
             }
 
             function _setupMapPlatform() {
-                if(!HereMapsConfig.app_id || !HereMapsConfig.app_code)
+                if (!HereMapsConfig.app_id || !HereMapsConfig.app_code)
                     throw new Error('app_id or app_code were missed. Please specify their in HereMapsConfig');
-                    
+
                 heremaps.platform = new H.service.Platform(HereMapsConfig);
                 heremaps.layers = heremaps.platform.createDefaultLayers();
             }
@@ -86,12 +90,12 @@ module.exports = function(
                     zoom: HereMapUtilsService.isValidCoords(position) ? options.zoom : options.maxZoom,
                     center: new H.geo.Point(position.latitude, position.longitude)
                 });
-                
+
                 // MarkersService.addUserMarker(map, {
                 //     pos: { lat: position.latitude, lng: position.longitude }
                 // });
 
-                MarkersService.addMarkersToMap(map, $scope.places);
+                MarkersService.addMarkersToMap(map, places);
 
                 mapReady && mapReady(MapProxy());
 
@@ -100,32 +104,31 @@ module.exports = function(
 
             function _uiModuleReady() {
                 var ui = heremaps.ui = H.ui.UI.createDefault(heremaps.map, heremaps.layers);
-
                 _setControlsPosition(ui);
             }
-            
-            function _setControlsPosition(ui){
+
+            function _setControlsPosition(ui) {
                 var position = $attrs.controls;
-                if(!ui || !_isValidPosition(position))
+                if (!ui || !_isValidPosition(position))
                     return;
 
-                var availableControls = CONSTS.CONTROLS; 
-                for(key in availableControls){
-                    if(!availableControls.hasOwnProperty(key))
+                var availableControls = CONSTS.CONTROLS;
+                for (key in availableControls) {
+                    if (!availableControls.hasOwnProperty(key))
                         continue;
                     var value = availableControls[key],
                         control = ui.getControl(value);
-                        
-                    if(!control)
+
+                    if (!control)
                         return;
-                        
+
                     control.setAlignment(position);
                 }
             }
-            
-            function _isValidPosition(position){
+
+            function _isValidPosition(position) {
                 var isValid = false;
-                switch(position) {
+                switch (position) {
                     case 'top-right':
                     case 'top-left':
                     case 'bottom-right':
@@ -135,42 +138,23 @@ module.exports = function(
                     default:
                         isValid = false;
                 }
-                
+
                 return isValid;
             }
-
+            
             function _eventsModuleReady() {
-                var map = heremaps.map,
-                    events = heremaps.mapEvents = new H.mapevents.MapEvents(map),
-                    behavior = heremaps.behavior = new H.mapevents.Behavior(events);
-
-                map.addEventListener('tap', function(evt) {
-                    // console.log(evt.type, evt.currentPointer.type);
+                EventsModule.start({
+                    platform: heremaps,
+                    listeners: listeners,
+                    options: options,
+                    injector: _moduleInjector
                 });
-
-                map.addEventListener('dragstart', function(ev) {
-                    var target = ev.target;
-                    if (target instanceof H.map.Marker) {
-                        behavior.disable();
-                    }
-                }, false);
-
-                map.addEventListener('drag', function(ev) {
-                    var target = ev.target,
-                        pointer = ev.currentPointer;
-                    if (target instanceof mapsjs.map.Marker) {
-                        target.setPosition(map.screenToGeo(pointer.viewportX, pointer.viewportY));
-                    }
-                }, false);
-
-                map.addEventListener('dragend', function(ev) {
-                    var target = ev.target;
-                    if (target instanceof mapsjs.map.Marker) {
-                        behavior.enable();
-                    }
-                }, false);
-
-                map.draggable = options.draggable;
+            }
+            
+            function _moduleInjector(){
+                return function(id){
+                    return heremaps[id];
+                }
             }
 
             function _resizeHandler() {
@@ -200,8 +184,8 @@ module.exports = function(
                             direction: direction
                         });
                     },
-                    setZoom: function(zoom){
-                      heremaps.map.setZoom(zoom || 10);  
+                    setZoom: function(zoom) {
+                        heremaps.map.setZoom(zoom || 10);
                     },
                     setCenter: function(coords) {
                         if (!coords) {
@@ -217,15 +201,8 @@ module.exports = function(
 
                         heremaps.map.setCenter(coords);
                     },
-                    updateMarkers: function(places){
-                        MarkersService.updateMarkers(heremaps.map, places);   
-                    },
-                    fitMarkersBounds: function(places){
-                        var sortByLatitude = places.sort(function(a, b){
-                            return +a.lat - +b.lat;
-                        });
-                        
-                        console.log(sortByLatitude);
+                    updateMarkers: function(places) {
+                        MarkersService.updateMarkers(heremaps.map, places);
                     }
                 }
             }
