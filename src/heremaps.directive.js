@@ -76,7 +76,7 @@ module.exports = function(
                 console.error('Can not get a geo position');
             }
 
-            function _setupMap(coords) {
+            function _setupMap() {
                 _initMap(function() {
                     APIService.loadModules($attrs.$attr, {
                         "controls": _uiModuleReady,
@@ -158,7 +158,7 @@ module.exports = function(
             }
 
             function _resizeHandler() {
-                _setMapSize(true);
+                _setMapSize();
 
                 heremaps.map.getViewPort().resize();
             }
