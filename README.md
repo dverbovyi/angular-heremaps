@@ -7,7 +7,7 @@ Angular directive for working with Nokia Here Maps
 
 ### Install guide:
 
-        npm install angular-heremaps --save
+        npm install angular-heremaps
 
 #####include angular-heremaps file
 
@@ -43,4 +43,4 @@ Before, you should register [here](https://developer.here.com/plans/api/consumer
 
 See details on [wiki pages](https://github.com/dverbovyi/angular-heremaps/wiki)
 
-####Any issue please report [here](https://github.com/dverbovyi/angular-heremaps/issues)
+Any issue please report [here](https://github.com/dverbovyi/angular-heremaps/issues)
