@@ -1,5 +1,5 @@
 var eventsModule = require('./events/events.js'),
-    infoBubble = require('./events/infoBubble.js');
+    infoBubble = require('./events/infobubble.js');
 
 angular.module('events-module', [])
     .factory('EventsModule', eventsModule)
