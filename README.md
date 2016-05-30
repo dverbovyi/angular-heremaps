@@ -41,4 +41,6 @@ Before, you should register [here](https://developer.here.com/plans/api/consumer
         <div heremaps></div>
 ```
 
-####See details on [wiki pages](https://github.com/dverbovyi/angular-heremaps/wiki)
+See details on [wiki pages](https://github.com/dverbovyi/angular-heremaps/wiki)
+
+####Any issue please report [here](https://github.com/dverbovyi/angular-heremaps/issues)
