@@ -2,6 +2,7 @@
     "name": "angular-heremaps",
     "version": "0.0.8",
     "description": "Angular directive for working with Nokia heremaps",
+    "readme": "npm i angular-heremaps",
     "source-folder": "/dist",
     "main": "angular-heremaps.js",
     "output": "angular-heremaps.js",
