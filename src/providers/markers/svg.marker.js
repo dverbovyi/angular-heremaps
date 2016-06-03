@@ -8,13 +8,13 @@ module.exports = function(MarkerInterface){
     proto.constructor = SVGMarker;
     
     proto.create = create;
-    proto._getIcon = _getIcon;
+    proto.getIcon = getIcon;
     
     return SVGMarker;
     
     function create(){
         var marker = new H.map.Marker(this.coords, {
-            icon: this._getIcon(),
+            icon: this.getIcon(),
         });
         
         this.addInfoBubble(marker);
@@ -22,7 +22,7 @@ module.exports = function(MarkerInterface){
         return marker;
     }
     
-    function _getIcon(){
+    function getIcon(){
         var icon = this.place.markup;
          if(!icon)
             throw new Error('markup missed');

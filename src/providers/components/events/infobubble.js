@@ -31,12 +31,12 @@ module.exports = function(MarkersService, HereMapUtilsService, CONSTS) {
         bubble.setState(CONSTS.INFOBUBBLE.STATE.OPEN);
     }
 
-    function create(data) {
-        var bubble = new H.ui.InfoBubble(data.position, {
-            content: data.markup
+    function create(source) {
+        var bubble = new H.ui.InfoBubble(source.position, {
+            content: source.markup
         });
 
-        bubble.display = data.display;
+        bubble.display = source.display;
         bubble.addClass(CONSTS.INFOBUBBLE.STATE.OPEN)
 
         HereMapUtilsService.addEventListener(bubble, 'statechange', function(e) {
@@ -51,12 +51,12 @@ module.exports = function(MarkersService, HereMapUtilsService, CONSTS) {
         return bubble;
     }
 
-    function show(e, ui) {
+    function show(e, ui, data) {
         var target = e.target,
             data = target.getData(),
             el = null;
 
-        if (!data.display || !data.markup || data.display !== CONSTS.INFOBUBBLE.DISPLAY_EVENT[e.type])
+        if (!data || !data.display || !data.markup || data.display !== CONSTS.INFOBUBBLE.DISPLAY_EVENT[e.type])
             return;
 
         var source = {

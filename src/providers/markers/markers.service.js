@@ -6,39 +6,29 @@ module.exports = function(DefaultMarker, DOMMarker, SVGMarker, CONSTS) {
         addMarkersToMap: addMarkersToMap,
         addUserMarker: addUserMarker,
         updateMarkers: updateMarkers,
-        addinfoBubble: addinfoBubble,
         isMarkerInstance: isMarkerInstance
     }
-    
+
     function isMarkerInstance(target) {
         return target instanceof H.map.Marker || target instanceof H.map.DomMarker;
     }
 
-    function addUserMarker(map, place) {//TODO
-        var styles = [
-            "border-radius: 50%",
-            "background-color: rgba(38, 33, 97, .8)",
-            "height: 12px",
-            "width: 12px"
-        ];
+    function addUserMarker(map, place) {
+        place.markup = '<svg width="35px" height="35px" viewBox="0 0 90 90" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' +
+            '<defs><circle id="path-1" cx="302" cy="802" r="15"></circle>' +
+            '<mask id="mask-2" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="-30" y="-30" width="90" height="90">' +
+            '<rect x="257" y="757" width="90" height="90" fill="white"></rect><use xlink:href="#path-1" fill="black"></use>' +
+            '</mask></defs><g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">' +
+            '<g id="Service-Options---directions---map" transform="translate(-257.000000, -757.000000)"><g id="Oval-15">' +
+            '<use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>' +
+            '<use stroke-opacity="0.29613904" stroke="#3F34A0" mask="url(#mask-2)" stroke-width="60" xlink:href="#path-1"></use>' +
+            '<use stroke="#3F34A0" stroke-width="5" xlink:href="#path-1"></use></g></g></g></svg>';
 
-        var markup = '<div style="{style}"></div>';
-        place.markup = markup.replace(/{style}/, styles.join(';'));
+        var marker = new SVGMarker(place).create();
 
-        var creator = new DOMMarker(place);
+        map.addObject(marker);
 
-        map.addObject(creator.create());
-
-        // var marker = new H.map.Circle(place.pos, 10000, {
-        //         style: {
-        //             strokeColor: 'rgba(55, 85, 170, 0.6)', // Color of the perimeter
-        //             lineWidth: 2,
-        //             fillColor: 'rgba(0, 128, 0, 0.7)'  // Color of the circle
-        //         }
-        //     }
-        // );
-
-        // map.addObject(marker);
+        return marker;
     }
 
     function addMarkersToMap(map, places) {
@@ -69,34 +59,6 @@ module.exports = function(DefaultMarker, DOMMarker, SVGMarker, CONSTS) {
         }
 
         addMarkersToMap.apply(null, arguments);
-    }
-
-    function addinfoBubble(ui, group) {
-        if (!group || !ui)
-            return;
-
-        group.addEventListener('tap', _groupEventHandler.bind(group, ui), false);
-    }
-
-    function _groupEventHandler(ui, e) {
-        var target = e.target;
-        
-        if(ui.bubble && ui.bubble.getState() === CONSTS.INFOBUBBLE_STATES.OPEN) {
-            ui.bubble.close();
-        }
-        
-        if(target.bubble) {
-            ui.bubble = target.bubble;
-            target.bubble.open();
-            return;
-        }
-        
-        var bubble = new H.ui.InfoBubble(e.target.getPosition(), {
-            content: target.getData()
-        });
-        target.bubble = bubble;
-        ui.addBubble(bubble);
-        ui.bubble = bubble;
     }
 
     function _getMarkerCreator(place) {

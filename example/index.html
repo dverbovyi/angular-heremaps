@@ -27,13 +27,17 @@
             width: 480px;
         }
         
+        .map {
+            margin-top: 10px;
+        }
+        
     </style>
 </head>
 
 <body>
-    <div class="resize_wrapper" ng-controller="AppCtrl">
-        <div class="map" heremaps controls="bottom-right" options="mapOptions" events="listeners" places="markers" map-ready="onMapReady"></div>
-        <div class="map" heremaps controls options="mapOptions" events="listeners" places="markers" map-ready="onMapReady"></div>
+    <div
+     class="resize_wrapper" ng-controller="AppCtrl">
+        <div class="map" heremaps controls="right-bottom" options="mapOptions" events="listeners" places="markers" map-ready="onMapReady"></div>
     </div>
 </body>
 

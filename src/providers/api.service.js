@@ -58,7 +58,7 @@ module.exports = function($q, HereMapsConfig, HereMapUtilsService, CONSTS) {
     function getPosition(options) {
         var dererred = $q.defer();
 
-        if (_isValidCoords(options.coords)) {
+        if (options && _isValidCoords(options.coords)) {
             dererred.resolve({ coords: options.coords });
         } else {
             navigator.geolocation.getCurrentPosition(function(response) {

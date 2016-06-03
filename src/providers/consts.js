@@ -1,5 +1,6 @@
 module.exports = {
     UPDATE_MAP_RESIZE_TIMEOUT: 500,
+    ANIMATION_ZOOM_STEP: .05,
     MODULES: {
         UI: 'controls',
         EVENTS: 'events',
@@ -22,10 +23,26 @@ module.exports = {
         SVG: "SVG"
     },
     CONTROLS: {
-        settings: 'mapsettings',
-        zoom: 'zoom',
-        scale: 'scalebar',
-        pano: 'panorama'
+        NAMES: {
+            SCALE: 'scalebar',
+            SETTINGS: 'mapsettings',
+            ZOOM: 'zoom',
+            USER: 'userposition'
+        },
+        POSITIONS: [
+            'top-right',
+            'top-center',
+            'top-left',
+            'left-top',
+            'left-middle',
+            'left-bottom',
+            'right-top',
+            'right-middle',
+            'right-bottom',
+            'bottom-right',
+            'bottom-center',
+            'bottom-left'
+        ]
     },
     INFOBUBBLE: {
         STATE: {

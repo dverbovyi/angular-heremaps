@@ -8,15 +8,14 @@ module.exports = function(MarkerInterface){
     proto.constructor = DOMMarker;
 
     proto.create = create;
-    proto._getIcon = _getIcon;
-    proto._setupEvents = _setupEvents;
-    proto._getEvents = _getEvents;
+    proto.getIcon = getIcon;
+    proto.setupEvents = setupEvents;
 
     return DOMMarker;
     
     function create(){
         var marker = new H.map.DomMarker(this.coords, {
-            icon: this._getIcon()
+            icon: this.getIcon()
         });
         
         this.addInfoBubble(marker);
@@ -24,15 +23,15 @@ module.exports = function(MarkerInterface){
         return marker;
     }
     
-    function _getIcon(){
+    function getIcon(){
         var icon = this.place.markup;
          if(!icon)
             throw new Error('markup missed');
 
-        return new H.map.DomIcon(icon, this._getEvents());
+        return new H.map.DomIcon(icon);
     }
     
-    function _setupEvents(el, events, remove){
+    function setupEvents(el, events, remove){
         var method = remove ? 'removeEventListener' : 'addEventListener';
 
         for(var key in events) {
@@ -40,23 +39,6 @@ module.exports = function(MarkerInterface){
                 continue;
 
             el[method].call(null, key, events[key]);
-        }
-    }
-    
-    function _getEvents(){
-        var self = this,
-            events = this.place.events;
-
-        if(!this.place.events)
-            return {};
-
-        return {
-            onAttach: function(clonedElement, domIcon, domMarker){
-                self._setupEvents(clonedElement, events);
-            },
-            onDetach: function(clonedElement, domIcon, domMarker){
-                self._setupEvents(clonedElement, events, true);
-            }
         }
     }
 }

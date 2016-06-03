@@ -11,7 +11,8 @@ module.exports = function(
     HereMapUtilsService,
     MarkersService,
     CONSTS,
-    EventsModule) {
+    EventsModule,
+    UIModule) {
     return {
         restrict: 'EA',
         template: "<div ng-style=\"{'width': mapWidth, 'height': mapHeight}\"></div>",
@@ -23,10 +24,11 @@ module.exports = function(
             events: '&'
         },
         controller: function($scope, $element, $attrs) {
-            var places = $scope.places(),
+            var CONTROL_NAMES = CONSTS.CONTROLS.NAMES,
+                places = $scope.places(),
                 opts = $scope.opts(),
                 listeners = $scope.events();
-                
+
             var options = angular.extend({}, CONSTS.DEFAULT_MAP_OPTIONS, opts),
                 position = HereMapUtilsService.isValidCoords(options.coords) ? options.coords : CONSTS.DEFAULT_MAP_OPTIONS.coords;
 
@@ -101,45 +103,12 @@ module.exports = function(
 
                 cb && cb();
             }
-
-            function _uiModuleReady() {
-                var ui = heremaps.ui = H.ui.UI.createDefault(heremaps.map, heremaps.layers);
-                _setControlsPosition(ui);
-            }
-
-            function _setControlsPosition(ui) {
-                var position = $attrs.controls;
-                if (!ui || !_isValidPosition(position))
-                    return;
-
-                var availableControls = CONSTS.CONTROLS;
-                for (key in availableControls) {
-                    if (!availableControls.hasOwnProperty(key))
-                        continue;
-                    var value = availableControls[key],
-                        control = ui.getControl(value);
-
-                    if (!control)
-                        return;
-
-                    control.setAlignment(position);
-                }
-            }
-
-            function _isValidPosition(position) {
-                var isValid = false;
-                switch (position) {
-                    case 'top-right':
-                    case 'top-left':
-                    case 'bottom-right':
-                    case 'bottom-left':
-                        isValid = true;
-                        break;
-                    default:
-                        isValid = false;
-                }
-
-                return isValid;
+            
+            function _uiModuleReady(){
+                UIModule.start({
+                    platform: heremaps,
+                    alignment: $attrs.controls
+                });
             }
             
             function _eventsModuleReady() {
@@ -150,9 +119,9 @@ module.exports = function(
                     injector: _moduleInjector
                 });
             }
-            
-            function _moduleInjector(){
-                return function(id){
+
+            function _moduleInjector() {
+                return function(id) {
                     return heremaps[id];
                 }
             }
@@ -184,8 +153,8 @@ module.exports = function(
                             direction: direction
                         });
                     },
-                    setZoom: function(zoom) {
-                        heremaps.map.setZoom(zoom || 10);
+                    setZoom: function(zoom, step) {
+                        HereMapUtilsService.zoom(heremaps.map, zoom || 10, step);
                     },
                     setCenter: function(coords) {
                         if (!coords) {
@@ -198,7 +167,6 @@ module.exports = function(
                                 })
                                 .catch(_locationFailure);
                         }
-
                         heremaps.map.setCenter(coords);
                     },
                     updateMarkers: function(places) {

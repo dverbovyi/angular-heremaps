@@ -1,11 +1,12 @@
-module.exports = function($rootScope, $timeout){
+module.exports = function($rootScope, $timeout, CONSTS){
     return {
         throttle: throttle,
         createScriptTag: createScriptTag,
         createLinkTag: createLinkTag,
         runScopeDigestIfNeed: runScopeDigestIfNeed,
         isValidCoords: isValidCoords,
-        addEventListener: addEventListener
+        addEventListener: addEventListener,
+        zoom: zoom
     };
     
     //#region PUBLIC
@@ -66,6 +67,26 @@ module.exports = function($rootScope, $timeout){
             (typeof coords.latitude === 'string' ||  typeof coords.latitude === 'number') &&
             (typeof coords.longitude === 'string' ||  typeof coords.longitude === 'number')
     }
+    
+    function zoom(map, value, step){
+        var currentZoom = map.getZoom(),
+            _step = step || CONSTS.ANIMATION_ZOOM_STEP,
+            factor = currentZoom >= value ? -1 : 1,
+            increment = step * factor;
+            
+        return (function zoom(){
+            if(!step || Math.floor(currentZoom) === Math.floor(value)) {
+                map.setZoom(value);
+                return;
+            }
+                
+            currentZoom += increment;
+            map.setZoom(currentZoom);
+            
+            requestAnimationFrame(zoom);
+        })();
+    }
+    
     //#endregion PUBLIC 
 
     function _setAttrs(el, attrs) {
