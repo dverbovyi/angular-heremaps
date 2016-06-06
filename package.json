@@ -1,40 +1,51 @@
 {
-    "name": "angular-heremaps",
-    "version": "0.0.13",
-    "description": "Angular directive for working with Nokia heremaps",
-    "source-folder": "/dist",
-    "main": "angular-heremaps.js",
-    "output": "angular-heremaps.js",
-    "scripts": {
-        "test": "./node_modules/.bin/jasmine JASMINE_CONFIG_PATH=jasmine.json",
-        "build": "./node_modules/.bin/gulp build"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/dverbovyi/angular-heremaps.git"
-    },
-    "keywords": [
-        "heremaps",
-        "here maps",
-        "javascript",
-        "angular",
-        "nokia"
-    ],
-    "author": "Dmytro Verbovyi: https://github.com/dverbovyi, Andrii Vandakurov: https://github.com/toastman",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/dverbovyi/angular-heremaps/issues"
-    },
-    "homepage": "https://github.com/dverbovyi/angular-heremaps#readme",
-    "dependencies": {
-        "angular": "^1.2"
-    },
-    "devDependencies": {
-        "browserify": "^13.0.0",
-        "gulp": "^3.9.1",
-        "gulp-sourcemaps": "^1.6.0",
-        "jasmine": "^2.4.1",
-        "vinyl-buffer": "^1.0.0",
-        "vinyl-source-stream": "^1.1.0"
-    }
+  "name": "angular-heremaps",
+  "version": "0.0.13",
+  "description": "Angular directive for working with Nokia heremaps",
+  "source-folder": "/dist",
+  "main": "angular-heremaps.js",
+  "output": "angular-heremaps.js",
+  "scripts": {
+    "test": "karma start",
+    "build": "./node_modules/.bin/gulp build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dverbovyi/angular-heremaps.git"
+  },
+  "keywords": [
+    "heremaps",
+    "here maps",
+    "javascript",
+    "angular",
+    "nokia"
+  ],
+  "author": "Dmytro Verbovyi: https://github.com/dverbovyi, Andrii Vandakurov: https://github.com/toastman",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dverbovyi/angular-heremaps/issues"
+  },
+  "homepage": "https://github.com/dverbovyi/angular-heremaps#readme",
+  "dependencies": {
+    "angular": "^1.2"
+  },
+  "devDependencies": {
+    "browserify": "^13.0.1",
+    "browserify-istanbul": "^2.0.0",
+    "gulp": "^3.9.1",
+    "gulp-sourcemaps": "^1.6.0",
+    "istanbul": "^0.4.3",
+    "jasmine": "^2.4.1",
+    "karma": "^0.13.22",
+    "karma-browserify": "^5.0.5",
+    "karma-chrome-launcher": "^1.0.1",
+    "karma-coverage": "^1.0.0",
+    "karma-jasmine": "^1.0.2",
+    "karma-mocha-reporter": "^2.0.3",
+    "karma-phantomjs-launcher": "^1.0.0",
+    "phantomjs-prebuilt": "^2.1.7",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.7.0"
+  }
 }
