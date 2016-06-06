@@ -1,3 +1,5 @@
+before_install:
+- npm install -g codeclimate-test-reporter
 install: 
   - npm i
 language: node_js
