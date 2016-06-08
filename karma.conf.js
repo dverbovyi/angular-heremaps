@@ -10,13 +10,16 @@ module.exports = function (config) {
 
         files: [
             './node_modules/angular/angular.js',
-            './src/*.js',
-            './tests/*.js'
+            './node_modules/angular-mocks/angular-mocks.js',
+            './src/**/*.js',
+            './src/heremaps.directive.js',
+            './tests/**/*.js'
         ],
 
         preprocessors: {
-            './src/*.js': ['browserify'],
-            './tests/*.js': ['browserify']
+            './node_modules/angular/angular.js': ['browserify'],
+            './src/**/*.js': ['browserify'],
+            './tests/**/*.js': ['browserify']
         },
 
         browserify: {
@@ -26,9 +29,18 @@ module.exports = function (config) {
 
         colors: true,
         logLevel: config.LOG_INFO,
+        
+        plugins : [
+            'karma-browserify',
+            'karma-jasmine',
+            'karma-mocha-reporter',
+            'karma-phantomjs-launcher',
+            'karma-chrome-launcher',
+            'karma-coverage'
+        ],
 
         reporters: ['mocha', 'progress', 'coverage'],
-
+        
         coverageReporter: {
             reporters: [{
                 type: 'lcov',
