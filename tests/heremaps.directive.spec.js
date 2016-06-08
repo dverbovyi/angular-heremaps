@@ -15,11 +15,11 @@ describe('Here Maps directive', function () {
     }]
     ));
 
-    it('Should render a map', function () {
+    xit('Should compile a directive', function () {
         var result = $compile('<div heremaps></div>')($scope);
          $scope.$digest();
          
          console.log(result)
-        expect(result.find('canvas').length).toBe(1);
+        expect(result.html()).toBe("<div ng-style=\"{'width': '640px', 'height': '480px'}\"></div>");
     });
 });
