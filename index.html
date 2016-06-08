@@ -9,10 +9,33 @@
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
-    
+
     <style>
         .demo {
             height: 480px;
+        }
+        
+        .dom-marker {
+            cursor: pointer;
+            border-radius: 6px;
+            padding: 4px;
+            color: #fff;
+            background-color: #1f262a;
+        }
+        
+        .dom-marker h3,
+        .dom-marker h5 {
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        
+        .github-link {
+            width: 100%;
+            display: block;
+            font-size: 17px;
+            padding: 8px 0 8px 4px;
+            color: white;
         }
     </style>
 </head>
@@ -27,7 +50,7 @@
     </section>-->
 
     <section class="demo" ng-controller="DemoCtrl">
-       <div class="map" heremaps controls="right-bottom" options="mapOptions" events="listeners" places="markers" map-ready="onMapReady"></div>
+        <div class="map" heremaps controls="right-bottom" options="mapOptions" events="listeners" places="markers" map-ready="onMapReady"></div>
     </section>
     <section class="main-content">
         <h1>
