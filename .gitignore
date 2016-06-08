@@ -1,0 +1,6 @@
+node_modules/
+.idea
+
+!.gitignore
+node_modules/angular/angular.js
+node_modules/angular-heremaps/dist/angular-heremaps.js
