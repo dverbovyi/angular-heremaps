@@ -36,6 +36,7 @@ module.exports = function(
                 mapReady = $scope.onMapReady(),
                 _onResizeMap = null;;
 
+            // TODO: Do we really need this $timeout workaround ?
             $timeout(function() {
                 return _setMapSize();
             }).then(function() {
@@ -103,14 +104,14 @@ module.exports = function(
 
                 cb && cb();
             }
-            
+
             function _uiModuleReady(){
                 UIModule.start({
                     platform: heremaps,
                     alignment: $attrs.controls
                 });
             }
-            
+
             function _eventsModuleReady() {
                 EventsModule.start({
                     platform: heremaps,

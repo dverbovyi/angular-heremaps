@@ -3,24 +3,25 @@
  */
 
 describe('Here Maps directive', function () {
-    var scope, $compile, $rootScope,
+    var scope, $compile, $rootScope, $timeout,
         template = angular.element('<div heremaps></div>');
 
-    angular.mock.module('heremaps');
+    beforeEach(function(){
+        angular.mock.module('heremaps');
 
-    beforeEach(inject(['$compile', '$rootScope', function (_$compile_, _$rootScope_) {
-        $compile = _$compile_;
-        $rootScope = _$rootScope_;
-        $scope = $rootScope.$new();
-    }]
-    ));
+        inject(function (_$compile_, _$rootScope_, _$timeout_) {
+            $compile = _$compile_;
+            $timeout = _$timeout_;
+            $rootScope = _$rootScope_;
+            $scope = $rootScope.$new();
+        })
+
+    });
 
     it('Should compile a directive', function () {
-        return true //skipped test     
-
-        var result = $compile('<div heremaps></div>')($scope);
+        var result = $compile(template)($scope);
+        $timeout.flush();
         $scope.$digest();
-
-        expect(result.html()).toBe("<div ng-style=\"{'width': '640px', 'height': '480px'}\"></div>");
+        expect(result[0].outerHTML).toBe('<div ng-style=\"{\'width\': mapWidth, \'height\': mapHeight}\" heremaps="" class="ng-scope ng-isolate-scope" style="width: 640px; height: 480px;\"></div>');
     });
 });
