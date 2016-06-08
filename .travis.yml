@@ -4,7 +4,7 @@ install:
   - npm i
 language: node_js
 node_js:
-  - "5.1"
+  - "4.2.4"
 script:
   - ./node_modules/.bin/gulp build
   - npm test
