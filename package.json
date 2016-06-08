@@ -1,7 +1,7 @@
 {
   "name": "angular-heremaps",
   "version": "0.0.14",
-  "description": "Angular directive for working with Nokia heremaps",
+  "description": "Angular directive for working with Nokia Here Maps",
   "source-folder": "/dist",
   "main": "angular-heremaps.js",
   "output": "angular-heremaps.js",
@@ -25,7 +25,7 @@
   "bugs": {
     "url": "https://github.com/dverbovyi/angular-heremaps/issues"
   },
-  "homepage": "https://github.com/dverbovyi/angular-heremaps#readme",
+  "homepage": "https://dverbovyi.github.io/angular-heremaps/",
   "dependencies": {
     "angular": "^1.2"
   },
