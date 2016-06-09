@@ -34,9 +34,8 @@ module.exports = function(
 
             var heremaps = {},
                 mapReady = $scope.onMapReady(),
-                _onResizeMap = null;;
-
-            // TODO: Do we really need this $timeout workaround ?
+                _onResizeMap = null;
+                
             $timeout(function() {
                 return _setMapSize();
             }).then(function() {
@@ -93,10 +92,6 @@ module.exports = function(
                     zoom: HereMapUtilsService.isValidCoords(position) ? options.zoom : options.maxZoom,
                     center: new H.geo.Point(position.latitude, position.longitude)
                 });
-
-                // MarkersService.addUserMarker(map, {
-                //     pos: { lat: position.latitude, lng: position.longitude }
-                // });
 
                 MarkersService.addMarkersToMap(map, places);
 

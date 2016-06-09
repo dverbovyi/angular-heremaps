@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="exampleModule">
+<html lang="en" ng-app="demoModule">
 
 <head>
     <meta charset="UTF-8">
@@ -22,23 +22,40 @@
             width: 100%;
         }
         
-        .resize_wrapper {
-            height: 320px;
-            width: 480px;
+        .demo {
+            height: 480px;
         }
         
-        .map {
-            margin-top: 10px;
+        .dom-marker {
+            cursor: pointer;
+            border-radius: 6px;
+            padding: 4px;
+            color: #fff;
+            background-color: #1f262a;
+        }
+        
+        .dom-marker h3,
+        .dom-marker h5 {
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        
+        .github-link {
+            width: 100%;
+            display: block;
+            font-size: 17px;
+            padding: 8px 0 8px 4px;
+            color: white;
         }
         
     </style>
 </head>
 
 <body>
-    <!--<div-->
-     <!--class="resize_wrapper" ng-controller="AppCtrl">-->
+    <section class="demo" ng-controller="DemoCtrl">
         <div class="map" heremaps controls="right-bottom" options="mapOptions" events="listeners" places="markers" map-ready="onMapReady"></div>
-    <!--</div>-->
+    </section>
 </body>
 
 </html>

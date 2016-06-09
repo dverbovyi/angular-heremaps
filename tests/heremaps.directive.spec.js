@@ -5,10 +5,11 @@
 describe('Here Maps directive', function () {
     var scope, $compile, $rootScope, $timeout,
         template = angular.element('<div heremaps></div>');
+        
 
     beforeEach(function(){
         angular.mock.module('heremaps');
-
+        
         inject(function (_$compile_, _$rootScope_, _$timeout_) {
             $compile = _$compile_;
             $timeout = _$timeout_;
