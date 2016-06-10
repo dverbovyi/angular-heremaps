@@ -143,10 +143,26 @@ module.exports = function(
                     getPlatform: function() {
                         return heremaps;
                     },
-                    calculateRoute: function(driveType, direction) {
-                        APIService.calculateRoute(heremaps.platform, heremaps.map, {
+                    
+                    /**
+                     * @param {String} driveType - car | pedestrian | publicTransport | truck
+                     * @param {Object} params - e.g: 
+                     *  {
+                     *      from: {lat: 41.9798, lng: -87.8801}, 
+                     *      to: {lat: 41.9043, lng: -87.9216},
+                     *      attributes: {
+                     *          leg: see https://developer.here.com/rest-apis/documentation/routing/topics/resource-param-type-route-representation-options.html#type-route-leg-attribute,
+                     *          route: see https://developer.here.com/rest-apis/documentation/routing/topics/resource-param-type-route-representation-options.html#type-route-attribute,
+                     *          maneuver: see https://developer.here.com/rest-apis/documentation/routing/topics/resource-param-type-route-representation-options.html#type-maneuver-attribute,
+                     *          link: see https://developer.here.com/rest-apis/documentation/routing/topics/resource-param-type-route-representation-options.html#type-route-link-attribute,
+                     *          lines: see https://developer.here.com/rest-apis/documentation/routing/topics/resource-param-type-route-representation-options.html#type-public-transport-line-attribute
+                     *      }
+                     * }
+                     */
+                    calculateRoute: function(driveType, params) {
+                        return APIService.calculateRoute(heremaps.platform, heremaps.map, {
                             driveType: driveType,
-                            direction: direction
+                            direction: params
                         });
                     },
                     setZoom: function(zoom, step) {

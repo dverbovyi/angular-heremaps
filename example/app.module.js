@@ -29,12 +29,29 @@
             }
         };
 
-        $scope.onMapReady = function (map) {
+        $scope.onMapReady = function(map) {
             $scope.map = map;
 
             $scope.map.setCenter({
                 lat: 25.1075831, lng: 55.159061
             });
+            
+            // var direction = {
+            //     mode: 'fastest',
+            //     from: {lat: 41.9798, lng: -87.8801}, 
+            //     to: {lat: 41.9043, lng: -87.9216},
+            //     attributes: {
+            //         route: 'waypoints,summary,shape,legs',
+            //         leg: 'waypoint, maneuvers, links, length, travelTime, shape, indices], boundingBox, baseTime, trafficTime, summary',
+            //         maneuver: 'position, shape, travelTime, length, time, link, publicTransportLine, platform, roadName, nextRoadName, roadNumber, nextRoadNumber, signPost, notes, action, direction, freewayExit, freewayJunction, indices, baseTime, trafficTime, waitTime, boundingBox, roadShield, shapeQuality, nextManeuver, publicTransportTickets, startAngle'
+            //     }
+            // };
+            
+            // $scope.map.calculateRoute('car', direction).then(function(response){
+            //     console.log(response)
+            // }, function(error){
+            //     console.log(error)
+            // });
         };
 
         $scope.markers = [

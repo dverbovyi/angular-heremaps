@@ -56,19 +56,19 @@ module.exports = function($q, HereMapsConfig, HereMapUtilsService, CONSTS) {
     }
 
     function getPosition(options) {
-        var dererred = $q.defer();
+        var deferred = $q.defer();
 
         if (options && _isValidCoords(options.coords)) {
-            dererred.resolve({ coords: options.coords });
+            deferred.resolve({ coords: options.coords });
         } else {
             navigator.geolocation.getCurrentPosition(function(response) {
-                dererred.resolve(response);
+                deferred.resolve(response);
             }, function(error) {
-                dererred.reject(error);
+                deferred.reject(error);
             }, options);
         }
 
-        return dererred.promise;
+        return deferred.promise;
     }
 
     /**
@@ -79,24 +79,41 @@ module.exports = function($q, HereMapsConfig, HereMapUtilsService, CONSTS) {
             dir = params.direction;
         
         var routeRequestParams = {
-            mode: 'fastest;{{Vechile}}'.replace(/{{Vechile}}/, params.driveType),
+            mode: 'shortest;{{Vechile}}'.replace(/{{Vechile}}/, params.driveType),
             representation: 'display',
             routeattributes: 'waypoints,summary,shape,legs',
             maneuverattributes: 'direction,action',
             waypoint0: [dir.from.lat, dir.from.lng].join(','),
             waypoint1: [dir.to.lat, dir.to.lng].join(',')
         };
+        
+        _setAttributes(routeRequestParams, params.attributes);
+        
+        var deferred = $q.defer();
             
-        router.calculateRoute(
-            routeRequestParams,
-            _onRouteSuccess,
-            _onRouteFailure
-        );
+        router.calculateRoute(routeRequestParams, function(response){
+            deferred.resolve(response);
+        }, function(error){
+            deferred.reject(error);
+        });
+        
+        return deferred.promise;
     }
     //#endregion PUBLIC
 
 
     //#region PRIVATE
+    
+    function _setAttributes(params, attrs){
+        var _key = 'attributes';
+        for(var key in attrs) {
+            if(!attrs.hasOwnProperty(key))
+                continue;
+                
+            params[key+_key] = attrs[key];
+        }
+    }
+    
     function _onRouteSuccess(result){
         console.log(result)
     }
