@@ -10,7 +10,7 @@ angular.module('events-module', [])
 angular.module('ui-module', [])
     .factory('UIModule', uiModule)
 
-var app = angular.module('components-module', [
+var app = angular.module('map-modules', [
 	'events-module',
     'ui-module'
 ]);

@@ -10,6 +10,7 @@ module.exports = function(
     APIService,
     HereMapUtilsService,
     MarkersService,
+    RoutesService,
     CONSTS,
     EventsModule,
     UIModule) {
@@ -66,11 +67,13 @@ module.exports = function(
                 heremaps.layers = heremaps.platform.createDefaultLayers();
             }
 
-            function _getLocation() {
+            function _getLocation(enableHighAccuracy, maximumAge) {
+                var _enableHighAccuracy = !!enableHighAccuracy,
+                    _maximumAge = maximumAge || 0;
+                    
                 return APIService.getPosition({
-                    coords: position,
-                    enableHighAccuracy: true,
-                    maximumAge: 10000
+                    enableHighAccuracy: _enableHighAccuracy,
+                    maximumAge: _maximumAge
                 });
             }
 
@@ -159,10 +162,10 @@ module.exports = function(
                      *      }
                      * }
                      */
-                    calculateRoute: function(driveType, params) {
-                        return APIService.calculateRoute(heremaps.platform, heremaps.map, {
+                    calculateRoute: function(driveType, direction) {
+                        return RoutesService.calculateRoute(heremaps.platform, heremaps.map, {
                             driveType: driveType,
-                            direction: params
+                            direction: direction
                         });
                     },
                     setZoom: function(zoom, step) {
@@ -170,17 +173,28 @@ module.exports = function(
                     },
                     setCenter: function(coords) {
                         if (!coords) {
-                            return _getLocation()
-                                .then(function(response) {
-                                    heremaps.map.setCenter({
-                                        lng: response.coords.longitude,
-                                        lat: response.coords.latitude
-                                    });
-                                })
-                                .catch(_locationFailure);
+                            return console.error('coords are not specified!');
                         }
+                        
                         heremaps.map.setCenter(coords);
                     },
+                    
+                    /**
+                     * @param {Boolean} enableHighAccuracy
+                     * @param {Number} maximumAge - the maximum age in milliseconds of a possible cached position that is acceptable to return. If set to 0, it means that the device cannot use a cached position and must attempt to retrieve the real current position
+                     */
+                    getUserLocation: function(enableHighAccuracy, maximumAge){
+                       return _getLocation.apply(null, arguments);
+                    },
+                    
+                    geocodePosition: function(coords, options){
+                        return APIService.geocodePosition(heremaps.platform, {
+                            coords: coords,
+                            radius: options && options.radius,
+                            lang: options && options.lang
+                        });
+                    },
+                    
                     updateMarkers: function(places) {
                         MarkersService.updateMarkers(heremaps.map, places);
                     }

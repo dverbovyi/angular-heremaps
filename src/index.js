@@ -1,5 +1,6 @@
-require('./providers/markers/markers.module');
-require('./providers/components/components.module');
+require('./providers/markers');
+require('./providers/map-modules');
+require('./providers/routes');
 
 var directive = require('./heremaps.directive'),
     configProvider = require('./providers/mapconfig.provider'),
@@ -9,12 +10,13 @@ var directive = require('./heremaps.directive'),
 
 var heremaps = angular.module('heremaps', [
     'markers-module',
-    'components-module'
+    'routes-module',
+    'map-modules'
 ]);
 
 heremaps
     .provider('HereMapsConfig', configProvider)
-    .service('APIService', ['$q', 'HereMapsConfig', 'HereMapUtilsService', 'CONSTS', apiService])
+    .service('APIService', ['$q', '$http', 'HereMapsConfig', 'HereMapUtilsService', 'CONSTS', apiService])
     .service('HereMapUtilsService', utilsService)
     .constant('CONSTS', consts);
 
