@@ -14,6 +14,9 @@ module.exports = function(DefaultMarker, DOMMarker, SVGMarker, CONSTS) {
     }
 
     function addUserMarker(map, place) {
+        if(map.userMarker)
+            return map.userMarker;
+        
         place.markup = '<svg width="35px" height="35px" viewBox="0 0 90 90" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' +
             '<defs><circle id="path-1" cx="302" cy="802" r="15"></circle>' +
             '<mask id="mask-2" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="-30" y="-30" width="90" height="90">' +
@@ -24,11 +27,11 @@ module.exports = function(DefaultMarker, DOMMarker, SVGMarker, CONSTS) {
             '<use stroke-opacity="0.29613904" stroke="#3F34A0" mask="url(#mask-2)" stroke-width="60" xlink:href="#path-1"></use>' +
             '<use stroke="#3F34A0" stroke-width="5" xlink:href="#path-1"></use></g></g></g></svg>';
 
-        var marker = new SVGMarker(place).create();
+        map.userMarker = new SVGMarker(place).create();
 
-        map.addObject(marker);
+        map.addObject(map.userMarker);
 
-        return marker;
+        return map.userMarker;
     }
 
     function addMarkersToMap(map, places) {
@@ -49,6 +52,8 @@ module.exports = function(DefaultMarker, DOMMarker, SVGMarker, CONSTS) {
         });
 
         map.addObject(map.markersGroup);
+        
+        map.setViewBounds(map.markersGroup.getBounds());
     }
 
     function updateMarkers(map, places) {

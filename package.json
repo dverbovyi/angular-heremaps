@@ -47,6 +47,7 @@
     "phantomjs-prebuilt": "^2.1.7",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
-    "watchify": "^3.7.0"
+    "watchify": "^3.7.0",
+    "yargs": "^4.7.1"
   }
 }

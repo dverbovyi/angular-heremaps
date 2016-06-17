@@ -1,10 +1,14 @@
 module.exports = function ($q) {
     return {
-        calculateRoute: calculateRoute
+        calculateRoute: calculateRoute,
+        addRouteToMap: addRouteToMap,
+        cleanRoutes: cleanRoutes
     }
-    
-    function calculateRoute(platform, map, config) {
-        var router = platform.getRoutingService(),
+
+    function calculateRoute(heremaps, config) {
+        var platform = heremaps.platform,
+            map = heremaps.map,
+            router = platform.getRoutingService(),
             dir = config.direction;
 
         var mode = '{{MODE}};{{VECHILE}}'
@@ -13,23 +17,71 @@ module.exports = function ($q) {
 
         var routeRequestParams = {
             mode: mode,
-            representation: config.representation || 'display',
+            representation: dir.representation || 'display',
             waypoint0: [dir.from.lat, dir.from.lng].join(','),
             waypoint1: [dir.to.lat, dir.to.lng].join(','),
-            language: config.language || 'en-gb'
+            language: dir.language || 'en-gb'
         };
 
         _setAttributes(routeRequestParams, dir.attrs);
 
         var deferred = $q.defer();
 
-        router.calculateRoute(routeRequestParams, function (response) {
-            deferred.resolve(response);
+        router.calculateRoute(routeRequestParams, function (result) {
+            deferred.resolve(result);
         }, function (error) {
             deferred.reject(error);
         });
 
         return deferred.promise;
+    }
+    
+    function cleanRoutes(map){
+        var group = map.routesGroup;
+         
+        if(!group)
+            return;
+            
+        group.removeAll();
+        map.removeObject(group);
+        map.routesGroup = null;
+    }
+    
+    function addRouteToMap(map, routeData, clean) {
+        if(clean)
+           cleanRoutes(map);
+           
+        var route = routeData.route;
+        
+        if (!map || !route || !route.shape)
+            return;
+
+        var strip = new H.geo.Strip(), polyline = null;
+
+        route.shape.forEach(function (point) {
+            var parts = point.split(',');
+            strip.pushLatLngAlt(parts[0], parts[1]);
+        });
+        
+        var style = routeData.style;
+
+        polyline = new H.map.Polyline(strip, {
+            style: {
+                lineWidth: style.lineWidth || 4,
+                strokeColor: style. color || 'rgba(0, 128, 255, 0.7)'
+            }
+        });
+        
+        var group = map.routesGroup;
+         
+        if(!group) {
+            group = map.routesGroup = new H.map.Group();
+            map.addObject(group);
+        }
+        
+        group.addObject(polyline);
+        
+        map.setViewBounds(polyline.getBounds(), true);
     }
 
     //#region PRIVATE
@@ -51,33 +103,6 @@ module.exports = function ($q) {
     function _onRouteFailure(error) {
         console.log('Calculate route failure', error);
     }
-
-    /**
-     * Creates a H.map.Polyline from the shape of the route and adds it to the map.
-     * @param {Object} route A route as received from the H.service.RoutingService
-     */
-    function addRouteShapeToMap(map, route) {
-        var strip = new H.geo.Strip(),
-            routeShape = route.shape,
-            polyline;
-
-        routeShape.forEach(function (point) {
-            var parts = point.split(',');
-            strip.pushLatLngAlt(parts[0], parts[1]);
-        });
-
-        polyline = new H.map.Polyline(strip, {
-            style: {
-                lineWidth: 4,
-                strokeColor: 'rgba(0, 128, 255, 0.7)'
-            }
-        });
-        // Add the polyline to the map
-        map.addObject(polyline);
-        // And zoom to its bounding rectangle
-        map.setViewBounds(polyline.getBounds(), true);
-    }
-
 
     /**
      * Creates a series of H.map.Marker points from the route and adds them to the map.

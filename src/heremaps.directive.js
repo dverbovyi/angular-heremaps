@@ -1,7 +1,7 @@
 /**
  * Created by Dmytro on 4/11/2016.
  */
-module.exports = function(
+module.exports = function (
     $timeout,
     $window,
     $rootScope,
@@ -24,7 +24,7 @@ module.exports = function(
             onMapReady: "&mapReady",
             events: '&'
         },
-        controller: function($scope, $element, $attrs) {
+        controller: function ($scope, $element, $attrs) {
             var CONTROL_NAMES = CONSTS.CONTROLS.NAMES,
                 places = $scope.places(),
                 opts = $scope.opts(),
@@ -33,19 +33,19 @@ module.exports = function(
             var options = angular.extend({}, CONSTS.DEFAULT_MAP_OPTIONS, opts),
                 position = HereMapUtilsService.isValidCoords(options.coords) ? options.coords : CONSTS.DEFAULT_MAP_OPTIONS.coords;
 
-            var heremaps = {},
+            var heremaps = {id: HereMapUtilsService.generateId()},
                 mapReady = $scope.onMapReady(),
                 _onResizeMap = null;
-                
-            $timeout(function() {
+
+            $timeout(function () {
                 return _setMapSize();
-            }).then(function() {
+            }).then(function () {
                 APIService.loadApi().then(_apiReady);
             });
 
             options.resize && addOnResizeListener();
 
-            $scope.$on('$destroy', function() {
+            $scope.$on('$destroy', function () {
                 $window.removeEventListener('resize', _onResizeMap);
             });
 
@@ -70,7 +70,7 @@ module.exports = function(
             function _getLocation(enableHighAccuracy, maximumAge) {
                 var _enableHighAccuracy = !!enableHighAccuracy,
                     _maximumAge = maximumAge || 0;
-                    
+
                 return APIService.getPosition({
                     enableHighAccuracy: _enableHighAccuracy,
                     maximumAge: _maximumAge
@@ -82,7 +82,7 @@ module.exports = function(
             }
 
             function _setupMap() {
-                _initMap(function() {
+                _initMap(function () {
                     APIService.loadModules($attrs.$attr, {
                         "controls": _uiModuleReady,
                         "events": _eventsModuleReady
@@ -95,7 +95,7 @@ module.exports = function(
                     zoom: HereMapUtilsService.isValidCoords(position) ? options.zoom : options.maxZoom,
                     center: new H.geo.Point(position.latitude, position.longitude)
                 });
-
+                
                 MarkersService.addMarkersToMap(map, places);
 
                 mapReady && mapReady(MapProxy());
@@ -103,7 +103,7 @@ module.exports = function(
                 cb && cb();
             }
 
-            function _uiModuleReady(){
+            function _uiModuleReady() {
                 UIModule.start({
                     platform: heremaps,
                     alignment: $attrs.controls
@@ -120,7 +120,7 @@ module.exports = function(
             }
 
             function _moduleInjector() {
-                return function(id) {
+                return function (id) {
                     return heremaps[id];
                 }
             }
@@ -141,12 +141,13 @@ module.exports = function(
                 HereMapUtilsService.runScopeDigestIfNeed($scope);
             }
 
+            //TODO: move to separate file
             function MapProxy() {
                 return {
-                    getPlatform: function() {
+                    getPlatform: function () {
                         return heremaps;
                     },
-                    
+
                     /**
                      * @param {String} driveType - car | pedestrian | publicTransport | truck
                      * @param {Object} params - e.g: 
@@ -162,40 +163,56 @@ module.exports = function(
                      *      }
                      * }
                      */
-                    calculateRoute: function(driveType, direction) {
-                        return RoutesService.calculateRoute(heremaps.platform, heremaps.map, {
+                    calculateRoute: function (driveType, direction) {
+                        return RoutesService.calculateRoute(heremaps, {
                             driveType: driveType,
                             direction: direction
                         });
                     },
-                    setZoom: function(zoom, step) {
+                    addRouteToMap: function (routeData, clean) {
+                        RoutesService.addRouteToMap(heremaps.map, routeData, clean);
+                    },
+                    setZoom: function (zoom, step) {
                         HereMapUtilsService.zoom(heremaps.map, zoom || 10, step);
                     },
-                    setCenter: function(coords) {
+                    setCenter: function (coords) {
                         if (!coords) {
                             return console.error('coords are not specified!');
                         }
-                        
+
                         heremaps.map.setCenter(coords);
                     },
-                    
+                    cleanRoutes: function(){
+                        RoutesService.cleanRoutes(heremaps.map);
+                    },
+
                     /**
                      * @param {Boolean} enableHighAccuracy
                      * @param {Number} maximumAge - the maximum age in milliseconds of a possible cached position that is acceptable to return. If set to 0, it means that the device cannot use a cached position and must attempt to retrieve the real current position
                      */
-                    getUserLocation: function(enableHighAccuracy, maximumAge){
-                       return _getLocation.apply(null, arguments);
+                    getUserLocation: function (enableHighAccuracy, maximumAge) {
+                        return _getLocation.apply(null, arguments).then(function(position){
+                            var coords = position.coords;
+                            
+                            MarkersService.addUserMarker(heremaps.map, {
+                                pos: {
+                                    lat: coords.latitude,
+                                    lng: coords.longitude
+                                }
+                            });
+                            
+                            return coords;
+                        })
                     },
                     
-                    geocodePosition: function(coords, options){
+                    geocodePosition: function (coords, options) {
                         return APIService.geocodePosition(heremaps.platform, {
                             coords: coords,
                             radius: options && options.radius,
                             lang: options && options.lang
                         });
                     },
-                    
-                    updateMarkers: function(places) {
+                    updateMarkers: function (places) {
                         MarkersService.updateMarkers(heremaps.map, places);
                     }
                 }
