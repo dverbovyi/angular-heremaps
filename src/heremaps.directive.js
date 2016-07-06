@@ -147,22 +147,6 @@ module.exports = function (
                     getPlatform: function () {
                         return heremaps;
                     },
-
-                    /**
-                     * @param {String} driveType - car | pedestrian | publicTransport | truck
-                     * @param {Object} params - e.g: 
-                     *  {
-                     *      from: {lat: 41.9798, lng: -87.8801}, 
-                     *      to: {lat: 41.9043, lng: -87.9216},
-                     *      attributes: {
-                     *          leg: see https://developer.here.com/rest-apis/documentation/routing/topics/resource-param-type-route-representation-options.html#type-route-leg-attribute,
-                     *          route: see https://developer.here.com/rest-apis/documentation/routing/topics/resource-param-type-route-representation-options.html#type-route-attribute,
-                     *          maneuver: see https://developer.here.com/rest-apis/documentation/routing/topics/resource-param-type-route-representation-options.html#type-maneuver-attribute,
-                     *          link: see https://developer.here.com/rest-apis/documentation/routing/topics/resource-param-type-route-representation-options.html#type-route-link-attribute,
-                     *          lines: see https://developer.here.com/rest-apis/documentation/routing/topics/resource-param-type-route-representation-options.html#type-public-transport-line-attribute
-                     *      }
-                     * }
-                     */
                     calculateRoute: function (driveType, direction) {
                         return RoutesService.calculateRoute(heremaps, {
                             driveType: driveType,
@@ -189,6 +173,7 @@ module.exports = function (
                     /**
                      * @param {Boolean} enableHighAccuracy
                      * @param {Number} maximumAge - the maximum age in milliseconds of a possible cached position that is acceptable to return. If set to 0, it means that the device cannot use a cached position and must attempt to retrieve the real current position
+                     * @return {Promise}
                      */
                     getUserLocation: function (enableHighAccuracy, maximumAge) {
                         return _getLocation.apply(null, arguments).then(function(position){
