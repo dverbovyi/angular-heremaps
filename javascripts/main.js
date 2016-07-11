@@ -21,7 +21,7 @@
         $scope.mapOptions = {
             height: 640,
             width: 480,
-            zoom: 13,
+            zoom: 12,
             draggable: true,
             resize: true,
             coords: {
