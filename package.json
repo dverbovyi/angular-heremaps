@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "angular-heremaps": "0.0.13"
+    "angular": "^1.2",
+    "angular-heremaps": "^0.0.16"
   },
   "devDependencies": {},
   "scripts": {
