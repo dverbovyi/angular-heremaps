@@ -36,7 +36,7 @@ module.exports = function(DefaultMarker, DOMMarker, SVGMarker, CONSTS) {
 
     function addMarkersToMap(map, places) {
         if (!places || !places.length)
-            return false;
+            return;
 
         if (!(map instanceof H.Map))
             throw new Error('Unsupported map instance');

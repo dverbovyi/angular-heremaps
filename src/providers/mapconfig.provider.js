@@ -7,7 +7,8 @@ module.exports = function() {
             app_id: options.app_id,
             app_code: options.app_code,
             apiVersion: options.apiVersion || DEFAULT_API_VERSION,
-            useHTTPS: options.useHTTPS
+            useHTTPS: options.useHTTPS,
+            useCIT: !!options.useCIT
         }
     };
 
