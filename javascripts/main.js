@@ -7,9 +7,10 @@
         .module('demoModule', ['heremaps'])
         .config(["HereMapsConfigProvider", function (HereMapsConfigProvider) {
             HereMapsConfigProvider.setOptions({
-                'app_id': 'wMHJuLgCQzkfbhzXIwRF',
-                'app_code': 'WLIc7QzoO8irv7lurUt1qA',
-                'useHTTPS': true
+                'app_id': 'DemoAppId01082013GAL',
+                'app_code': 'AJKnXv84fjrb0KIHawS0Tg',
+                'useHTTPS': true,
+                'useCIT': true
             });
         }]);
 
