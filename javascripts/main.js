@@ -21,7 +21,7 @@
         $scope.mapOptions = {
             height: 640,
             width: 480,
-            zoom: 10,
+            zoom: 13,
             draggable: true,
             resize: true,
             coords: {
@@ -36,6 +36,8 @@
             $scope.map.setCenter({
                 lat: 25.1075831, lng: 55.159061
             });
+            
+            $scope.map.setZoom(13);
         };
 
         $scope.markers = [
