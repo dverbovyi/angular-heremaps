@@ -107,6 +107,7 @@ module.exports = function (
             mapReady && mapReady(MapProxy());
 
             cb && cb();
+                
         }
 
         function _uiModuleReady() {
@@ -131,25 +132,35 @@ module.exports = function (
             }
         }
 
-        function _resizeHandler() {
-            _setMapSize();
+        function _resizeHandler(height, width) {
+            _setMapSize.apply(null, arguments);
 
             heremaps.map.getViewPort().resize();
         }
 
-        function _setMapSize() {
-            var height = $element[0].parentNode.offsetHeight || options.height,
-                width = $element[0].parentNode.offsetWidth || options.width;
+        function _setMapSize(height, width) {
+            var height = height || $element[0].parentNode.offsetHeight || options.height,
+                width = width || $element[0].parentNode.offsetWidth || options.width;
 
             $scope.mapHeight = height + 'px';
             $scope.mapWidth = width + 'px';
-
+            
             HereMapUtilsService.runScopeDigestIfNeed($scope);
         }
 
         //TODO: move to separate file
         function MapProxy() {
             return {
+                refresh: function(){
+                    var currentBounds = this.getViewBounds();
+                    
+                    this.setMapSizes();
+                    this.setViewBounds(currentBounds);
+                },
+                setMapSizes: function(height, width){
+                    console.log($element[0].parentNode.offsetHeight)
+                    _resizeHandler.apply(null, arguments);
+                },
                 getPlatform: function () {
                     return heremaps;
                 },
@@ -164,6 +175,18 @@ module.exports = function (
                 },
                 setZoom: function (zoom, step) {
                     HereMapUtilsService.zoom(heremaps.map, zoom || 10, step);
+                },
+                getZoom: function(){
+                    return heremaps.map.getZoom();  
+                },
+                getCenter: function(){
+                    return heremaps.map.getCenter();  
+                },
+                getViewBounds: function(){
+                    return heremaps.map.getViewBounds();   
+                },
+                setViewBounds: function(boundingRect, opt_animate){
+                    heremaps.map.setViewBounds(boundingRect, opt_animate);
                 },
                 setCenter: function (coords) {
                     if (!coords) {
