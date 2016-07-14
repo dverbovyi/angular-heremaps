@@ -148,7 +148,6 @@ module.exports = function (
             HereMapUtilsService.runScopeDigestIfNeed($scope);
         }
 
-        //TODO: move to separate file
         function MapProxy() {
             return {
                 refresh: function(){
@@ -218,7 +217,6 @@ module.exports = function (
                         return coords;
                     })
                 },
-
                 geocodePosition: function (coords, options) {
                     return APIService.geocodePosition(heremaps.platform, {
                         coords: coords,
