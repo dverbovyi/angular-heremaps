@@ -1,4 +1,4 @@
-module.exports = function ($q, $http, HereMapsConfig, HereMapUtilsService, CONSTS) {
+module.exports = function ($q, $http, HereMapsConfig, HereMapsUtilsService, HereMapsCONSTS) {
     var version = HereMapsConfig.apiVersion,
         protocol = HereMapsConfig.useHTTPS ? 'https' : 'http';
 
@@ -100,10 +100,10 @@ module.exports = function ($q, $http, HereMapsConfig, HereMapUtilsService, CONST
         var loader;
 
         switch (attr) {
-            case CONSTS.MODULES.UI:
+            case HereMapsCONSTS.MODULES.UI:
                 loader = _loadUIModule;
                 break;
-            case CONSTS.MODULES.EVENTS:
+            case HereMapsCONSTS.MODULES.EVENTS:
                 loader = _loadEventsModule;
                 break;
             default:
@@ -115,7 +115,7 @@ module.exports = function ($q, $http, HereMapsConfig, HereMapUtilsService, CONST
 
     function _loadUIModule() {
         if (!_isLoaded(CONFIG.UI)) {
-            var link = HereMapUtilsService.createLinkTag({
+            var link = HereMapsUtilsService.createLinkTag({
                 rel: 'stylesheet',
                 type: 'text/css',
                 href: _getURL(CONFIG.UI.href)
@@ -154,7 +154,7 @@ module.exports = function ($q, $http, HereMapsConfig, HereMapUtilsService, CONST
             defer.resolve();
         } else {
             src = _getURL(sourceName),
-                script = HereMapUtilsService.createScriptTag({ src: src });
+                script = HereMapsUtilsService.createScriptTag({ src: src });
 
             script && head.appendChild(script);
 

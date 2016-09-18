@@ -1,4 +1,4 @@
-module.exports = function ($rootScope, $timeout, CONSTS) {
+module.exports = function ($rootScope, $timeout, HereMapsCONSTS) {
     return {
         throttle: throttle,
         createScriptTag: createScriptTag,
@@ -71,7 +71,7 @@ module.exports = function ($rootScope, $timeout, CONSTS) {
 
     function zoom(map, value, step) {
         var currentZoom = map.getZoom(),
-            _step = step || CONSTS.ANIMATION_ZOOM_STEP,
+            _step = step || HereMapsCONSTS.ANIMATION_ZOOM_STEP,
             factor = currentZoom >= value ? -1 : 1,
             increment = step * factor;
 

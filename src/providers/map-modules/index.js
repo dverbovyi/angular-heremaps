@@ -1,18 +1,11 @@
-var eventsModule = require('./events/events.js'),
-    infoBubble = require('./events/infobubble.js');
+angular.module('heremaps-events-module', [])
+    .factory('HereMapsEventsFactory', require('./events/events.js'))
+    .factory('HereMapsInfoBubbleFactory', require('./events/infobubble.js'));
     
-var uiModule = require('./ui/ui.js');
+angular.module('heremaps-ui-module', [])
+    .factory('HereMapsUiFactory', require('./ui/ui.js'))
 
-angular.module('events-module', [])
-    .factory('EventsModule', eventsModule)
-    .factory('InfoBubbleFactory', infoBubble);
-    
-angular.module('ui-module', [])
-    .factory('UIModule', uiModule)
-
-var app = angular.module('map-modules', [
-	'events-module',
-    'ui-module'
+module.exports = angular.module('heremaps-map-modules', [
+	'heremaps-events-module',
+    'heremaps-ui-module'
 ]);
-
-module.exports = app;

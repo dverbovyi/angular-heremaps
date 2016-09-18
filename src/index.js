@@ -2,24 +2,18 @@ require('./providers/markers');
 require('./providers/map-modules');
 require('./providers/routes');
 
-var directive = require('./heremaps.directive'),
-    configProvider = require('./providers/mapconfig.provider'),
-    apiService = require('./providers/api.service'),
-    utilsService = require('./providers/maputils.service'),
-    consts = require('./providers/consts');
-
-var heremaps = angular.module('heremaps', [
-    'markers-module',
-    'routes-module',
-    'map-modules'
-]);
-
-heremaps
-    .provider('HereMapsConfig', configProvider)
-    .service('APIService', ['$q', '$http', 'HereMapsConfig', 'HereMapUtilsService', 'CONSTS', apiService])
-    .service('HereMapUtilsService', utilsService)
-    .constant('CONSTS', consts);
-
-heremaps.directive('heremaps', directive);
-
-module.exports = heremaps;
+module.exports = angular.module('heremaps', [
+        'heremaps-markers-module',
+        'heremaps-routes-module',
+        'heremaps-map-modules'
+    ])
+    .provider('HereMapsConfig', require('./providers/mapconfig.provider'))
+    .service('HereMapsUtilsService', require('./providers/maputils.service'))
+    .service('HereMapsAPIService', [
+        '$q', 
+        '$http',
+        'HereMapsConfig', 
+        'HereMapsUtilsService', 
+        'HereMapsCONSTS', require('./providers/api.service')])
+    .constant('HereMapsCONSTS', require('./providers/consts'))
+    .directive('heremaps', require('./heremaps.directive'));

@@ -1,11 +1,11 @@
-module.exports = function(HereMapUtilsService, MarkersService, CONSTS, InfoBubbleFactory) {
+module.exports = function(HereMapsUtilsService, HereMapsMarkerService, HereMapsCONSTS, HereMapsInfoBubbleFactory) {
     function Events(platform, Injector, listeners) {
         this.map = platform.map;
         this.listeners = listeners;
         this.inject = new Injector();
         this.events = platform.events = new H.mapevents.MapEvents(this.map);
         this.behavior = platform.behavior = new H.mapevents.Behavior(this.events);
-        this.bubble = InfoBubbleFactory.create();
+        this.bubble = HereMapsInfoBubbleFactory.create();
 
         this.setupEventListeners();
     }
@@ -31,35 +31,35 @@ module.exports = function(HereMapUtilsService, MarkersService, CONSTS, InfoBubbl
     function setupEventListeners() {
         var self = this;
 
-        HereMapUtilsService.addEventListener(this.map, 'tap', this.infoBubbleHandler.bind(this));
+        HereMapsUtilsService.addEventListener(this.map, 'tap', this.infoBubbleHandler.bind(this));
 
-        HereMapUtilsService.addEventListener(this.map, 'pointermove', this.infoBubbleHandler.bind(this));
+        HereMapsUtilsService.addEventListener(this.map, 'pointermove', this.infoBubbleHandler.bind(this));
 
-        HereMapUtilsService.addEventListener(this.map, 'dragstart', function(e) {
-            if (MarkersService.isMarkerInstance(e.target)) {
+        HereMapsUtilsService.addEventListener(this.map, 'dragstart', function(e) {
+            if (HereMapsMarkerService.isMarkerInstance(e.target)) {
                 self.behavior.disable();
             }
 
-            self.triggerUserListener(CONSTS.USER_EVENTS[e.type], e);
+            self.triggerUserListener(HereMapsCONSTS.USER_EVENTS[e.type], e);
         });
 
-        HereMapUtilsService.addEventListener(this.map, 'drag', function(e) {
+        HereMapsUtilsService.addEventListener(this.map, 'drag', function(e) {
             var pointer = e.currentPointer,
                 target = e.target;
 
-            if (MarkersService.isMarkerInstance(target)) {
+            if (HereMapsMarkerService.isMarkerInstance(target)) {
                 target.setPosition(self.map.screenToGeo(pointer.viewportX, pointer.viewportY));
             }
 
-            self.triggerUserListener(CONSTS.USER_EVENTS[e.type], e);
+            self.triggerUserListener(HereMapsCONSTS.USER_EVENTS[e.type], e);
         });
 
-        HereMapUtilsService.addEventListener(this.map, 'dragend', function(e) {
-            if (MarkersService.isMarkerInstance(e.target)) {
+        HereMapsUtilsService.addEventListener(this.map, 'dragend', function(e) {
+            if (HereMapsMarkerService.isMarkerInstance(e.target)) {
                 self.behavior.enable();
             }
 
-            self.triggerUserListener(CONSTS.USER_EVENTS[e.type], e);
+            self.triggerUserListener(HereMapsCONSTS.USER_EVENTS[e.type], e);
         });
     }
 
@@ -85,7 +85,7 @@ module.exports = function(HereMapUtilsService, MarkersService, CONSTS, InfoBubbl
         if(ui)
             this.bubble.toggle(e, ui);
             
-        this.triggerUserListener(CONSTS.USER_EVENTS[e.type], e);      
+        this.triggerUserListener(HereMapsCONSTS.USER_EVENTS[e.type], e);      
     }
 
 };

@@ -1,10 +1,10 @@
-module.exports = function(MarkerInterface){
+module.exports = function(HereMapsMarkerInterface){
     function DOMMarker(place){
         this.place = place;
         this.setCoords();
     }
 
-    var proto = DOMMarker.prototype = new MarkerInterface();
+    var proto = DOMMarker.prototype = new HereMapsMarkerInterface();
     proto.constructor = DOMMarker;
 
     proto.create = create;

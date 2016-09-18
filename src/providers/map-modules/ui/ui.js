@@ -1,4 +1,4 @@
-module.exports = function(APIService, MarkersService, HereMapUtilsService, CONSTS) {
+module.exports = function(HereMapsAPIService, HereMapsMarkerService, HereMapsUtilsService, HereMapsCONSTS) {
     function UI(platform, alignment) {
         this.map = platform.map;
         this.layers = platform.layers;
@@ -26,7 +26,7 @@ module.exports = function(APIService, MarkersService, HereMapUtilsService, CONST
     }
 
     function setupControls() {
-        var NAMES = CONSTS.CONTROLS.NAMES,
+        var NAMES = HereMapsCONSTS.CONTROLS.NAMES,
             userControl = this.createUserControl();
 
         this.ui.getControl(NAMES.SETTINGS).setIncidentsLayer(false);
@@ -45,7 +45,7 @@ module.exports = function(APIService, MarkersService, HereMapUtilsService, CONST
                 if (userControlButton.getState() === H.ui.base.Button.State.DOWN)
                     return;
 
-                APIService.getPosition().then(function(response) {
+                HereMapsAPIService.getPosition().then(function(response) {
                     var position = {
                         lng: response.coords.longitude,
                         lat: response.coords.latitude
@@ -53,14 +53,14 @@ module.exports = function(APIService, MarkersService, HereMapUtilsService, CONST
                     
                     self.map.setCenter(position);
                     
-                    HereMapUtilsService.zoom(self.map, 17, .08);
+                    HereMapsUtilsService.zoom(self.map, 17, .08);
 
                     if (self.userMarker) {
                         self.userMarker.setPosition(position);
                         return;
                     }
                     
-                    self.userMarker = MarkersService.addUserMarker(self.map, {
+                    self.userMarker = HereMapsMarkerService.addUserMarker(self.map, {
                         pos: position
                     });
                 });
@@ -87,7 +87,7 @@ module.exports = function(APIService, MarkersService, HereMapUtilsService, CONST
     }
 
     function isValidAlignment(alignment) {
-        return !!(CONSTS.CONTROLS.POSITIONS.indexOf(alignment) + 1);
+        return !!(HereMapsCONSTS.CONTROLS.POSITIONS.indexOf(alignment) + 1);
     }
 
 };

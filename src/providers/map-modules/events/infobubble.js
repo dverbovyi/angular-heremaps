@@ -1,4 +1,4 @@
-module.exports = function(MarkersService, HereMapUtilsService, CONSTS) {
+module.exports = function(HereMapsMarkerService, HereMapsUtilsService, HereMapsCONSTS) {
     function InfoBubble() {}
 
     var proto = InfoBubble.prototype;
@@ -16,7 +16,7 @@ module.exports = function(MarkersService, HereMapUtilsService, CONSTS) {
     }
 
     function toggle(e, ui) {
-        if (MarkersService.isMarkerInstance(e.target))
+        if (HereMapsMarkerService.isMarkerInstance(e.target))
             this.show(e, ui);
         else
             this.close(e, ui);
@@ -28,7 +28,7 @@ module.exports = function(MarkersService, HereMapUtilsService, CONSTS) {
         bubble.setPosition(data.position);
         bubble.setContent(data.markup);
 
-        bubble.setState(CONSTS.INFOBUBBLE.STATE.OPEN);
+        bubble.setState(HereMapsCONSTS.INFOBUBBLE.STATE.OPEN);
     }
 
     function create(source) {
@@ -37,13 +37,13 @@ module.exports = function(MarkersService, HereMapUtilsService, CONSTS) {
         });
 
         bubble.display = source.display;
-        bubble.addClass(CONSTS.INFOBUBBLE.STATE.OPEN)
+        bubble.addClass(HereMapsCONSTS.INFOBUBBLE.STATE.OPEN)
 
-        HereMapUtilsService.addEventListener(bubble, 'statechange', function(e) {
+        HereMapsUtilsService.addEventListener(bubble, 'statechange', function(e) {
             var state = this.getState(),
                 el = this.getElement();
-            if (state === CONSTS.INFOBUBBLE.STATE.CLOSED) {
-                el.classList.remove(CONSTS.INFOBUBBLE.STATE.OPEN);
+            if (state === HereMapsCONSTS.INFOBUBBLE.STATE.CLOSED) {
+                el.classList.remove(HereMapsCONSTS.INFOBUBBLE.STATE.OPEN);
             } else
                 this.addClass(state)
         });
@@ -56,7 +56,7 @@ module.exports = function(MarkersService, HereMapUtilsService, CONSTS) {
             data = target.getData(),
             el = null;
 
-        if (!data || !data.display || !data.markup || data.display !== CONSTS.INFOBUBBLE.DISPLAY_EVENT[e.type])
+        if (!data || !data.display || !data.markup || data.display !== HereMapsCONSTS.INFOBUBBLE.DISPLAY_EVENT[e.type])
             return;
 
         var source = {
@@ -76,10 +76,10 @@ module.exports = function(MarkersService, HereMapUtilsService, CONSTS) {
     }
 
     function close(e, ui) {
-        if (!ui.bubble || ui.bubble.display !== CONSTS.INFOBUBBLE.DISPLAY_EVENT[e.type]) {
+        if (!ui.bubble || ui.bubble.display !== HereMapsCONSTS.INFOBUBBLE.DISPLAY_EVENT[e.type]) {
             return;
         }
 
-        ui.bubble.setState(CONSTS.INFOBUBBLE.STATE.CLOSED);
+        ui.bubble.setState(HereMapsCONSTS.INFOBUBBLE.STATE.CLOSED);
     }
 }

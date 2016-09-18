@@ -1,6 +1,6 @@
-module.exports = function(DefaultMarker, DOMMarker, SVGMarker, CONSTS) {
+module.exports = function(HereMapsDefaultMarker, HereMapsDOMMarker, HereMapsSVGMarker, HereMapsCONSTS) {
 
-    var MARKER_TYPES = CONSTS.MARKER_TYPES;
+    var MARKER_TYPES = HereMapsCONSTS.MARKER_TYPES;
 
     return {
         addMarkersToMap: addMarkersToMap,
@@ -27,7 +27,7 @@ module.exports = function(DefaultMarker, DOMMarker, SVGMarker, CONSTS) {
             '<use stroke-opacity="0.29613904" stroke="#3F34A0" mask="url(#mask-2)" stroke-width="60" xlink:href="#path-1"></use>' +
             '<use stroke="#3F34A0" stroke-width="5" xlink:href="#path-1"></use></g></g></g></svg>';
 
-        map.userMarker = new SVGMarker(place).create();
+        map.userMarker = new HereMapsSVGMarker(place).create();
 
         map.addObject(map.userMarker);
 
@@ -72,13 +72,13 @@ module.exports = function(DefaultMarker, DOMMarker, SVGMarker, CONSTS) {
 
         switch (type) {
             case MARKER_TYPES.DOM:
-                ConcreteMarker = DOMMarker;
+                ConcreteMarker = HereMapsDOMMarker;
                 break;
             case MARKER_TYPES.SVG:
-                ConcreteMarker = SVGMarker;
+                ConcreteMarker = HereMapsSVGMarker;
                 break;
             default:
-                ConcreteMarker = DefaultMarker;
+                ConcreteMarker = HereMapsDefaultMarker;
         }
 
         return new ConcreteMarker(place);

@@ -7,13 +7,13 @@ module.exports = function (
     $rootScope,
     $filter,
     HereMapsConfig,
-    APIService,
-    HereMapUtilsService,
-    MarkersService,
+    HereMapsAPIService,
+    HereMapsUtilsService,
+    HereMapsMarkerService,
     RoutesService,
-    CONSTS,
-    EventsModule,
-    UIModule) {
+    HereMapsCONSTS,
+    HereMapsEventsFactory,
+    HereMapsUiFactory) {
         
     HereMapsDirectiveCtrl.$inject = ['$scope', '$element', '$attrs'];
         
@@ -31,22 +31,23 @@ module.exports = function (
     }
     
     function HereMapsDirectiveCtrl($scope, $element, $attrs) {
-        var CONTROL_NAMES = CONSTS.CONTROLS.NAMES,
+        var CONTROL_NAMES = HereMapsCONSTS.CONTROLS.NAMES,
             places = $scope.places(),
             opts = $scope.opts(),
             listeners = $scope.events();
 
-        var options = angular.extend({}, CONSTS.DEFAULT_MAP_OPTIONS, opts),
-            position = HereMapUtilsService.isValidCoords(options.coords) ? options.coords : CONSTS.DEFAULT_MAP_OPTIONS.coords;
+        var options = angular.extend({}, HereMapsCONSTS.DEFAULT_MAP_OPTIONS, opts),
+            position = HereMapsUtilsService.isValidCoords(options.coords) ? 
+                        options.coords : HereMapsCONSTS.DEFAULT_MAP_OPTIONS.coords;
 
-        var heremaps = { id: HereMapUtilsService.generateId() },
+        var heremaps = { id: HereMapsUtilsService.generateId() },
             mapReady = $scope.onMapReady(),
             _onResizeMap = null;
 
         $timeout(function () {
             return _setMapSize();
         }).then(function () {
-            APIService.loadApi().then(_apiReady);
+            HereMapsAPIService.loadApi().then(_apiReady);
         });
 
         options.resize && addOnResizeListener();
@@ -56,7 +57,7 @@ module.exports = function (
         });
 
         function addOnResizeListener() {
-            _onResizeMap = HereMapUtilsService.throttle(_resizeHandler, CONSTS.UPDATE_MAP_RESIZE_TIMEOUT);
+            _onResizeMap = HereMapsUtilsService.throttle(_resizeHandler, HereMapsCONSTS.UPDATE_MAP_RESIZE_TIMEOUT);
             $window.addEventListener('resize', _onResizeMap);
         }
 
@@ -77,7 +78,7 @@ module.exports = function (
             var _enableHighAccuracy = !!enableHighAccuracy,
                 _maximumAge = maximumAge || 0;
 
-            return APIService.getPosition({
+            return HereMapsAPIService.getPosition({
                 enableHighAccuracy: _enableHighAccuracy,
                 maximumAge: _maximumAge
             });
@@ -89,7 +90,7 @@ module.exports = function (
 
         function _setupMap() {
             _initMap(function () {
-                APIService.loadModules($attrs.$attr, {
+                HereMapsAPIService.loadModules($attrs.$attr, {
                     "controls": _uiModuleReady,
                     "events": _eventsModuleReady
                 });
@@ -98,11 +99,11 @@ module.exports = function (
 
         function _initMap(cb) {
             var map = heremaps.map = new H.Map($element[0], heremaps.layers.normal.map, {
-                zoom: HereMapUtilsService.isValidCoords(position) ? options.zoom : options.maxZoom,
+                zoom: HereMapsUtilsService.isValidCoords(position) ? options.zoom : options.maxZoom,
                 center: new H.geo.Point(position.latitude, position.longitude)
             });
 
-            MarkersService.addMarkersToMap(map, places);
+            HereMapsMarkerService.addMarkersToMap(map, places);
 
             mapReady && mapReady(MapProxy());
 
@@ -111,14 +112,14 @@ module.exports = function (
         }
 
         function _uiModuleReady() {
-            UIModule.start({
+            HereMapsUiFactory.start({
                 platform: heremaps,
                 alignment: $attrs.controls
             });
         }
 
         function _eventsModuleReady() {
-            EventsModule.start({
+            HereMapsEventsFactory.start({
                 platform: heremaps,
                 listeners: listeners,
                 options: options,
@@ -145,7 +146,7 @@ module.exports = function (
             $scope.mapHeight = height + 'px';
             $scope.mapWidth = width + 'px';
             
-            HereMapUtilsService.runScopeDigestIfNeed($scope);
+            HereMapsUtilsService.runScopeDigestIfNeed($scope);
         }
 
         function MapProxy() {
@@ -173,7 +174,7 @@ module.exports = function (
                     RoutesService.addRouteToMap(heremaps.map, routeData, clean);
                 },
                 setZoom: function (zoom, step) {
-                    HereMapUtilsService.zoom(heremaps.map, zoom || 10, step);
+                    HereMapsUtilsService.zoom(heremaps.map, zoom || 10, step);
                 },
                 getZoom: function(){
                     return heremaps.map.getZoom();  
@@ -207,7 +208,7 @@ module.exports = function (
                     return _getLocation.apply(null, arguments).then(function (position) {
                         var coords = position.coords;
 
-                        MarkersService.addUserMarker(heremaps.map, {
+                        HereMapsMarkerService.addUserMarker(heremaps.map, {
                             pos: {
                                 lat: coords.latitude,
                                 lng: coords.longitude
@@ -218,14 +219,14 @@ module.exports = function (
                     })
                 },
                 geocodePosition: function (coords, options) {
-                    return APIService.geocodePosition(heremaps.platform, {
+                    return HereMapsAPIService.geocodePosition(heremaps.platform, {
                         coords: coords,
                         radius: options && options.radius,
                         lang: options && options.lang
                     });
                 },
                 updateMarkers: function (places) {
-                    MarkersService.updateMarkers(heremaps.map, places);
+                    HereMapsMarkerService.updateMarkers(heremaps.map, places);
                 }
             }
         }

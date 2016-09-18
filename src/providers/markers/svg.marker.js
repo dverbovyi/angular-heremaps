@@ -1,10 +1,10 @@
-module.exports = function(MarkerInterface){
+module.exports = function(HereMapsMarkerInterface){
     function SVGMarker(place){
         this.place = place;
         this.setCoords();
     }
     
-    var proto = SVGMarker.prototype = new MarkerInterface();
+    var proto = SVGMarker.prototype = new HereMapsMarkerInterface();
     proto.constructor = SVGMarker;
     
     proto.create = create;
