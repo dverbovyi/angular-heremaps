@@ -114,7 +114,7 @@ module.exports = function ($q, $http, HereMapsConfig, HereMapsUtilsService, Here
     }
 
     function _loadUIModule() {
-        if (!_isLoaded(CONFIG.UI)) {
+        if (!_isLoaded(CONFIG.UI.src)) {
             var link = HereMapsUtilsService.createLinkTag({
                 rel: 'stylesheet',
                 type: 'text/css',
@@ -177,7 +177,7 @@ module.exports = function ($q, $http, HereMapsConfig, HereMapsUtilsService, Here
             case CONFIG.SERVICE:
                 checker = _isServiceLoaded;
                 break;
-            case CONFIG.UI:
+            case CONFIG.UI.src:
                 checker = _isUILoaded;
                 break;
             case CONFIG.EVENTS:
