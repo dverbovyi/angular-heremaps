@@ -44,3 +44,24 @@ Before, you should register [here](https://developer.here.com/plans/api/consumer
 See details on [wiki pages](https://github.com/dverbovyi/angular-heremaps/wiki)
 
 Please report, any issue [here](https://github.com/dverbovyi/angular-heremaps/issues)
+
+
+### To Contribute
+
+#### Clone the project
+        git clone https://github.com/dverbovyi/angular-heremaps.git
+
+#### Install dependencies
+        cd angular-heremaps
+
+        npm i
+
+#### Start dev-server
+
+        gulp serve
+
+#### Build resources
+
+        gulp build
+
+      
