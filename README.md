@@ -48,8 +48,8 @@ Please report, any issue [here](https://github.com/dverbovyi/angular-heremaps/is
 
 ### To Contribute
 
-#### Clone the project
-        git clone https://github.com/dverbovyi/angular-heremaps.git
+#### Fork and clone the project
+        git clone https://github.com/{{username}}/angular-heremaps.git
 
 #### Install dependencies
         cd angular-heremaps
