@@ -16,7 +16,7 @@ module.exports = function(HereMapsDefaultMarker, HereMapsDOMMarker, HereMapsSVGM
     function addUserMarker(map, place) {
         if(map.userMarker)
             return map.userMarker;
-        
+
         place.markup = '<svg width="35px" height="35px" viewBox="0 0 90 90" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' +
             '<defs><circle id="path-1" cx="302" cy="802" r="15"></circle>' +
             '<mask id="mask-2" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="-30" y="-30" width="90" height="90">' +
@@ -34,7 +34,7 @@ module.exports = function(HereMapsDefaultMarker, HereMapsDOMMarker, HereMapsSVGM
         return map.userMarker;
     }
 
-    function addMarkersToMap(map, places) {
+    function addMarkersToMap(map, places, refreshViewbounds) {
         if (!places || !places.length)
             return;
 
@@ -52,11 +52,12 @@ module.exports = function(HereMapsDefaultMarker, HereMapsDOMMarker, HereMapsSVGM
         });
 
         map.addObject(map.markersGroup);
-        
-        map.setViewBounds(map.markersGroup.getBounds());
-    }
 
-    function updateMarkers(map, places) {
+        if(refreshViewbounds){
+          map.setViewBounds(map.markersGroup.getBounds());
+        }
+      }
+    function updateMarkers(map, places, refreshViewbounds) {
         if (map.markersGroup) {
             map.markersGroup.removeAll();
             map.removeObject(map.markersGroup);
