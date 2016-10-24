@@ -16,7 +16,7 @@ module.exports = function(HereMapsDefaultMarker, HereMapsDOMMarker, HereMapsSVGM
     function addUserMarker(map, place) {
         if(map.userMarker)
             return map.userMarker;
-
+        
         place.markup = '<svg width="35px" height="35px" viewBox="0 0 90 90" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' +
             '<defs><circle id="path-1" cx="302" cy="802" r="15"></circle>' +
             '<mask id="mask-2" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="-30" y="-30" width="90" height="90">' +

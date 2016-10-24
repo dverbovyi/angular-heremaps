@@ -35,27 +35,27 @@ module.exports = function ($q) {
         }, function (error) {
             deferred.reject(error);
         });
-
+    
         return deferred.promise;
     }
 
     function cleanRoutes(map){
         var group = map.routesGroup;
-
+         
         if(!group)
             return;
-
+            
         group.removeAll();
         map.removeObject(group);
         map.routesGroup = null;
     }
-
+    
     function addRouteToMap(map, routeData, clean) {
         if(clean)
            cleanRoutes(map);
-
+           
         var route = routeData.route;
-
+        
         if (!map || !route || !route.shape)
             return;
 
@@ -65,7 +65,7 @@ module.exports = function ($q) {
             var parts = point.split(',');
             strip.pushLatLngAlt(parts[0], parts[1]);
         });
-
+        
         var style = routeData.style;
 
         polyline = new H.map.Polyline(strip, {
@@ -74,16 +74,16 @@ module.exports = function ($q) {
                 strokeColor: style. color || 'rgba(0, 128, 255, 0.7)'
             }
         });
-
+        
         var group = map.routesGroup;
-
+        
         if(!group) {
             group = map.routesGroup = new H.map.Group();
             map.addObject(group);
         }
-
+        
         group.addObject(polyline);
-
+        
         map.setViewBounds(polyline.getBounds(), true);
     }
 

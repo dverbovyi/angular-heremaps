@@ -14,9 +14,9 @@ module.exports = function (
     HereMapsCONSTS,
     HereMapsEventsFactory,
     HereMapsUiFactory) {
-
+        
     HereMapsDirectiveCtrl.$inject = ['$scope', '$element', '$attrs'];
-
+        
     return {
         restrict: 'EA',
         template: "<div ng-style=\"{'width': mapWidth, 'height': mapHeight}\"></div>",
@@ -29,7 +29,7 @@ module.exports = function (
         },
         controller: HereMapsDirectiveCtrl
     }
-
+    
     function HereMapsDirectiveCtrl($scope, $element, $attrs) {
         var CONTROL_NAMES = HereMapsCONSTS.CONTROLS.NAMES,
             places = $scope.places(),
@@ -37,7 +37,7 @@ module.exports = function (
             listeners = $scope.events();
 
         var options = angular.extend({}, HereMapsCONSTS.DEFAULT_MAP_OPTIONS, opts),
-            position = HereMapsUtilsService.isValidCoords(options.coords) ?
+            position = HereMapsUtilsService.isValidCoords(options.coords) ? 
                         options.coords : HereMapsCONSTS.DEFAULT_MAP_OPTIONS.coords;
 
         var heremaps = { id: HereMapsUtilsService.generateId() },
@@ -69,7 +69,7 @@ module.exports = function (
         function _setupMapPlatform() {
             if (!HereMapsConfig.app_id || !HereMapsConfig.app_code)
                 throw new Error('app_id or app_code were missed. Please specify their in HereMapsConfig');
-
+            
             heremaps.platform = new H.service.Platform(HereMapsConfig);
             heremaps.layers = heremaps.platform.createDefaultLayers();
         }
@@ -108,7 +108,7 @@ module.exports = function (
             mapReady && mapReady(MapProxy());
 
             cb && cb();
-
+                
         }
 
         function _uiModuleReady() {
@@ -145,7 +145,7 @@ module.exports = function (
 
             $scope.mapHeight = height + 'px';
             $scope.mapWidth = width + 'px';
-
+            
             HereMapsUtilsService.runScopeDigestIfNeed($scope);
         }
 
@@ -153,7 +153,7 @@ module.exports = function (
             return {
                 refresh: function(){
                     var currentBounds = this.getViewBounds();
-
+                    
                     this.setMapSizes();
                     this.setViewBounds(currentBounds);
                 },
@@ -177,13 +177,13 @@ module.exports = function (
                     HereMapsUtilsService.zoom(heremaps.map, zoom || 10, step);
                 },
                 getZoom: function(){
-                    return heremaps.map.getZoom();
+                    return heremaps.map.getZoom();  
                 },
                 getCenter: function(){
-                    return heremaps.map.getCenter();
+                    return heremaps.map.getCenter();  
                 },
                 getViewBounds: function(){
-                    return heremaps.map.getViewBounds();
+                    return heremaps.map.getViewBounds();   
                 },
                 setViewBounds: function(boundingRect, opt_animate){
                     heremaps.map.setViewBounds(boundingRect, opt_animate);
