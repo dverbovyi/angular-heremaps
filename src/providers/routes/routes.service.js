@@ -9,7 +9,8 @@ module.exports = function ($q) {
         var platform = heremaps.platform,
             map = heremaps.map,
             router = platform.getRoutingService(),
-            dir = config.direction;
+            dir = config.direction,
+            waypoints = dir.waypoints;
 
         var mode = '{{MODE}};{{VECHILE}}'
             .replace(/{{MODE}}/, dir.mode)
@@ -18,10 +19,12 @@ module.exports = function ($q) {
         var routeRequestParams = {
             mode: mode,
             representation: dir.representation || 'display',
-            waypoint0: [dir.from.lat, dir.from.lng].join(','),
-            waypoint1: [dir.to.lat, dir.to.lng].join(','),
             language: dir.language || 'en-gb'
         };
+
+        for(var no = 0; no < waypoints.length; no++){
+          routeRequestParams["waypoint" + no] = [waypoints[no].lat, waypoints[no].lng].join(',');
+        }
 
         _setAttributes(routeRequestParams, dir.attrs);
 

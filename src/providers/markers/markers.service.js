@@ -34,7 +34,7 @@ module.exports = function(HereMapsDefaultMarker, HereMapsDOMMarker, HereMapsSVGM
         return map.userMarker;
     }
 
-    function addMarkersToMap(map, places) {
+    function addMarkersToMap(map, places, refreshViewbounds) {
         if (!places || !places.length)
             return;
 
@@ -52,11 +52,12 @@ module.exports = function(HereMapsDefaultMarker, HereMapsDOMMarker, HereMapsSVGM
         });
 
         map.addObject(map.markersGroup);
-        
-        map.setViewBounds(map.markersGroup.getBounds());
-    }
 
-    function updateMarkers(map, places) {
+        if(refreshViewbounds){
+          map.setViewBounds(map.markersGroup.getBounds());
+        }
+      }
+    function updateMarkers(map, places, refreshViewbounds) {
         if (map.markersGroup) {
             map.markersGroup.removeAll();
             map.removeObject(map.markersGroup);

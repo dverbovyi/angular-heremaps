@@ -103,7 +103,7 @@ module.exports = function (
                 center: new H.geo.Point(position.latitude, position.longitude)
             });
 
-            HereMapsMarkerService.addMarkersToMap(map, places);
+            HereMapsMarkerService.addMarkersToMap(map, places, true);
 
             mapReady && mapReady(MapProxy());
 
@@ -225,8 +225,8 @@ module.exports = function (
                         lang: options && options.lang
                     });
                 },
-                updateMarkers: function (places) {
-                    HereMapsMarkerService.updateMarkers(heremaps.map, places);
+                updateMarkers: function (places, refreshViewbounds) {
+                    HereMapsMarkerService.updateMarkers(heremaps.map, places, refreshViewbounds);
                 }
             }
         }
