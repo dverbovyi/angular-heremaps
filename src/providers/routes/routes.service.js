@@ -35,10 +35,10 @@ module.exports = function ($q) {
         }, function (error) {
             deferred.reject(error);
         });
-    
+
         return deferred.promise;
     }
-
+    
     function cleanRoutes(map){
         var group = map.routesGroup;
          
@@ -76,7 +76,7 @@ module.exports = function ($q) {
         });
         
         var group = map.routesGroup;
-        
+         
         if(!group) {
             group = map.routesGroup = new H.map.Group();
             map.addObject(group);
