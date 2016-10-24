@@ -9,7 +9,8 @@ module.exports = function ($q) {
         var platform = heremaps.platform,
             map = heremaps.map,
             router = platform.getRoutingService(),
-            dir = config.direction;
+            dir = config.direction,
+            waypoints = dir.waypoints;
 
         var mode = '{{MODE}};{{VECHILE}}'
             .replace(/{{MODE}}/, dir.mode)
@@ -18,10 +19,12 @@ module.exports = function ($q) {
         var routeRequestParams = {
             mode: mode,
             representation: dir.representation || 'display',
-            waypoint0: [dir.from.lat, dir.from.lng].join(','),
-            waypoint1: [dir.to.lat, dir.to.lng].join(','),
             language: dir.language || 'en-gb'
         };
+
+        for(var no = 0; no < waypoints.length; no++){
+          routeRequestParams["waypoint" + no] = [waypoints[no].lat, waypoints[no].lng].join(',');
+        }
 
         _setAttributes(routeRequestParams, dir.attrs);
 
@@ -35,24 +38,24 @@ module.exports = function ($q) {
 
         return deferred.promise;
     }
-    
+
     function cleanRoutes(map){
         var group = map.routesGroup;
-         
+
         if(!group)
             return;
-            
+
         group.removeAll();
         map.removeObject(group);
         map.routesGroup = null;
     }
-    
+
     function addRouteToMap(map, routeData, clean) {
         if(clean)
            cleanRoutes(map);
-           
+
         var route = routeData.route;
-        
+
         if (!map || !route || !route.shape)
             return;
 
@@ -62,7 +65,7 @@ module.exports = function ($q) {
             var parts = point.split(',');
             strip.pushLatLngAlt(parts[0], parts[1]);
         });
-        
+
         var style = routeData.style;
 
         polyline = new H.map.Polyline(strip, {
@@ -71,16 +74,16 @@ module.exports = function ($q) {
                 strokeColor: style. color || 'rgba(0, 128, 255, 0.7)'
             }
         });
-        
+
         var group = map.routesGroup;
-         
+
         if(!group) {
             group = map.routesGroup = new H.map.Group();
             map.addObject(group);
         }
-        
+
         group.addObject(polyline);
-        
+
         map.setViewBounds(polyline.getBounds(), true);
     }
 
