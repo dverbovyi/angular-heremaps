@@ -8,7 +8,7 @@ Angular directive for working with Nokia Here Maps
 ###0.1.1 release notes:
 * Add minified version *dist/angular-heremaps.min.js*;
 * `calculateRoute` method: added support for more than 2 waypoints (Thanks [jzet](https://github.com/jzet) for pull request); 
-* `updateMarkers` method: added optional `refreshViewbounds` parameterSet to update viewbounds on marker change. By default: `false` (Thanks [jzet](https://github.com/jzet) for pull request);
+* `updateMarkers` method: added optional `refreshViewbounds` parameter to update viewbounds on marker change. By default: `false` (Thanks [jzet](https://github.com/jzet) for pull request);
 * UI module loading bug fixed (Thanks [klagoda](https://github.com/klagoda) for pull request)
 
 ### Install guide:
