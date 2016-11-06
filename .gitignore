@@ -6,4 +6,4 @@ coverage/
 
 !.gitignore
 node_modules/angular/angular.min.js
-node_modules/angular-heremaps/dist/angular-heremaps.js
+node_modules/angular-heremaps
