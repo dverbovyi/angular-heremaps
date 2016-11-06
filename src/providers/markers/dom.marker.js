@@ -1,4 +1,7 @@
-module.exports = function(HereMapsMarkerInterface){
+module.exports = HereMapsDOMMarker;
+
+HereMapsDOMMarker.$inject = ['HereMapsMarkerInterface'];
+function HereMapsDOMMarker(HereMapsMarkerInterface){
     function DOMMarker(place){
         this.place = place;
         this.setCoords();

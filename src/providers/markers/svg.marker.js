@@ -1,4 +1,7 @@
-module.exports = function(HereMapsMarkerInterface){
+module.exports = HereMapsSVGMarker;
+
+HereMapsSVGMarker.$inject = ['HereMapsMarkerInterface'];
+function HereMapsSVGMarker(HereMapsMarkerInterface){
     function SVGMarker(place){
         this.place = place;
         this.setCoords();

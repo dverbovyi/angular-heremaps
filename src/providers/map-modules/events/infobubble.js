@@ -1,4 +1,11 @@
-module.exports = function(HereMapsMarkerService, HereMapsUtilsService, HereMapsCONSTS) {
+module.exports = HereMapsInfoBubbleFactory;
+
+HereMapsInfoBubbleFactory.$inject = [
+    'HereMapsMarkerService',
+    'HereMapsUtilsService',
+    'HereMapsCONSTS'
+];
+function HereMapsInfoBubbleFactory(HereMapsMarkerService, HereMapsUtilsService, HereMapsCONSTS) {
     function InfoBubble() {}
 
     var proto = InfoBubble.prototype;

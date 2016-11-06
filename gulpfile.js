@@ -4,6 +4,7 @@
 var browserify = require('browserify'),
     gulp = require('gulp'),
     source = require('vinyl-source-stream'),
+    minify = require('gulp-minify'),
     buffer = require('vinyl-buffer'),
     config = require('./package.json'),
     argv = require('yargs').argv,
@@ -15,7 +16,7 @@ var entryPoint = './src/index.js',
     jsWatchPath = './src/**/*.js';
 /**/
 
-gulp.task('browser-sync', function() {
+gulp.task('browser-sync', function () {
     browserSync.init({
         server: {
             baseDir: browserDir
@@ -24,15 +25,20 @@ gulp.task('browser-sync', function() {
 });
 
 gulp.task('build', function () {
-    return browserify(entryPoint, {debug: true})
+    return browserify(entryPoint, { debug: true })
         .bundle()
         .pipe(source('angular-heremaps.js'))
         .pipe(buffer())
+        .pipe(minify({
+            ext: {
+                min: '.min.js'
+            },
+        }))
         .pipe(gulp.dest('./dist/'))
-        .pipe(browserSync.reload({stream: true}));
+        .pipe(browserSync.reload({ stream: true }));
 });
 
-gulp.task('serve', ['build', 'browser-sync'], function() {
+gulp.task('serve', ['build', 'browser-sync'], function () {
     gulp.watch(jsWatchPath, ['build']).on('change', browserSync.reload);
     gulp.watch("index.html").on('change', browserSync.reload);
 })

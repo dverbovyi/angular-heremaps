@@ -1,7 +1,20 @@
-/**
- * Created by Dmytro on 4/11/2016.
- */
-module.exports = function (
+module.exports = HereMapsDirective;
+
+HereMapsDirective.$inject = [
+    '$timeout',
+    '$window',
+    '$rootScope',
+    '$filter',
+    'HereMapsConfig',
+    'HereMapsAPIService',
+    'HereMapsUtilsService',
+    'HereMapsMarkerService',
+    'HereMapsRoutesService',
+    'HereMapsCONSTS',
+    'HereMapsEventsFactory',
+    'HereMapsUiFactory'
+];
+function HereMapsDirective(
     $timeout,
     $window,
     $rootScope,
@@ -10,7 +23,7 @@ module.exports = function (
     HereMapsAPIService,
     HereMapsUtilsService,
     HereMapsMarkerService,
-    RoutesService,
+    HereMapsRoutesService,
     HereMapsCONSTS,
     HereMapsEventsFactory,
     HereMapsUiFactory) {
@@ -158,20 +171,19 @@ module.exports = function (
                     this.setViewBounds(currentBounds);
                 },
                 setMapSizes: function(height, width){
-                    console.log($element[0].parentNode.offsetHeight)
                     _resizeHandler.apply(null, arguments);
                 },
                 getPlatform: function () {
                     return heremaps;
                 },
                 calculateRoute: function (driveType, direction) {
-                    return RoutesService.calculateRoute(heremaps, {
+                    return HereMapsRoutesService.calculateRoute(heremaps, {
                         driveType: driveType,
                         direction: direction
                     });
                 },
                 addRouteToMap: function (routeData, clean) {
-                    RoutesService.addRouteToMap(heremaps.map, routeData, clean);
+                    HereMapsRoutesService.addRouteToMap(heremaps.map, routeData, clean);
                 },
                 setZoom: function (zoom, step) {
                     HereMapsUtilsService.zoom(heremaps.map, zoom || 10, step);
@@ -196,7 +208,7 @@ module.exports = function (
                     heremaps.map.setCenter(coords);
                 },
                 cleanRoutes: function () {
-                    RoutesService.cleanRoutes(heremaps.map);
+                    HereMapsRoutesService.cleanRoutes(heremaps.map);
                 },
 
                 /**

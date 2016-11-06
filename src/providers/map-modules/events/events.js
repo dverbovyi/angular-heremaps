@@ -1,4 +1,12 @@
-module.exports = function(HereMapsUtilsService, HereMapsMarkerService, HereMapsCONSTS, HereMapsInfoBubbleFactory) {
+module.exports = HereMapsEventsFactory;
+
+HereMapsEventsFactory.$inject = [
+    'HereMapsUtilsService',
+    'HereMapsMarkerService',
+    'HereMapsCONSTS',
+    'HereMapsInfoBubbleFactory'
+];
+function HereMapsEventsFactory(HereMapsUtilsService, HereMapsMarkerService, HereMapsCONSTS, HereMapsInfoBubbleFactory) {
     function Events(platform, Injector, listeners) {
         this.map = platform.map;
         this.listeners = listeners;

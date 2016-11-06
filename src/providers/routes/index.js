@@ -1,2 +1,2 @@
 module.exports = angular.module('heremaps-routes-module', [])
-                    .service('RoutesService', require('./routes.service.js'));  
+                    .service('HereMapsRoutesService', require('./routes.service.js'));  

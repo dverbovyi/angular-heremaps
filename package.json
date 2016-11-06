@@ -35,6 +35,7 @@
     "browserify": "^13.0.1",
     "browserify-istanbul": "^2.0.0",
     "gulp": "^3.9.1",
+    "gulp-minify": "0.0.14",
     "gulp-sourcemaps": "^1.6.0",
     "istanbul": "^0.4.3",
     "jasmine": "^2.4.1",

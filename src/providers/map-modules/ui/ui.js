@@ -1,4 +1,12 @@
-module.exports = function(HereMapsAPIService, HereMapsMarkerService, HereMapsUtilsService, HereMapsCONSTS) {
+module.exports = HereMapsUiFactory;
+
+HereMapsUiFactory.$inject = [
+    'HereMapsAPIService',
+    'HereMapsMarkerService',
+    'HereMapsUtilsService',
+    'HereMapsCONSTS'
+];
+function HereMapsUiFactory(HereMapsAPIService, HereMapsMarkerService, HereMapsUtilsService, HereMapsCONSTS) {
     function UI(platform, alignment) {
         this.map = platform.map;
         this.layers = platform.layers;

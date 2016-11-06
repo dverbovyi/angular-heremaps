@@ -1,5 +1,12 @@
-module.exports = function(HereMapsDefaultMarker, HereMapsDOMMarker, HereMapsSVGMarker, HereMapsCONSTS) {
+module.exports = HereMapsMarkerService;
 
+HereMapsMarkerService.$inject = [
+    'HereMapsDefaultMarker',
+    'HereMapsDOMMarker',
+    'HereMapsSVGMarker',
+    'HereMapsCONSTS'
+];
+function HereMapsMarkerService(HereMapsDefaultMarker, HereMapsDOMMarker, HereMapsSVGMarker, HereMapsCONSTS) {
     var MARKER_TYPES = HereMapsCONSTS.MARKER_TYPES;
 
     return {

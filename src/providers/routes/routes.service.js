@@ -1,4 +1,7 @@
-module.exports = function ($q) {
+module.exports = HereMapsRoutesService;
+
+HereMapsRoutesService.$inject = ['$q'];
+function HereMapsRoutesService($q) {
     return {
         calculateRoute: calculateRoute,
         addRouteToMap: addRouteToMap,
@@ -13,7 +16,7 @@ module.exports = function ($q) {
             waypoints = dir.waypoints;
 
         var mode = '{{MODE}};{{VECHILE}}'
-            .replace(/{{MODE}}/, dir.mode)
+            .replace(/{{MODE}}/, dir.mode || 'fastest')
             .replace(/{{VECHILE}}/, config.driveType);
 
         var routeRequestParams = {
@@ -22,9 +25,9 @@ module.exports = function ($q) {
             language: dir.language || 'en-gb'
         };
 
-        for(var no = 0; no < waypoints.length; no++){
-          routeRequestParams["waypoint" + no] = [waypoints[no].lat, waypoints[no].lng].join(',');
-        }
+        waypoints.forEach(function (waypoint, i) {
+            routeRequestParams["waypoint" + i] = [waypoint.lat, waypoint.lng].join(',');
+        });
 
         _setAttributes(routeRequestParams, dir.attrs);
 
@@ -38,24 +41,24 @@ module.exports = function ($q) {
 
         return deferred.promise;
     }
-    
-    function cleanRoutes(map){
+
+    function cleanRoutes(map) {
         var group = map.routesGroup;
-         
-        if(!group)
+
+        if (!group)
             return;
-            
+
         group.removeAll();
         map.removeObject(group);
         map.routesGroup = null;
     }
-    
+
     function addRouteToMap(map, routeData, clean) {
-        if(clean)
-           cleanRoutes(map);
-           
+        if (clean)
+            cleanRoutes(map);
+
         var route = routeData.route;
-        
+
         if (!map || !route || !route.shape)
             return;
 
@@ -65,26 +68,28 @@ module.exports = function ($q) {
             var parts = point.split(',');
             strip.pushLatLngAlt(parts[0], parts[1]);
         });
-        
-        var style = routeData.style;
+
+        var style = routeData.style || {};
 
         polyline = new H.map.Polyline(strip, {
             style: {
                 lineWidth: style.lineWidth || 4,
-                strokeColor: style. color || 'rgba(0, 128, 255, 0.7)'
+                strokeColor: style.color || 'rgba(0, 128, 255, 0.7)'
             }
         });
-        
+
         var group = map.routesGroup;
-         
-        if(!group) {
+
+        if (!group) {
             group = map.routesGroup = new H.map.Group();
             map.addObject(group);
         }
-        
+
         group.addObject(polyline);
-        
-        map.setViewBounds(polyline.getBounds(), true);
+
+        if(routeData.zoomToBounds) {
+            map.setViewBounds(polyline.getBounds(), true);
+        }
     }
 
     //#region PRIVATE
@@ -99,14 +104,6 @@ module.exports = function ($q) {
         }
     }
 
-    function _onRouteSuccess(result) {
-        console.log(result)
-    }
-
-    function _onRouteFailure(error) {
-        console.log('Calculate route failure', error);
-    }
-
     /**
      * Creates a series of H.map.Marker points from the route and adds them to the map.
      * @param {Object} route  A route as received from the H.service.RoutingService
@@ -118,9 +115,7 @@ module.exports = function ($q) {
             'fill="#1b468d" stroke="white" stroke-width="1"  />' +
             '</svg>',
             dotIcon = new H.map.Icon(svgMarkup, { anchor: { x: 8, y: 8 } }),
-            group = new H.map.Group(),
-            i,
-            j;
+            group = new H.map.Group(), i, j;
 
         // Add a marker for each maneuver
         for (i = 0; i < route.leg.length; i += 1) {

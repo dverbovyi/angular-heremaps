@@ -1,4 +1,13 @@
-module.exports = function ($q, $http, HereMapsConfig, HereMapsUtilsService, HereMapsCONSTS) {
+module.exports = HereMapsAPIService;
+
+HereMapsAPIService.$inject = [
+    '$q',
+    '$http',
+    'HereMapsConfig',
+    'HereMapsUtilsService',
+    'HereMapsCONSTS'
+];
+function HereMapsAPIService($q, $http, HereMapsConfig, HereMapsUtilsService, HereMapsCONSTS) {
     var version = HereMapsConfig.apiVersion,
         protocol = HereMapsConfig.useHTTPS ? 'https' : 'http';
 
