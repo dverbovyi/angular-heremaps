@@ -3,7 +3,7 @@
 # angular-heremaps
 *Live demo* **https://dverbovyi.github.io/angular-heremaps/**
 
-Angular directive for working with Nokia Here Maps
+AngularJS directive for working with Nokia Here Maps
 
 ###0.1.1 release notes:
 * Add minified version *dist/angular-heremaps.min.js*;
