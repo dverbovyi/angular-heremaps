@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/dverbovyi/angular-heremaps.svg?branch=master)](https://travis-ci.org/dverbovyi/angular-heremaps) [![Test Coverage](https://codeclimate.com/github/dverbovyi/angular-heremaps/badges/coverage.svg)](https://codeclimate.com/github/dverbovyi/angular-heremaps/coverage)
+[![Build Status](https://travis-ci.org/dverbovyi/angular-heremaps.svg?branch=master)](https://travis-ci.org/dverbovyi/angular-heremaps) 
+[![npm version](https://badge.fury.io/js/angular-heremaps.svg)](https://badge.fury.io/js/angular-heremaps)
 
 # angular-heremaps
 *Live demo* **https://dverbovyi.github.io/angular-heremaps/**
