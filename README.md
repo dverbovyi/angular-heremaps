@@ -6,7 +6,7 @@
 
 AngularJS directive for working with Nokia Here Maps
 
-###0.1.1 release notes:
+### 0.1.1 release notes:
 * Add minified version *dist/angular-heremaps.min.js*;
 * `calculateRoute` method: added support for more than 2 waypoints (Thanks [jzet](https://github.com/jzet) for pull request); 
 * `updateMarkers` method: added optional `refreshViewbounds` parameter to update viewbounds on marker change. By default: `false` (Thanks [jzet](https://github.com/jzet) for pull request);
@@ -16,19 +16,19 @@ AngularJS directive for working with Nokia Here Maps
 
         npm install angular-heremaps
 
-#####include angular-heremaps file
+##### include angular-heremaps file
 
 ```html
     <script src="/node_modules/angular-heremaps/dist/angular-heremaps.js" type="text/javascript"></script>
 ```
     
-#####add dependency in your angular application
+##### add dependency in your angular application
 
 ```javascript 
     angular.module('exampleModule', ['heremaps'])
 ```
         
-#####add config provider:
+##### add config provider:
 Before, you should register [here](https://developer.here.com/plans/api/consumer-mapping) and get your app id. Then pass it below
 
 ```javascript
@@ -42,7 +42,7 @@ Before, you should register [here](https://developer.here.com/plans/api/consumer
         }]);
 ```
 
-####Simple directive initialization with default options.
+#### Simple directive initialization with default options.
 
 ```html
         <div heremaps></div>
