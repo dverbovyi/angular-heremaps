@@ -8,9 +8,8 @@
 
 AngularJS directive for working with Nokia Here Maps
 
-### 0.1.2 release notes:
-- Added `geocodeAddress` method to angular-heremaps public API. The method performs text or partial address geocode by using https://developer.here.com/api-explorer/rest/geocoder/latitude-longitude-by-partial-address API
-thanks [aanev](https://github.com/aanev) for the PR
+### 0.1.2 latest release
+[see release notes](https://github.com/dverbovyi/angular-heremaps/releases/tag/v0.1.2)
 
 ### Install guide:
 
