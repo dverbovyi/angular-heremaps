@@ -110,20 +110,9 @@ function HereMapsAPIService($q, $http, HereMapsConfig, HereMapsUtilsService, Her
 
         var geocoder = platform.getGeocodingService(),
             deferred = $q.defer(),
-            _params = {};
+            _params = { gen: 8 };
 
-        _params.gen = '8';
-
-        if (!!params.searchtext) {
-            // free text geocode
-            _params.searchtext = params.searchtext;
-        } else {
-            // partial address geocode
-            !!params.housenumber && (_params.housenumber = params.housenumber);
-            !!params.street && (_params.street = params.street);
-            !!params.city && (_params.city = params.city);
-            !!params.country && (_params.country = params.country);
-        }
+        for (var key in params) { _params[key] = params[key]; }
 
         geocoder.geocode(_params, function (response) {
             deferred.resolve(response)
