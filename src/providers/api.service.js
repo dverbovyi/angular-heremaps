@@ -41,7 +41,8 @@ function HereMapsAPIService($q, $http, HereMapsConfig, HereMapsUtilsService, Her
         loadApi: loadApi,
         loadModules: loadModules,
         getPosition: getPosition,
-        geocodePosition: geocodePosition
+        geocodePosition: geocodePosition,
+        geocodeAddress: geocodeAddress
     };
 
     //#region PUBLIC
@@ -100,6 +101,25 @@ function HereMapsAPIService($q, $http, HereMapsConfig, HereMapsUtilsService, Her
             deferred.reject(error)
         });
         
+        return deferred.promise;
+    }
+
+    function geocodeAddress(platform, params) {
+        if (!params)
+            return console.error('Missed required parameters');
+
+        var geocoder = platform.getGeocodingService(),
+            deferred = $q.defer(),
+            _params = { gen: 8 };
+
+        for (var key in params) { _params[key] = params[key]; }
+
+        geocoder.geocode(_params, function (response) {
+            deferred.resolve(response)
+        }, function (error) {
+            deferred.reject(error)
+        });
+
         return deferred.promise;
     }
 
