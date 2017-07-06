@@ -1,6 +1,6 @@
 {
   "name": "angular-heremaps",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Angular directive for working with Nokia Here Maps",
   "source-folder": "/dist",
   "main": "angular-heremaps.js",
