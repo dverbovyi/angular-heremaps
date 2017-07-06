@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/dverbovyi/angular-heremaps.svg?branch=master)](https://travis-ci.org/dverbovyi/angular-heremaps) 
+[![Code Climate](https://codeclimate.com/github/dverbovyi/angular-heremaps/badges/gpa.svg)](https://codeclimate.com/github/dverbovyi/angular-heremaps)
 [![npm version](https://badge.fury.io/js/angular-heremaps.svg)](https://badge.fury.io/js/angular-heremaps)
+
 
 # angular-heremaps
 *Live demo* **https://dverbovyi.github.io/angular-heremaps/**
