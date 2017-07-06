@@ -41,7 +41,8 @@ function HereMapsAPIService($q, $http, HereMapsConfig, HereMapsUtilsService, Her
         loadApi: loadApi,
         loadModules: loadModules,
         getPosition: getPosition,
-        geocodePosition: geocodePosition
+        geocodePosition: geocodePosition,
+        geocodeAddress: geocodeAddress
     };
 
     //#region PUBLIC
@@ -100,6 +101,36 @@ function HereMapsAPIService($q, $http, HereMapsConfig, HereMapsUtilsService, Her
             deferred.reject(error)
         });
         
+        return deferred.promise;
+    }
+
+    function geocodeAddress(platform, params) {
+        if (!params)
+            return console.error('Missed required parameters');
+
+        var geocoder = platform.getGeocodingService(),
+            deferred = $q.defer(),
+            _params = {};
+
+        _params.gen = '8';
+
+        if (!!params.searchtext) {
+            // free text geocode
+            _params.searchtext = params.searchtext;
+        } else {
+            // partial address geocode
+            !!params.housenumber && (_params.housenumber = params.housenumber);
+            !!params.street && (_params.street = params.street);
+            !!params.city && (_params.city = params.city);
+            !!params.country && (_params.country = params.country);
+        }
+
+        geocoder.geocode(_params, function (response) {
+            deferred.resolve(response)
+        }, function (error) {
+            deferred.reject(error)
+        });
+
         return deferred.promise;
     }
 
