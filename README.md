@@ -56,6 +56,8 @@ Please report, any issue [here](https://github.com/dverbovyi/angular-heremaps/is
 
 #### Fork and clone the project
         git clone https://github.com/{{username}}/angular-heremaps.git
+        
+and make pull request
 
 #### Install dependencies
         cd angular-heremaps
