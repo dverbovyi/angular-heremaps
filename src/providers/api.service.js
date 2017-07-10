@@ -42,7 +42,9 @@ function HereMapsAPIService($q, $http, HereMapsConfig, HereMapsUtilsService, Her
         loadModules: loadModules,
         getPosition: getPosition,
         geocodePosition: geocodePosition,
-        geocodeAddress: geocodeAddress
+        geocodeAddress: geocodeAddress,
+        geocodeAutocomplete: geocodeAutocomplete,
+        findLocationById: findLocationById
     };
 
     //#region PUBLIC
@@ -119,6 +121,66 @@ function HereMapsAPIService($q, $http, HereMapsConfig, HereMapsUtilsService, Her
         }, function (error) {
             deferred.reject(error)
         });
+
+        return deferred.promise;
+    }
+
+    function geocodeAutocomplete(params) {
+        if (!params)
+            return console.error('Missing required parameters');
+
+        var autocompleteUrl = protocol + '://autocomplete.geocoder.cit.api.here.com/6.2/suggest.json',
+            deferred = $q.defer(),
+            _params = {
+                query: "",
+                beginHighlight: "<mark>",
+                endHighlight: "</mark>",
+                maxresults: "5"
+            };
+
+        for (var key in _params) {
+            if (angular.isDefined(params[key])) {
+                _params[key] = params[key];
+            }
+        }
+
+        _params.app_id = HereMapsConfig.app_id;
+        _params.app_code = HereMapsConfig.app_code;
+
+        $http.get(autocompleteUrl, { params: _params })
+            .success(function(response) {
+                deferred.resolve(response);
+            })
+            .error(function(error) {
+                deferred.reject(error);
+            });
+
+        return deferred.promise;
+    }
+
+    /**
+     * Finds location by HERE Maps Location identifier. Returns XML string.
+     */
+    function findLocationById(locationId) {
+        if (!locationId)
+            return console.error('Missing Location Identifier');
+
+        var locationUrl = protocol + '://geocoder.cit.api.here.com/6.2/geocode.xml',
+            deferred = $q.defer(),
+            _params = {
+                locationid: locationId,
+                gen: 9,
+                app_id: HereMapsConfig.app_id,
+                app_code: HereMapsConfig.app_code
+            };
+
+        $http.get(locationUrl, { params: _params })
+            .success(function(response) {
+                deferred.resolve(response);
+            })
+            .error(function(error) {
+                deferred.reject(error);
+            });
 
         return deferred.promise;
     }
