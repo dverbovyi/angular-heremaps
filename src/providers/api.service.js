@@ -24,7 +24,9 @@ function HereMapsAPIService($q, $http, HereMapsConfig, HereMapsUtilsService, Her
             src: "mapsjs-ui.js",
             href: "mapsjs-ui.css"
         },
-        EVENTS: "mapsjs-mapevents.js"
+        EVENTS: "mapsjs-mapevents.js",
+        AUTOCOMPLETE_URL: "://autocomplete.geocoder.cit.api.here.com/6.2/suggest.json",
+        LOCATION_URL: "://geocoder.cit.api.here.com/6.2/geocode.xml"
     };
 
     var API_DEFERSQueue = {};
@@ -129,7 +131,7 @@ function HereMapsAPIService($q, $http, HereMapsConfig, HereMapsUtilsService, Her
         if (!params)
             return console.error('Missing required parameters');
 
-        var autocompleteUrl = protocol + '://autocomplete.geocoder.cit.api.here.com/6.2/suggest.json',
+        var autocompleteUrl = protocol + CONFIG.AUTOCOMPLETE_URL,
             deferred = $q.defer(),
             _params = {
                 query: "",
@@ -165,7 +167,7 @@ function HereMapsAPIService($q, $http, HereMapsConfig, HereMapsUtilsService, Her
         if (!locationId)
             return console.error('Missing Location Identifier');
 
-        var locationUrl = protocol + '://geocoder.cit.api.here.com/6.2/geocode.xml',
+        var locationUrl = protocol + CONFIG.LOCATION_URL,
             deferred = $q.defer(),
             _params = {
                 locationid: locationId,
