@@ -237,6 +237,26 @@ function HereMapsDirective(
                         lang: options && options.lang
                     });
                 },
+                geocodeAddress: function (address) {
+                    return HereMapsAPIService.geocodeAddress(heremaps.platform, {
+                        searchtext: address && address.searchtext,
+                        country: address && address.country,
+                        city: address && address.city,
+                        street: address && address.street,
+                        housenumber: address && address.housenumber
+                    });
+                },
+                geocodeAutocomplete: function (query, options) {
+                    return HereMapsAPIService.geocodeAutocomplete({
+                        query: query,
+                        beginHighlight: options && options.beginHighlight,
+                        endHighlight: options && options.endHighlight,
+                        maxresults: options && options.maxresults
+                    });
+                },
+                findLocationById: function (locationId) {
+                    return HereMapsAPIService.findLocationById(locationId);
+                },
                 updateMarkers: function (places, refreshViewbounds) {
                     HereMapsMarkerService.updateMarkers(heremaps.map, places, refreshViewbounds);
                 }
