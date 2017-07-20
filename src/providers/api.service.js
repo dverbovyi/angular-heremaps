@@ -26,7 +26,7 @@ function HereMapsAPIService($q, $http, HereMapsConfig, HereMapsUtilsService, Her
         },
         EVENTS: "mapsjs-mapevents.js",
         AUTOCOMPLETE_URL: "://autocomplete.geocoder.cit.api.here.com/6.2/suggest.json",
-        LOCATION_URL: "://geocoder.cit.api.here.com/6.2/geocode.xml"
+        LOCATION_URL: "://geocoder.cit.api.here.com/6.2/geocode.json"
     };
 
     var API_DEFERSQueue = {};
@@ -161,7 +161,7 @@ function HereMapsAPIService($q, $http, HereMapsConfig, HereMapsUtilsService, Her
     }
 
     /**
-     * Finds location by HERE Maps Location identifier. Returns XML string.
+     * Finds location by HERE Maps Location identifier.
      */
     function findLocationById(locationId) {
         if (!locationId)
