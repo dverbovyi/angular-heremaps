@@ -18,7 +18,7 @@ AngularJS directive for working with Nokia Here Maps
 ##### include angular-heremaps file
 
 ```html
-    <script src="/node_modules/angular-heremaps/dist/angular-heremaps.js" type="text/javascript"></script>
+    <script src="/node_modules/angular-heremaps/dist/angular-heremaps.min.js" type="text/javascript"></script>
 ```
     
 ##### add dependency in your angular application
