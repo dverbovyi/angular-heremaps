@@ -27,9 +27,9 @@ function HereMapsDirective(
     HereMapsCONSTS,
     HereMapsEventsFactory,
     HereMapsUiFactory) {
-        
+
     HereMapsDirectiveCtrl.$inject = ['$scope', '$element', '$attrs'];
-        
+
     return {
         restrict: 'EA',
         template: "<div ng-style=\"{'width': mapWidth, 'height': mapHeight}\"></div>",
@@ -42,7 +42,7 @@ function HereMapsDirective(
         },
         controller: HereMapsDirectiveCtrl
     }
-    
+
     function HereMapsDirectiveCtrl($scope, $element, $attrs) {
         var CONTROL_NAMES = HereMapsCONSTS.CONTROLS.NAMES,
             places = $scope.places(),
@@ -50,8 +50,8 @@ function HereMapsDirective(
             listeners = $scope.events();
 
         var options = angular.extend({}, HereMapsCONSTS.DEFAULT_MAP_OPTIONS, opts),
-            position = HereMapsUtilsService.isValidCoords(options.coords) ? 
-                        options.coords : HereMapsCONSTS.DEFAULT_MAP_OPTIONS.coords;
+            position = HereMapsUtilsService.isValidCoords(options.coords) ?
+                options.coords : HereMapsCONSTS.DEFAULT_MAP_OPTIONS.coords;
 
         var heremaps = { id: HereMapsUtilsService.generateId() },
             mapReady = $scope.onMapReady(),
@@ -82,7 +82,7 @@ function HereMapsDirective(
         function _setupMapPlatform() {
             if (!HereMapsConfig.app_id || !HereMapsConfig.app_code)
                 throw new Error('app_id or app_code were missed. Please specify their in HereMapsConfig');
-            
+
             heremaps.platform = new H.service.Platform(HereMapsConfig);
             heremaps.layers = heremaps.platform.createDefaultLayers();
         }
@@ -121,7 +121,7 @@ function HereMapsDirective(
             mapReady && mapReady(MapProxy());
 
             cb && cb();
-                
+
         }
 
         function _uiModuleReady() {
@@ -158,19 +158,19 @@ function HereMapsDirective(
 
             $scope.mapHeight = height + 'px';
             $scope.mapWidth = width + 'px';
-            
+
             HereMapsUtilsService.runScopeDigestIfNeed($scope);
         }
 
         function MapProxy() {
             return {
-                refresh: function(){
+                refresh: function () {
                     var currentBounds = this.getViewBounds();
-                    
+
                     this.setMapSizes();
                     this.setViewBounds(currentBounds);
                 },
-                setMapSizes: function(height, width){
+                setMapSizes: function (height, width) {
                     _resizeHandler.apply(null, arguments);
                 },
                 getPlatform: function () {
@@ -188,17 +188,20 @@ function HereMapsDirective(
                 setZoom: function (zoom, step) {
                     HereMapsUtilsService.zoom(heremaps.map, zoom || 10, step);
                 },
-                getZoom: function(){
-                    return heremaps.map.getZoom();  
+                getZoom: function () {
+                    return heremaps.map.getZoom();
                 },
-                getCenter: function(){
-                    return heremaps.map.getCenter();  
+                getCenter: function () {
+                    return heremaps.map.getCenter();
                 },
-                getViewBounds: function(){
-                    return heremaps.map.getViewBounds();   
+                getViewBounds: function () {
+                    return heremaps.map.getViewBounds();
                 },
-                setViewBounds: function(boundingRect, opt_animate){
-                    heremaps.map.setViewBounds(boundingRect, opt_animate);
+                setViewBounds: function (boundingRect, opt_animate) {
+                    HereMapsMarkerService.setViewBounds(heremaps.map, boundingRect, opt_animate);
+                },
+                getBoundsRectFromPoints: function (topLeft, bottomRight) {
+                    return HereMapsUtilsService.getBoundsRectFromPoints.apply(null, arguments);
                 },
                 setCenter: function (coords) {
                     if (!coords) {
@@ -220,14 +223,10 @@ function HereMapsDirective(
                     return _getLocation.apply(null, arguments).then(function (position) {
                         var coords = position.coords;
 
-                        HereMapsMarkerService.addUserMarker(heremaps.map, {
-                            pos: {
-                                lat: coords.latitude,
-                                lng: coords.longitude
-                            }
-                        });
-
-                        return coords;
+                        return {
+                            lat: coords.latitude,
+                            lng: coords.longitude
+                        };
                     })
                 },
                 geocodePosition: function (coords, options) {

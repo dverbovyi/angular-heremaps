@@ -15,6 +15,7 @@ function HereMapsUtilsService($rootScope, $timeout, HereMapsCONSTS) {
         isValidCoords: isValidCoords,
         addEventListener: addEventListener,
         zoom: zoom,
+        getBoundsRectFromPoints: getBoundsRectFromPoints,
         generateId: generateId
     };
 
@@ -31,9 +32,7 @@ function HereMapsUtilsService($rootScope, $timeout, HereMapsCONSTS) {
     }
 
     function addEventListener(obj, eventName, listener, useCapture) {
-        var _useCapture = !!useCapture;
-
-        obj.addEventListener(eventName, listener, _useCapture);
+        obj.addEventListener(eventName, listener, !!useCapture);
     }
 
     function runScopeDigestIfNeed(scope, cb) {
@@ -94,6 +93,22 @@ function HereMapsUtilsService($rootScope, $timeout, HereMapsCONSTS) {
 
             requestAnimationFrame(zoom);
         })();
+    }
+
+    /**
+     * @method getBoundsRectFromPoints
+     * 
+     * @param {Object} topLeft 
+     *  @property {Number|String} lat
+     *  @property {Number|String} lng
+     * @param {Object} bottomRight 
+     *  @property {Number|String} lat
+     *  @property {Number|String} lng
+     * 
+     * @return {H.geo.Rect}
+     */
+    function getBoundsRectFromPoints(topLeft, bottomRight) {
+        return H.geo.Rect.fromPoints(topLeft, bottomRight, true);
     }
 
     function generateId() {

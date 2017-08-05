@@ -33,13 +33,13 @@
         $scope.onMapReady = function (heremaps) {
             $scope.heremaps = heremaps;
 
-            $scope.heremaps.setCenter({
+            heremaps.setCenter({
                 lat: 25.1075831, lng: 55.159061
             });
 
-            $scope.heremaps.setZoom(13);
+            heremaps.setZoom(13);
 
-            $scope.heremaps.calculateRoute('car', {
+            heremaps.calculateRoute('car', {
                 mode: 'fastest',
                 waypoints: [
                     { lat: 25.1075831, lng: 55.1461 },

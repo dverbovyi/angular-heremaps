@@ -1,7 +1,7 @@
 module.exports = HereMapsRoutesService;
 
-HereMapsRoutesService.$inject = ['$q'];
-function HereMapsRoutesService($q) {
+HereMapsRoutesService.$inject = ['$q', 'HereMapsMarkerService'];
+function HereMapsRoutesService($q, HereMapsMarkerService) {
     return {
         calculateRoute: calculateRoute,
         addRouteToMap: addRouteToMap,
@@ -88,7 +88,7 @@ function HereMapsRoutesService($q) {
         group.addObject(polyline);
 
         if(routeData.zoomToBounds) {
-            map.setViewBounds(polyline.getBounds(), true);
+            HereMapsMarkerService.setViewBounds(map, polyline.getBounds(), true);
         }
     }
 

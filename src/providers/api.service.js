@@ -72,7 +72,7 @@ function HereMapsAPIService($q, $http, HereMapsConfig, HereMapsUtilsService, Her
     function getPosition(options) {
         var deferred = $q.defer();
 
-        if (options && _isValidCoords(options.coords)) {
+        if (options && HereMapsUtilsService.isValidCoords(options.coords)) {
             deferred.resolve({ coords: options.coords });
         } else {
             navigator.geolocation.getCurrentPosition(function (response) {
@@ -246,8 +246,8 @@ function HereMapsAPIService($q, $http, HereMapsConfig, HereMapsUtilsService, Her
         if (_isLoaded(sourceName)) {
             defer.resolve();
         } else {
-            src = _getURL(sourceName),
-                script = HereMapsUtilsService.createScriptTag({ src: src });
+            src = _getURL(sourceName);
+            script = HereMapsUtilsService.createScriptTag({ src: src });
 
             script && head.appendChild(script);
 
@@ -317,13 +317,5 @@ function HereMapsAPIService($q, $http, HereMapsConfig, HereMapsUtilsService, Her
         }
 
         API_DEFERSQueue[sourceName] = [];
-    }
-
-    function _isValidCoords(coords) {
-        var lng = coords && coords.longitude,
-            lat = coords && coords.latitude;
-
-        return (typeof lng === 'number' || typeof lng === 'string') &&
-            (typeof lat === 'number' || typeof lat === 'string');
     }
 };

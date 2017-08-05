@@ -13,7 +13,8 @@ function HereMapsMarkerService(HereMapsDefaultMarker, HereMapsDOMMarker, HereMap
         addMarkersToMap: addMarkersToMap,
         addUserMarker: addUserMarker,
         updateMarkers: updateMarkers,
-        isMarkerInstance: isMarkerInstance
+        isMarkerInstance: isMarkerInstance,
+        setViewBounds: setViewBounds
     }
 
     function isMarkerInstance(target) {
@@ -21,9 +22,9 @@ function HereMapsMarkerService(HereMapsDefaultMarker, HereMapsDOMMarker, HereMap
     }
 
     function addUserMarker(map, place) {
-        if(map.userMarker)
+        if (map.userMarker)
             return map.userMarker;
-        
+
         place.markup = '<svg width="35px" height="35px" viewBox="0 0 90 90" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' +
             '<defs><circle id="path-1" cx="302" cy="802" r="15"></circle>' +
             '<mask id="mask-2" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="-30" y="-30" width="90" height="90">' +
@@ -51,7 +52,7 @@ function HereMapsMarkerService(HereMapsDefaultMarker, HereMapsDOMMarker, HereMap
         if (!map.markersGroup)
             map.markersGroup = new H.map.Group();
 
-        places.forEach(function(place, i) {
+        places.forEach(function (place, i) {
             var creator = _getMarkerCreator(place),
                 marker = place.draggable ? _draggableMarkerMixin(creator.create()) : creator.create();
 
@@ -60,10 +61,15 @@ function HereMapsMarkerService(HereMapsDefaultMarker, HereMapsDOMMarker, HereMap
 
         map.addObject(map.markersGroup);
 
-        if(refreshViewbounds){
-          map.setViewBounds(map.markersGroup.getBounds());
+        if (refreshViewbounds) {
+            setViewBounds(map, map.markersGroup.getBounds());
         }
-      }
+    }
+
+    function setViewBounds(map, bounds, opt_animate) {
+        map.setViewBounds(bounds, !!opt_animate);
+    }
+
     function updateMarkers(map, places, refreshViewbounds) {
         if (map.markersGroup) {
             map.markersGroup.removeAll();
@@ -97,5 +103,4 @@ function HereMapsMarkerService(HereMapsDefaultMarker, HereMapsDOMMarker, HereMap
 
         return marker;
     }
-
 };
