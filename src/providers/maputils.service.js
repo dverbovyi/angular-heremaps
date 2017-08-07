@@ -16,7 +16,8 @@ function HereMapsUtilsService($rootScope, $timeout, HereMapsCONSTS) {
         addEventListener: addEventListener,
         zoom: zoom,
         getBoundsRectFromPoints: getBoundsRectFromPoints,
-        generateId: generateId
+        generateId: generateId,
+        getMapFactory: getMapFactory
     };
 
     //#region PUBLIC
@@ -93,6 +94,10 @@ function HereMapsUtilsService($rootScope, $timeout, HereMapsCONSTS) {
 
             requestAnimationFrame(zoom);
         })();
+    }
+
+    function getMapFactory(){
+        return HereMapsUtilsService.getMapFactory();
     }
 
     /**
