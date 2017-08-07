@@ -97,7 +97,7 @@ function HereMapsUtilsService($rootScope, $timeout, HereMapsCONSTS) {
     }
 
     function getMapFactory(){
-        return HereMapsUtilsService.getMapFactory();
+        return H;
     }
 
     /**
