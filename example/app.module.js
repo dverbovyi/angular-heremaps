@@ -49,7 +49,7 @@
                 if(!result.response)
                     return;
 
-                $scope.heremaps.addRouteToMap({
+                heremaps.addRouteToMap({
                     zoomToBounds: false,
                     route: result.response.route[0],
                     style: {
