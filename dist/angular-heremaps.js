@@ -259,6 +259,9 @@ function HereMapsDirective(
                 },
                 updateMarkers: function (places, refreshViewbounds) {
                     HereMapsMarkerService.updateMarkers(heremaps.map, places, refreshViewbounds);
+                },
+                getMapFactory: function (){
+                    return HereMapsUtilsService.getMapFactory();
                 }
             }
         }
@@ -1017,7 +1020,8 @@ function HereMapsUtilsService($rootScope, $timeout, HereMapsCONSTS) {
         addEventListener: addEventListener,
         zoom: zoom,
         getBoundsRectFromPoints: getBoundsRectFromPoints,
-        generateId: generateId
+        generateId: generateId,
+        getMapFactory: getMapFactory
     };
 
     //#region PUBLIC
@@ -1110,6 +1114,10 @@ function HereMapsUtilsService($rootScope, $timeout, HereMapsCONSTS) {
      */
     function getBoundsRectFromPoints(topLeft, bottomRight) {
         return H.geo.Rect.fromPoints(topLeft, bottomRight, true);
+    }
+
+    function getMapFactory(){
+        return H;
     }
 
     function generateId() {

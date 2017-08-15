@@ -258,6 +258,9 @@ function HereMapsDirective(
                 },
                 updateMarkers: function (places, refreshViewbounds) {
                     HereMapsMarkerService.updateMarkers(heremaps.map, places, refreshViewbounds);
+                },
+                getMapFactory: function (){
+                    return HereMapsUtilsService.getMapFactory();
                 }
             }
         }
