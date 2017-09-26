@@ -88,6 +88,15 @@
             }
         ];
 
+        $scope.listeners = {
+            'click': function () {
+                console.info('click');
+            },
+            'mapviewchangeend': function () {
+                console.info('mapviewchangeend');
+            }
+        };
+
         function handleError(e) {
             console.error(e);
         }

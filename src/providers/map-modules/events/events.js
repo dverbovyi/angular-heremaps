@@ -69,6 +69,18 @@ function HereMapsEventsFactory(HereMapsUtilsService, HereMapsMarkerService, Here
 
             self.triggerUserListener(HereMapsCONSTS.USER_EVENTS[e.type], e);
         });
+
+        HereMapsUtilsService.addEventListener(this.map, 'mapviewchangestart', function(e) {
+            self.triggerUserListener(HereMapsCONSTS.USER_EVENTS[e.type], e);
+        });
+
+        HereMapsUtilsService.addEventListener(this.map, 'mapviewchange', function(e) {
+            self.triggerUserListener(HereMapsCONSTS.USER_EVENTS[e.type], e);
+        });
+
+        HereMapsUtilsService.addEventListener(this.map, 'mapviewchangeend', function(e) {
+            self.triggerUserListener(HereMapsCONSTS.USER_EVENTS[e.type], e);
+        });
     }
 
     function setupOptions(options) {
