@@ -61,6 +61,9 @@ module.exports = {
         pointerenter: 'mouseenter',
         drag: 'drag',
         dragstart: 'dragstart',
-        dragend: 'dragend'
+        dragend: 'dragend',
+        mapviewchange: 'mapviewchange',
+        mapviewchangestart: 'mapviewchangestart',
+        mapviewchangeend: 'mapviewchangeend'
     }
 }
