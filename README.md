@@ -8,8 +8,8 @@
 
 AngularJS directive for working with Nokia Here Maps
 
-### 0.1.7 latest release
-[see release notes](https://github.com/dverbovyi/angular-heremaps/releases/tag/v0.1.7)
+### 0.1.9 latest release
+[see release notes](https://github.com/dverbovyi/angular-heremaps/releases/tag/v0.1.9)
 
 ### Install guide:
 
