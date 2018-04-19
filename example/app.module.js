@@ -89,7 +89,7 @@
                 pos: { lat: 25.1075831, lng: 55.2 },
                 type: 'SVG',
                 draggable: true,
-                markup: './marker.svg'
+                markup: './example/marker.svg'
             }
         ];
 
