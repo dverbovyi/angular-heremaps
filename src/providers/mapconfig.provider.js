@@ -8,7 +8,8 @@ module.exports = function() {
             app_code: options.app_code,
             apiVersion: options.apiVersion || DEFAULT_API_VERSION,
             useHTTPS: options.useHTTPS,
-            useCIT: !!options.useCIT
+            useCIT: !!options.useCIT,
+            mapTileConfig: options.mapTileConfig
         }
     };
 

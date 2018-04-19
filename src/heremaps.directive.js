@@ -118,6 +118,9 @@ function HereMapsDirective(
 
             HereMapsMarkerService.addMarkersToMap(map, places, true);
 
+            if (HereMapsConfig.mapTileConfig)
+                _setCustomMapStyles(map, HereMapsConfig.mapTileConfig);
+
             mapReady && mapReady(MapProxy());
 
             cb && cb();
@@ -160,6 +163,23 @@ function HereMapsDirective(
             $scope.mapWidth = width + 'px';
 
             HereMapsUtilsService.runScopeDigestIfNeed($scope);
+        }
+        
+        function _setCustomMapStyles(map, config) {
+            // Create a MapTileService instance to request base tiles (i.e. base.map.api.here.com):
+            var mapTileService = heremaps.platform.getMapTileService({ 'type': 'base' });
+
+            // Create a tile layer which requests map tiles
+            var newStyleLayer = mapTileService.createTileLayer(
+                'maptile', 
+                config.scheme || 'normal.day', 
+                config.size || 256, 
+                config.format || 'png8', 
+                config.metadataQueryParams || {}
+            );
+            
+            // Set new style layer as a base layer on the map:
+            map.setBaseLayer(newStyleLayer);
         }
 
         function MapProxy() {
