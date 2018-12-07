@@ -223,12 +223,12 @@ function HereMapsDirective(
                 getBoundsRectFromPoints: function (topLeft, bottomRight) {
                     return HereMapsUtilsService.getBoundsRectFromPoints.apply(null, arguments);
                 },
-                setCenter: function (coords) {
+                setCenter: function (coords, opt_animate) {
                     if (!coords) {
                         return console.error('coords are not specified!');
                     }
 
-                    heremaps.map.setCenter(coords);
+                    heremaps.map.setCenter(coords, opt_animate);
                 },
                 cleanRoutes: function () {
                     HereMapsRoutesService.cleanRoutes(heremaps.map);
